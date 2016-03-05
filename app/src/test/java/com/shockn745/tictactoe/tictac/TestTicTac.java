@@ -42,7 +42,7 @@ public class TestTicTac {
     }
 
     @Test
-    public void threeInAColumn_differentPlayers_gameIsFinished() throws Exception {
+    public void threeInAColumn_differentPlayers_gameIsNOTFinished() throws Exception {
         game.play(new Move(0, 0, Move.PLAYER_1));
         game.play(new Move(1, 0, Move.PLAYER_2));
         game.play(new Move(2, 0, Move.PLAYER_1));
