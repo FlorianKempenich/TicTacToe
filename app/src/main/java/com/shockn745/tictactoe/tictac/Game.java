@@ -28,7 +28,17 @@ public class Game {
     }
 
     public boolean isFinished() {
-        return false;
+        int firstColum = 0;
+        for (Move move: moves) {
+            if (inFirstColumn(move)) {
+                firstColum++;
+            }
+        }
+        return firstColum == 3;
+    }
+
+    private boolean inFirstColumn(Move move) {
+        return move.y == 0;
     }
 
 }

@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class TestTicTac {
@@ -23,13 +24,21 @@ public class TestTicTac {
     }
 
     @Test
-    @Ignore
-    public void threeInAColumm_gameIsFinished() throws Exception {
-//        playPlayerOne(new Move(0, 0));
-//        playPlayerOne(new Move(0, 1));
-//        playPlayerOne(new Move(0, 2));
-//
-//        assertTrue("Game should be finished", game.isFinished());
+    public void threeInAColumn_samePlayer_gameIsFinished() throws Exception {
+        game.play(new Move(0, 0, Move.PLAYER_1));
+        game.play(new Move(1, 0, Move.PLAYER_1));
+        game.play(new Move(2, 0, Move.PLAYER_1));
+
+        assertTrue("Game should be finished", game.isFinished());
     }
+
+//    @Test
+//    public void threeInAColumn_differentPlayers_gameIsFinished() throws Exception {
+//        game.play(new Move(0, 0, Move.PLAYER_1));
+//        game.play(new Move(1, 0, Move.PLAYER_2));
+//        game.play(new Move(2, 0, Move.PLAYER_1));
+//
+//        assertFalse("Game should NOT be finished", game.isFinished());
+//    }
 
 }
