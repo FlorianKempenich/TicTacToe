@@ -4,8 +4,10 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class TestTicTac {
 
@@ -25,19 +27,14 @@ public class TestTicTac {
 
     @Test
     public void threeInALine_samePlayer_gameIsFinished() throws Exception {
-        game.play(new Move(0, 0, Move.PLAYER_1));
-        game.play(new Move(1, 0, Move.PLAYER_1));
-        game.play(new Move(2, 0, Move.PLAYER_1));
+        scoreLinePlayerOne(0);
 
         assertTrue("Game should be finished", game.isFinished());
     }
 
     @Test
     public void threeInALine_differentLine_samePlayer_gameIsFinished() throws Exception {
-        game.play(new Move(0, 1, Move.PLAYER_1));
-        game.play(new Move(1, 1, Move.PLAYER_1));
-        game.play(new Move(2, 1, Move.PLAYER_1));
-
+        scoreLinePlayerOne(1);
         assertTrue("Game should be finished", game.isFinished());
     }
 
@@ -50,4 +47,24 @@ public class TestTicTac {
         assertFalse("Game should NOT be finished", game.isFinished());
     }
 
+    @Test
+    public void samePlayerPlays2Rounds_throwException() throws Exception {
+        game.play(new Move(0,0, Move.PLAYER_1));
+        try {
+            game.play(new Move(0,1, Move.PLAYER_1));
+            fail();
+        } catch (IllegalMoveException e) {
+            assertEquals("This player just played", e.getMessage());
+        }
+
+    }
+
+    private void scoreLinePlayerOne(int lineIndex) throws Exception {
+        int otherLine = lineIndex == 0 ? 1 : 0;
+        game.play(new Move(0, lineIndex, Move.PLAYER_1));
+        game.play(new Move(2, otherLine, Move.PLAYER_2));
+        game.play(new Move(1, lineIndex, Move.PLAYER_1));
+        game.play(new Move(1, otherLine, Move.PLAYER_2));
+        game.play(new Move(2, lineIndex, Move.PLAYER_1));
+    }
 }

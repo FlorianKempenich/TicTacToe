@@ -12,6 +12,7 @@ package com.shockn745.tictactoe.tictac;
 public class Game {
 
     private int[][] board = new int[3][3];
+    private int previousPlayer = Move.NO_PLAYER;
 
     public Game() {
         initializeTheBoard();
@@ -37,6 +38,10 @@ public class Game {
     }
 
     private void checkForIllegalMove(Move currentMove) throws IllegalMoveException {
+        if (previousPlayer == currentMove.player) {
+            throw new IllegalMoveException("This player just played");
+        }
+        previousPlayer = currentMove.player;
         if (coordinatesAlreadyPlayed(currentMove)) {
             throw new IllegalMoveException();
         }
@@ -45,6 +50,10 @@ public class Game {
     private boolean coordinatesAlreadyPlayed(Move currentMove) {
         int squareOwner = playerAtCoordinates(currentMove.x, currentMove.y);
         return squareOwner != Move.NO_PLAYER;
+    }
+
+    private int playerAtCoordinates(int x, int y) {
+        return board[x][y];
     }
 
     public boolean isFinished() {
@@ -73,10 +82,6 @@ public class Game {
             }
         }
         return true;
-    }
-
-    private int playerAtCoordinates(int x, int y) {
-        return board[x][y];
     }
 
 }

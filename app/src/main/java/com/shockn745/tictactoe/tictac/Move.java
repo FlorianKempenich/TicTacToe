@@ -11,10 +11,10 @@ public class Move {
 
     public final int player;
 
-    public Move(int x, int y) throws InvalidMoveException {
+    public Move(int x, int y, int player) throws InvalidMoveException {
         this.x = x;
         this.y = y;
-        this.player = PLAYER_1;
+        this.player = player;
         checkIfMoveValid();
     }
 
@@ -35,13 +35,6 @@ public class Move {
 
     private boolean invalidPlayer() {
         return player != PLAYER_1 && player != PLAYER_2;
-    }
-
-    public Move(int x, int y, int player) throws InvalidMoveException {
-        this.x = x;
-        this.y = y;
-        this.player = player;
-        checkIfMoveValid();
     }
 
     @Override
