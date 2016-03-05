@@ -48,7 +48,12 @@ public class Game {
     }
 
     public boolean isFinished() {
-        return isLineScored(0);
+        for (int i = 0; i < 3; i++) {
+            if (isLineScored(i)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean isLineScored(int lineIndex) {
