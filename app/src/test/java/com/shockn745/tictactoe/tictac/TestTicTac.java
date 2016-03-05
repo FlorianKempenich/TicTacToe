@@ -3,7 +3,8 @@ package com.shockn745.tictactoe.tictac;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertTrue;
 
 public class TestTicTac {
 
@@ -15,30 +16,20 @@ public class TestTicTac {
 
     }
 
-    @Test
-    public void testHappyPath_Move() throws Exception {
-        Move move = new Move(0,2);
-
-        assertEquals(0, move.x);
-        assertEquals(2, move.y);
-    }
-
-    @Test (expected = InvalidMoveException.class)
-    public void invalidMove_throwException() throws Exception {
-        new Move(22,34);
-    }
-
-    @Test
-    public void testEqualityOnMoves() throws Exception {
-        assertEquals(new Move(0,0), new Move(0,0));
-
-    }
-
     @Test (expected = IllegalMoveException.class)
-    @Ignore
-    public void playTwoMovesSameSpot_ThrowIllegalMoveException() throws Exception {
-        Move moveA0 = new Move(0, 0);
-        game.play(moveA0, Game.PLAYER_1);
-        game.play(moveA0, Game.PLAYER_2);
+    public void playTwoMovesSameSpot_ThrowIllegalMoveExceptionnew() throws Exception {
+        game.play(new Move(0, 0, Move.PLAYER_1));
+        game.play(new Move(0, 0, Move.PLAYER_2));
     }
+
+    @Test
+    @Ignore
+    public void threeInAColumm_gameIsFinished() throws Exception {
+//        playPlayerOne(new Move(0, 0));
+//        playPlayerOne(new Move(0, 1));
+//        playPlayerOne(new Move(0, 2));
+//
+//        assertTrue("Game should be finished", game.isFinished());
+    }
+
 }

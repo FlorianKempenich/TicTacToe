@@ -1,20 +1,34 @@
 package com.shockn745.tictactoe.tictac;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Game {
 
-    public static final int PLAYER_1 = 1;
-    public static final int PLAYER_2 = 2;
+    private List<Move> moves = new ArrayList<>(9);
 
-    private Move lastMove = null;
+    public void play(Move move) throws IllegalMoveException {
+        checkForIllegalMove(move);
+        moves.add(move);
+    }
 
-    public void play(Move move, int player) throws IllegalMoveException {
-        if (lastMove != null && lastMove == move) {
-
+    private void checkForIllegalMove(Move currentMove) throws IllegalMoveException {
+        if (coordinatesAlreadyPlayed(currentMove)) {
+            throw new IllegalMoveException();
         }
     }
 
+    private boolean coordinatesAlreadyPlayed(Move currentMove) {
+        for (Move move: moves) {
+            if (move.sameCoordinates(currentMove)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-
-
+    public boolean isFinished() {
+        return false;
+    }
 
 }
