@@ -2,19 +2,25 @@ package com.shockn745.tictactoe;
 
 public class Move {
 
-    public static final int NO_PLAYER = 2345;
-    public static final int PLAYER_1 = 6541;
-    public static final int PLAYER_2 = 3546;
-
     public final int x;
     public final int y;
 
-    public final int player;
+    public final int playerOld;
+    public final Player player;
 
     public Move(int x, int y, int player) throws InvalidMoveException {
         this.x = x;
         this.y = y;
+        this.player = new Player(player);
+        this.playerOld = this.player.type;
+        checkIfMoveValid();
+    }
+
+    public Move(int y, int x, Player player) {
+        this.y = y;
+        this.x = x;
         this.player = player;
+        this.playerOld = this.player.type;
         checkIfMoveValid();
     }
 
@@ -34,7 +40,7 @@ public class Move {
     }
 
     private boolean invalidPlayer() {
-        return player != PLAYER_1 && player != PLAYER_2;
+        return playerOld != Player.PLAYER_1 && playerOld != Player.PLAYER_2;
     }
 
     @Override
@@ -44,14 +50,14 @@ public class Move {
 
         Move move = (Move) o;
 
-        return x == move.x && y == move.y && player == move.player;
+        return x == move.x && y == move.y && playerOld == move.playerOld;
     }
 
     @Override
     public int hashCode() {
         int result = x;
         result = 31 * result + y;
-        result = 31 * result + player;
+        result = 31 * result + playerOld;
         return result;
     }
 

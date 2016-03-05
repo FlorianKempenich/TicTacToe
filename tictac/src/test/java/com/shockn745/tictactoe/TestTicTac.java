@@ -20,15 +20,15 @@ public class TestTicTac {
 
     @Test(expected = IllegalMoveException.class)
     public void playTwoMovesSameSpot_ThrowIllegalMoveException() throws Exception {
-        game.play(new Move(0, 0, Move.PLAYER_1));
-        game.play(new Move(0, 0, Move.PLAYER_2));
+        game.play(new Move(0, 0, Player.PLAYER_1));
+        game.play(new Move(0, 0, Player.PLAYER_2));
     }
 
     @Test
     public void samePlayerPlays2Rounds_throwException() throws Exception {
-        game.play(new Move(0, 0, Move.PLAYER_1));
+        game.play(new Move(0, 0, Player.PLAYER_1));
         try {
-            game.play(new Move(0, 1, Move.PLAYER_1));
+            game.play(new Move(0, 1, Player.PLAYER_1));
             fail();
         } catch (IllegalMoveException e) {
             assertEquals("This player just played", e.getMessage());
@@ -44,11 +44,11 @@ public class TestTicTac {
 
     private void scoreLinePlayerOne(int lineIndex) throws Exception {
         int otherLine = lineIndex == 0 ? 1 : 0;
-        game.play(new Move(0, lineIndex, Move.PLAYER_1));
-        game.play(new Move(2, otherLine, Move.PLAYER_2));
-        game.play(new Move(1, lineIndex, Move.PLAYER_1));
-        game.play(new Move(1, otherLine, Move.PLAYER_2));
-        game.play(new Move(2, lineIndex, Move.PLAYER_1));
+        game.play(new Move(0, lineIndex, Player.PLAYER_1));
+        game.play(new Move(2, otherLine, Player.PLAYER_2));
+        game.play(new Move(1, lineIndex, Player.PLAYER_1));
+        game.play(new Move(1, otherLine, Player.PLAYER_2));
+        game.play(new Move(2, lineIndex, Player.PLAYER_1));
     }
 
     @Test
@@ -59,9 +59,9 @@ public class TestTicTac {
 
     @Test
     public void threeInAColumn_differentPlayers_gameIsNOTFinished() throws Exception {
-        game.play(new Move(0, 0, Move.PLAYER_1));
-        game.play(new Move(1, 0, Move.PLAYER_2));
-        game.play(new Move(2, 0, Move.PLAYER_1));
+        game.play(new Move(0, 0, Player.PLAYER_1));
+        game.play(new Move(1, 0, Player.PLAYER_2));
+        game.play(new Move(2, 0, Player.PLAYER_1));
 
         assertFalse("Game should NOT be finished", game.isFinished());
     }

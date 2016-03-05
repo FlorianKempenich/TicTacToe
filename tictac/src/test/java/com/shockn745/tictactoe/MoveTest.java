@@ -11,18 +11,18 @@ public class MoveTest {
 
     @Test
     public void newConstructorHappyPath() throws Exception {
-        Move move = new Move(0, 2, Move.PLAYER_1);
+        Move move = new Move(0, 2, Player.PLAYER_1);
 
         assertEquals(0, move.x);
         assertEquals(2, move.y);
-        assertEquals(Move.PLAYER_1, move.player);
+        assertEquals(Player.PLAYER_1, move.playerOld);
 
     }
 
     @Test
     public void invalidMove_throwException() throws Exception {
      try {
-         new Move(22, 34, Move.PLAYER_1);
+         new Move(22, 34, Player.PLAYER_1);
          fail();
      } catch (InvalidMoveException e) {
          assertEquals("Out of bounds coordinates", e.getMessage());
@@ -31,10 +31,10 @@ public class MoveTest {
 
     @Test
     public void testEqualityOnMoves() throws Exception {
-        assertEquals(new Move(0,0, Move.PLAYER_1), new Move(0,0, Move.PLAYER_1));
-        assertNotEquals(new Move(0,0, Move.PLAYER_1), new Move(0,0, Move.PLAYER_2));
-        assertNotEquals(new Move(1,0, Move.PLAYER_1), new Move(0,0, Move.PLAYER_1));
-        assertNotEquals(new Move(0,1, Move.PLAYER_1), new Move(0,0, Move.PLAYER_1));
+        assertEquals(new Move(0,0, Player.PLAYER_1), new Move(0,0, Player.PLAYER_1));
+        assertNotEquals(new Move(0,0, Player.PLAYER_1), new Move(0,0, Player.PLAYER_2));
+        assertNotEquals(new Move(1,0, Player.PLAYER_1), new Move(0,0, Player.PLAYER_1));
+        assertNotEquals(new Move(0,1, Player.PLAYER_1), new Move(0,0, Player.PLAYER_1));
     }
 
     @Test
@@ -49,8 +49,8 @@ public class MoveTest {
 
     @Test
     public void testIf2MovesHaveSameCoordinates() throws Exception {
-        Move first = new Move(1,2, Move.PLAYER_1);
-        Move second = new Move(1,2, Move.PLAYER_2);
+        Move first = new Move(1,2, Player.PLAYER_1);
+        Move second = new Move(1,2, Player.PLAYER_2);
 
         assertTrue(first.sameCoordinates(second));
     }

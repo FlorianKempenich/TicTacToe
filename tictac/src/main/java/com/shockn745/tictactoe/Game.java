@@ -12,7 +12,7 @@ package com.shockn745.tictactoe;
 public class Game {
 
     private int[][] board = new int[3][3];
-    private int previousPlayer = Move.NO_PLAYER;
+    private int previousPlayer = Player.NO_PLAYER;
 
     public Game() {
         initializeTheBoard();
@@ -21,7 +21,7 @@ public class Game {
     private void initializeTheBoard() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                board[i][j] = Move.NO_PLAYER;
+                board[i][j] = Player.NO_PLAYER;
             }
         }
     }
@@ -34,14 +34,14 @@ public class Game {
     private void addMoveToBoard(Move currentMove) {
         int x = currentMove.x;
         int y = currentMove.y;
-        board[x][y] = currentMove.player;
+        board[x][y] = currentMove.playerOld;
     }
 
     private void checkForIllegalMove(Move currentMove) throws IllegalMoveException {
-        if (previousPlayer == currentMove.player) {
+        if (previousPlayer == currentMove.playerOld) {
             throw new IllegalMoveException("This player just played");
         }
-        previousPlayer = currentMove.player;
+        previousPlayer = currentMove.playerOld;
         if (coordinatesAlreadyPlayed(currentMove)) {
             throw new IllegalMoveException();
         }
@@ -49,7 +49,7 @@ public class Game {
 
     private boolean coordinatesAlreadyPlayed(Move currentMove) {
         int squareOwner = playerAtCoordinates(currentMove.x, currentMove.y);
-        return squareOwner != Move.NO_PLAYER;
+        return squareOwner != Player.NO_PLAYER;
     }
 
     private int playerAtCoordinates(int x, int y) {
@@ -57,6 +57,7 @@ public class Game {
     }
 
     public boolean isFinished() {
+        DebugHelper.printBoard(board);
         for (int i = 0; i < 3; i++) {
             if (isLineScored(i)) {
                 return true;
@@ -75,7 +76,7 @@ public class Game {
     }
 
     private boolean isLineOwnedByASinglePlayer(int lineIndex, int lineOwner) {
-        if (lineOwner == Move.NO_PLAYER) return false;
+        if (lineOwner == Player.NO_PLAYER) return false;
         for (int i = 0; i < 3; i++) {
             if (playerAtCoordinates(i, lineIndex) != lineOwner) {
                 return false;
