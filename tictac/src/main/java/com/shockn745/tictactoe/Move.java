@@ -17,8 +17,8 @@ public class Move {
     private void checkIfMoveValid() {
         if (isOutOfBounds()) {
             throw new InvalidMoveException("Out of bounds coordinates");
-        } else if (player.invalidPlayer()) {
-            throw new InvalidMoveException("Invalid player, USE STATIC FIELDS");
+        } else if (player == null) {
+            throw new InvalidMoveException("Null player, INITIALIZE PLAYER");
         }
     }
 
@@ -30,6 +30,14 @@ public class Move {
     }
 
     @Override
+    public int hashCode() {
+        int result = x;
+        result = 31 * result + y;
+        result = 31 * result + player.hashCode();
+        return result;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -38,14 +46,6 @@ public class Move {
 
         return x == move.x && y == move.y && player.equals(move.player);
 
-    }
-
-    @Override
-    public int hashCode() {
-        int result = x;
-        result = 31 * result + y;
-        result = 31 * result + player.hashCode();
-        return result;
     }
 
     public boolean sameCoordinates(Move other) {

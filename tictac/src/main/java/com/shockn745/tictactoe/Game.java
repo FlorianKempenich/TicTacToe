@@ -11,8 +11,10 @@ package com.shockn745.tictactoe;
  */
 public class Game {
 
+    private static final Player NO_PLAYER = Player.noPlayer();
+    
     private Player[][] board = new Player[3][3];
-    private Player previousPlayer = new Player(Player.NO_PLAYER);
+    private Player previousPlayer = NO_PLAYER;
 
     public Game() {
         initializeTheBoard();
@@ -21,7 +23,7 @@ public class Game {
     private void initializeTheBoard() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                board[i][j] = new Player(Player.NO_PLAYER);
+                board[i][j] = NO_PLAYER;
             }
         }
     }
@@ -49,7 +51,7 @@ public class Game {
 
     private boolean coordinatesAlreadyPlayed(Move currentMove) {
         Player squareOwner = playerAtCoordinates(currentMove.x, currentMove.y);
-        return !squareOwner.equals(new Player(Player.NO_PLAYER));
+        return !squareOwner.equals(NO_PLAYER);
     }
 
     private Player playerAtCoordinates(int x, int y) {
@@ -75,7 +77,7 @@ public class Game {
     }
 
     private boolean isLineOwnedByASinglePlayer(int lineIndex, Player lineOwner) {
-        if (lineOwner.equals(new Player(Player.NO_PLAYER))) return false;
+        if (lineOwner.equals(NO_PLAYER)) return false;
         for (int i = 0; i < 3; i++) {
             if (!playerAtCoordinates(i, lineIndex).equals(lineOwner)) {
                 return false;

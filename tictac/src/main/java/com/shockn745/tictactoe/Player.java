@@ -2,24 +2,31 @@ package com.shockn745.tictactoe;
 
 public class Player {
 
-    public static final int NO_PLAYER = 0;
-    public static final int PLAYER_1 = 1;
-    public static final int PLAYER_2 = 2;
+    private static final int NO_PLAYER = 0;
+    private static final int PLAYER_1 = 1;
+    private static final int PLAYER_2 = 2;
 
-    public final int type;
+    private final int type;
 
-    public Player(int type) throws InvalidPlayerException {
+    private Player(int type) throws InvalidPlayerException {
         this.type = type;
     }
 
-    private void checkForInvalidPlayer() throws InvalidPlayerException {
-        if (invalidPlayer()) {
-            throw new InvalidPlayerException();
-        }
+    public static Player player1() {
+        return new Player(PLAYER_1);
     }
 
-    public boolean invalidPlayer() {
-        return type != Player.PLAYER_1 && type != Player.PLAYER_2;
+    public static Player player2() {
+        return new Player(PLAYER_2);
+    }
+
+    public static Player noPlayer() {
+        return new Player(NO_PLAYER);
+    }
+
+    @Override
+    public int hashCode() {
+        return type;
     }
 
     @Override
@@ -31,11 +38,6 @@ public class Player {
 
         return type == player.type;
 
-    }
-
-    @Override
-    public int hashCode() {
-        return type;
     }
 
     @Override
