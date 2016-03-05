@@ -12,7 +12,7 @@ package com.shockn745.tictactoe;
 public class Game {
 
     private static final Player NO_PLAYER = Player.noPlayer();
-    
+
     private Player[][] board = new Player[3][3];
     private Player previousPlayer = NO_PLAYER;
 
@@ -60,11 +60,30 @@ public class Game {
 
     public boolean isFinished() {
         for (int i = 0; i < 3; i++) {
-            if (isLineScored(i)) {
+            if (isLineScored(i) || isColumnScored(i)) {
                 return true;
             }
         }
         return false;
+    }
+
+    private boolean isColumnScored(int columnIndex) {
+        Player columnOwner = getColumnOwner(columnIndex);
+        return isColumnOwnedByASinglePlayer(columnIndex, columnOwner);
+    }
+
+    private Player getColumnOwner(int columnIndex) {
+        return board[columnIndex][0];
+    }
+
+    private boolean isColumnOwnedByASinglePlayer(int columnIndex, Player columnOwner) {
+        if (columnOwner.equals(NO_PLAYER)) return false;
+        for (int i = 0; i < 3; i++) {
+            if (!playerAtCoordinates(columnIndex, i).equals(columnOwner)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private boolean isLineScored(int lineIndex) {
