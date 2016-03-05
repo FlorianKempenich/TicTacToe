@@ -2,6 +2,7 @@ package com.shockn745.tictactoe.tictac;
 
 public class Move {
 
+    public static final int NO_PLAYER = 2345;
     public static final int PLAYER_1 = 6541;
     public static final int PLAYER_2 = 3546;
 

@@ -1,15 +1,39 @@
 package com.shockn745.tictactoe.tictac;
 
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * Represents a game of TicTacToe.
+ * <p/>
+ * A game is finished when either one of the column, one of the lines, or one of the diagonal is
+ * scored.
+ * <p/>
+ * A line is scored when the same player owns all the square in a line.
+ * Same for column and diagonal.
+ */
 public class Game {
 
-    private List<Move> moves = new ArrayList<>(9);
+    private int[][] board = new int[3][3];
+
+    public Game() {
+        initializeTheBoard();
+    }
+
+    private void initializeTheBoard() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                board[i][j] = Move.NO_PLAYER;
+            }
+        }
+    }
 
     public void play(Move move) throws IllegalMoveException {
         checkForIllegalMove(move);
-        moves.add(move);
+        addMoveToBoard(move);
+    }
+
+    private void addMoveToBoard(Move currentMove) {
+        int x = currentMove.x;
+        int y = currentMove.y;
+        board[x][y] = currentMove.player;
     }
 
     private void checkForIllegalMove(Move currentMove) throws IllegalMoveException {
@@ -19,26 +43,35 @@ public class Game {
     }
 
     private boolean coordinatesAlreadyPlayed(Move currentMove) {
-        for (Move move: moves) {
-            if (move.sameCoordinates(currentMove)) {
-                return true;
-            }
-        }
-        return false;
+        int squareOwner = playerAtCoordinates(currentMove.x, currentMove.y);
+        return squareOwner != Move.NO_PLAYER;
     }
 
     public boolean isFinished() {
-        int firstColum = 0;
-        for (Move move: moves) {
-            if (inFirstColumn(move)) {
-                firstColum++;
-            }
-        }
-        return firstColum == 3;
+        return isLineScored(0);
     }
 
-    private boolean inFirstColumn(Move move) {
-        return move.y == 0;
+    private boolean isLineScored(int lineIndex) {
+        int lineOwner = getLineOwner(lineIndex);
+        return isLineOwnedByASinglePlayer(lineIndex, lineOwner);
+    }
+
+    private int getLineOwner(int lineIndex) {
+        return board[0][lineIndex];
+    }
+
+    private boolean isLineOwnedByASinglePlayer(int lineIndex, int lineOwner) {
+        if (lineOwner == Move.NO_PLAYER) return false;
+        for (int i = 0; i < 3; i++) {
+            if (playerAtCoordinates(i, lineIndex) != lineOwner) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private int playerAtCoordinates(int x, int y) {
+        return board[x][y];
     }
 
 }
