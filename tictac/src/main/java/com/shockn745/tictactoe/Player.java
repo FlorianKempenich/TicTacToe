@@ -18,7 +18,37 @@ public class Player {
         }
     }
 
-    private boolean invalidPlayer() {
+    public boolean invalidPlayer() {
         return type != Player.PLAYER_1 && type != Player.PLAYER_2;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Player player = (Player) o;
+
+        return type == player.type;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return type;
+    }
+
+    @Override
+    public String toString() {
+        switch (type) {
+            case PLAYER_1:
+                return "Player 1";
+            case PLAYER_2:
+                return "Player 2";
+            case NO_PLAYER:
+                return "NO_PLAYER";
+            default:
+                return "";
+        }
     }
 }

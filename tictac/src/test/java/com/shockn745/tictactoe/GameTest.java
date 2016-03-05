@@ -21,7 +21,7 @@ public class GameTest {
     @Test(expected = IllegalMoveException.class)
     public void playTwoMovesSameSpot_ThrowIllegalMoveException() throws Exception {
         game.play(new Move(0, 0, new Player(Player.PLAYER_1)));
-        game.play(new Move(0, 0, Player.PLAYER_2));
+        game.play(new Move(0, 0, new Player(Player.PLAYER_2)));
     }
 
     @Test
@@ -45,9 +45,9 @@ public class GameTest {
     private void scoreLinePlayerOne(int lineIndex) throws Exception {
         int otherLine = lineIndex == 0 ? 1 : 0;
         game.play(new Move(0, lineIndex, new Player(Player.PLAYER_1)));
-        game.play(new Move(2, otherLine, Player.PLAYER_2));
+        game.play(new Move(2, otherLine, new Player(Player.PLAYER_2)));
         game.play(new Move(1, lineIndex, new Player(Player.PLAYER_1)));
-        game.play(new Move(1, otherLine, Player.PLAYER_2));
+        game.play(new Move(1, otherLine, new Player(Player.PLAYER_2)));
         game.play(new Move(2, lineIndex, new Player(Player.PLAYER_1)));
     }
 
@@ -60,7 +60,7 @@ public class GameTest {
     @Test
     public void threeInAColumn_differentPlayers_gameIsNOTFinished() throws Exception {
         game.play(new Move(0, 0, new Player(Player.PLAYER_1)));
-        game.play(new Move(1, 0, Player.PLAYER_2));
+        game.play(new Move(1, 0, new Player(Player.PLAYER_2)));
         game.play(new Move(2, 0, new Player(Player.PLAYER_1)));
 
         assertFalse("Game should NOT be finished", game.isFinished());
