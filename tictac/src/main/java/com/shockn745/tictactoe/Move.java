@@ -16,7 +16,7 @@ public class Move {
         checkIfMoveValid();
     }
 
-    public Move(int y, int x, Player player) {
+    public Move(int x, int y, Player player) {
         this.y = y;
         this.x = x;
         this.player = player;

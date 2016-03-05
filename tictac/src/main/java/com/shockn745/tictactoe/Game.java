@@ -57,7 +57,6 @@ public class Game {
     }
 
     public boolean isFinished() {
-        DebugHelper.printBoard(board);
         for (int i = 0; i < 3; i++) {
             if (isLineScored(i)) {
                 return true;
