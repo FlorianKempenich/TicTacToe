@@ -1,4 +1,4 @@
-package com.shockn745.tictactoe.tictac;
+package com.shockn745.tictactoe;
 
 /**
  * Represents a game of TicTacToe.

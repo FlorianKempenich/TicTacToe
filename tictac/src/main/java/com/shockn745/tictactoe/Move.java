@@ -1,4 +1,4 @@
-package com.shockn745.tictactoe.tictac;
+package com.shockn745.tictactoe;
 
 public class Move {
 
