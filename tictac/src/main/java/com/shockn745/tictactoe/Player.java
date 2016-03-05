@@ -2,6 +2,7 @@ package com.shockn745.tictactoe;
 
 public class Player {
 
+    // Unfortunately the use of enum is advised against
     private static final int NO_PLAYER = 0;
     private static final int PLAYER_1 = 1;
     private static final int PLAYER_2 = 2;

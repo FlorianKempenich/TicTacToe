@@ -58,7 +58,7 @@ public class GameTest {
     }
 
     @Test
-    public void threeInAColumn_differentPlayers_gameIsNOTFinished() throws Exception {
+    public void threeInALine_differentPlayers_gameIsNOTFinished() throws Exception {
         game.play(new Move(0, 0, Player.player1()));
         game.play(new Move(1, 0, Player.player2()));
         game.play(new Move(2, 0, Player.player1()));
