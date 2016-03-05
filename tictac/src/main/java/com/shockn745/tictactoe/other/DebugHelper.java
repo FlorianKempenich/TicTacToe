@@ -1,4 +1,4 @@
-package com.shockn745.tictactoe;
+package com.shockn745.tictactoe.other;
 
 public class DebugHelper {
 

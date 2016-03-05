@@ -1,4 +1,4 @@
-package com.shockn745.tictactoe;
+package com.shockn745.tictactoe.exceptions;
 
 public class IllegalMoveException extends Exception{
 

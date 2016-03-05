@@ -1,5 +1,7 @@
 package com.shockn745.tictactoe;
 
+import com.shockn745.tictactoe.exceptions.IllegalMoveException;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,7 +34,8 @@ public class GameTest {
 
     @Before
     public void setUp() throws Exception {
-        game = new Game();
+        Board board = new Board();
+        game = new Game(board);
 
     }
 

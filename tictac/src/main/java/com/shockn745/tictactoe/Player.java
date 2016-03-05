@@ -1,5 +1,7 @@
 package com.shockn745.tictactoe;
 
+import com.shockn745.tictactoe.exceptions.InvalidPlayerException;
+
 public class Player {
 
     // Unfortunately the use of enum is advised against

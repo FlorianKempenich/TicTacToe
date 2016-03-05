@@ -1,5 +1,7 @@
 package com.shockn745.tictactoe;
 
+import com.shockn745.tictactoe.exceptions.InvalidMoveException;
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

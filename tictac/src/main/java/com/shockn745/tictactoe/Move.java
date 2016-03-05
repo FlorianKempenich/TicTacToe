@@ -1,5 +1,7 @@
 package com.shockn745.tictactoe;
 
+import com.shockn745.tictactoe.exceptions.InvalidMoveException;
+
 public class Move {
 
     public final int x;
