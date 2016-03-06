@@ -40,7 +40,7 @@ public class Game {
                 return true;
             }
         }
-        return false;
+        return isFirstDiagonalFinished() || isSecondDiagonalFinished();
     }
 
     private boolean isColumnScored(int columnIndex) {
@@ -69,6 +69,34 @@ public class Game {
         if (lineOwner.equals(NO_PLAYER)) return false;
         for (int i = 0; i < 3; i++) {
             if (!board.playerAtCoordinates(i, lineIndex).equals(lineOwner)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isFirstDiagonalFinished() {
+        Player diagonalOwner = board.getFirstDiagonalOwner();
+        return isFirstDiagonalOwnedByASinglePlayer(diagonalOwner);
+    }
+
+    private boolean isFirstDiagonalOwnedByASinglePlayer(Player diagonalOwner) {
+        for (int i = 0; i < 3; i++) {
+            if (!board.playerAtCoordinates(i, i).equals(diagonalOwner)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isSecondDiagonalFinished() {
+        Player diagonalOwner = board.getSecondDiagonalOwner();
+        return isSecondDiagonalOwnedByASinglePlayer(diagonalOwner);
+    }
+
+    private boolean isSecondDiagonalOwnedByASinglePlayer(Player diagonalOwner) {
+        for (int i = 0; i < 3; i++) {
+            if (!board.playerAtCoordinates(i, 2 - i).equals(diagonalOwner)) {
                 return false;
             }
         }
