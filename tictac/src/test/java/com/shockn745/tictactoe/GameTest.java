@@ -1,6 +1,7 @@
 package com.shockn745.tictactoe;
 
 import com.shockn745.tictactoe.exceptions.IllegalMoveException;
+import com.shockn745.tictactoe.exceptions.InvalidMoveException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -113,6 +114,7 @@ public class GameTest {
         scoreSecondDiagonalPlayerOne(game);
         assertTrue("Game should be finished", game.isFinished());
     }
+
 
     //todo play with "no player" -> exception
 }

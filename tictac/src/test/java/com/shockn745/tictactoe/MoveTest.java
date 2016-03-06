@@ -58,4 +58,16 @@ public class MoveTest {
 
         assertTrue(first.sameCoordinates(second));
     }
+
+    @Test
+    public void playWithNoPlayer_throwIllegalMoveException() throws Exception {
+        try {
+            new Move(1, 2, Player.noPlayer());
+            fail();
+        } catch (InvalidMoveException e) {
+            assertEquals("Invalid player. Play only with PLAYER 1 OR PLAYER 2", e.getMessage());
+        }
+
+    }
+
 }

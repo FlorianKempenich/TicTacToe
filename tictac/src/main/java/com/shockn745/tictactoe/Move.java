@@ -21,6 +21,8 @@ public class Move {
             throw new InvalidMoveException("Out of bounds coordinates");
         } else if (player == null) {
             throw new InvalidMoveException("Null player, INITIALIZE PLAYER");
+        } else if (player.equals(Player.noPlayer())) {
+            throw new InvalidMoveException("Invalid player. Play only with PLAYER 1 OR PLAYER 2");
         }
     }
 
