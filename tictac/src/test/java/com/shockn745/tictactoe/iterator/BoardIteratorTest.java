@@ -4,7 +4,6 @@ import com.shockn745.tictactoe.Board;
 import com.shockn745.tictactoe.Move;
 import com.shockn745.tictactoe.Player;
 import com.shockn745.tictactoe.exceptions.IllegalMoveException;
-import com.shockn745.tictactoe.iterator.BoardIterator;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +15,12 @@ public class BoardIteratorTest {
 
     private Board board;
 
+    @Before
+    public void setUp() throws Exception {
+        board = new Board();
+        initBoard(board);
+    }
+
     private static void initBoard(Board board) throws IllegalMoveException {
         board.addMove(new Move(0, 0, Player.player1()));
         board.addMove(new Move(1, 0, Player.player2()));
@@ -26,13 +31,7 @@ public class BoardIteratorTest {
         board.addMove(new Move(0, 2, Player.player2()));
         board.addMove(new Move(1, 2, Player.player1()));
         board.addMove(new Move(2, 2, Player.player2()));
-        System.out.println(board);
-    }
-
-    @Before
-    public void setUp() throws Exception {
-        board = new Board();
-        initBoard(board);
+//        System.out.println(board);
     }
 
     @Test

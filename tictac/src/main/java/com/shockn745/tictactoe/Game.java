@@ -40,29 +40,38 @@ public class Game {
         previousPlayer = currentMove.player;
     }
 
-
-    public boolean isFinished() {
+    public boolean isFinished() { //todo change logic or naming : "isFinished" should not update the winner conceptually speaking
         for (int i = 0; i < 3; i++) {
-            BoardIterator lineIterator = new LineIterator(board, i);
+            BoardIterator lineIterator = new LineIterator(board, i); // todo put iterator in the board
             BoardIterator columnIterator = new ColumnIterator(board, i);
             if (isSequenceScored(lineIterator) || isSequenceScored(columnIterator)) {
                 return true;
             }
         }
         BoardIterator firstDiagonalIterator = new FirstDiagonalIterator(board);
-        BoardIterator secondDiagonalIterator= new SecondDiagonalIterator(board);
+        BoardIterator secondDiagonalIterator = new SecondDiagonalIterator(board);
         return isSequenceScored(firstDiagonalIterator) || isSequenceScored(secondDiagonalIterator);
     }
 
     private boolean isSequenceScored(BoardIterator iterator) {
+        Player sequenceWinner = getSequenceWinner(iterator);
+        if (!sequenceWinner.equals(Player.noPlayer())) {
+            winner = sequenceWinner;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private Player getSequenceWinner(BoardIterator iterator) {
+        Player sequenceWinner = Player.noPlayer();
         Player sequenceOwner = iterator.first();
         boolean scored = isSequenceOwnedBySamePlayer(iterator, sequenceOwner);
         if (scored) {
-            winner = sequenceOwner;
+            sequenceWinner = sequenceOwner;
         }
-        return scored;
+        return sequenceWinner;
     }
-
 
     private boolean isSequenceOwnedBySamePlayer(BoardIterator iterator, Player sequenceOwner) {
         if (sequenceOwner.equals(NO_PLAYER)) return false;
@@ -71,7 +80,6 @@ public class Game {
         }
         return true;
     }
-
 
     public Player getWinner() {
         return winner;

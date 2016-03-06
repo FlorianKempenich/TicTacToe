@@ -47,22 +47,6 @@ public class Board {
         return board[x][y];
     }
 
-    public Player getColumnOwner(int columnIndex) {
-        return board[columnIndex][0];
-    }
-
-    public Player getFirstDiagonalOwner() {
-        return getLineOwner(0);
-    }
-
-    public Player getLineOwner(int lineIndex) {
-        return board[0][lineIndex];
-    }
-
-    public Player getSecondDiagonalOwner() {
-        return getLineOwner(2);
-    }
-
     @Override
     public String toString() {
         return
