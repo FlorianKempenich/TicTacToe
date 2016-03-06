@@ -115,6 +115,31 @@ public class GameTest {
         assertTrue("Game should be finished", game.isFinished());
     }
 
+    @Test
+    public void gameFinished_column_getWinner() throws Exception {
+        scoreColumnPlayerOne(game, 0);
+        assertTrue(game.isFinished());
+        assertEquals(Player.player1(), game.getWinner());
+    }
 
-    //todo play with "no player" -> exception
+    @Test
+    public void gameFinished_line_getWinner() throws Exception {
+        scoreLinePlayerOne(game, 1);
+        assertTrue(game.isFinished());
+        assertEquals(Player.player1(), game.getWinner());
+    }
+
+    @Test
+    public void gameFinished_firstDiagonal_getWinner() throws Exception {
+        scoreFirstDiagonalPlayerOne(game);
+        assertTrue(game.isFinished());
+        assertEquals(Player.player1(), game.getWinner());
+    }
+
+    @Test
+    public void gameFinished_secondDiagonal_getWinner() throws Exception {
+        scoreSecondDiagonalPlayerOne(game);
+        assertTrue(game.isFinished());
+        assertEquals(Player.player1(), game.getWinner());
+    }
 }

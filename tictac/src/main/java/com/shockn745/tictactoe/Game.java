@@ -1,6 +1,11 @@
 package com.shockn745.tictactoe;
 
 import com.shockn745.tictactoe.exceptions.IllegalMoveException;
+import com.shockn745.tictactoe.iterator.BoardIterator;
+import com.shockn745.tictactoe.iterator.ColumnIterator;
+import com.shockn745.tictactoe.iterator.FirstDiagonalIterator;
+import com.shockn745.tictactoe.iterator.LineIterator;
+import com.shockn745.tictactoe.iterator.SecondDiagonalIterator;
 
 /**
  * Represents a game of TicTacToe.
@@ -16,6 +21,8 @@ public class Game {
     private static final Player NO_PLAYER = Player.noPlayer();
     private final Board board;
     private Player previousPlayer = NO_PLAYER;
+
+    private Player winner = Player.noPlayer();
 
     public Game(Board board) {
         this.board = board;
@@ -36,71 +43,38 @@ public class Game {
 
     public boolean isFinished() {
         for (int i = 0; i < 3; i++) {
-            if (isLineScored(i) || isColumnScored(i)) {
+            BoardIterator lineIterator = new LineIterator(board, i);
+            BoardIterator columnIterator = new ColumnIterator(board, i);
+            if (isSequenceScored(lineIterator) || isSequenceScored(columnIterator)) {
                 return true;
             }
         }
-        return isFirstDiagonalFinished() || isSecondDiagonalFinished();
+        BoardIterator firstDiagonalIterator = new FirstDiagonalIterator(board);
+        BoardIterator secondDiagonalIterator= new SecondDiagonalIterator(board);
+        return isSequenceScored(firstDiagonalIterator) || isSequenceScored(secondDiagonalIterator);
     }
 
-    private boolean isColumnScored(int columnIndex) {
-        Player columnOwner = board.getColumnOwner(columnIndex);
-        return isColumnOwnedByASinglePlayer(columnIndex, columnOwner);
+    private boolean isSequenceScored(BoardIterator iterator) {
+        Player sequenceOwner = iterator.first();
+        boolean scored = isSequenceOwnedBySamePlayer(iterator, sequenceOwner);
+        if (scored) {
+            winner = sequenceOwner;
+        }
+        return scored;
     }
 
 
-    private boolean isColumnOwnedByASinglePlayer(int columnIndex, Player columnOwner) {
-        if (columnOwner.equals(NO_PLAYER)) return false;
-        for (int i = 0; i < 3; i++) {
-            if (!board.playerAtCoordinates(columnIndex, i).equals(columnOwner)) {
-                return false;
-            }
+    private boolean isSequenceOwnedBySamePlayer(BoardIterator iterator, Player sequenceOwner) {
+        if (sequenceOwner.equals(NO_PLAYER)) return false;
+        while (iterator.hasNext()) {
+            if (!iterator.next().equals(sequenceOwner)) return false;
         }
         return true;
     }
 
-    private boolean isLineScored(int lineIndex) {
-        Player lineOwner = board.getLineOwner(lineIndex);
-        return isLineOwnedByASinglePlayer(lineIndex, lineOwner);
-    }
 
-
-    private boolean isLineOwnedByASinglePlayer(int lineIndex, Player lineOwner) {
-        if (lineOwner.equals(NO_PLAYER)) return false;
-        for (int i = 0; i < 3; i++) {
-            if (!board.playerAtCoordinates(i, lineIndex).equals(lineOwner)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean isFirstDiagonalFinished() {
-        Player diagonalOwner = board.getFirstDiagonalOwner();
-        return isFirstDiagonalOwnedByASinglePlayer(diagonalOwner);
-    }
-
-    private boolean isFirstDiagonalOwnedByASinglePlayer(Player diagonalOwner) {
-        for (int i = 0; i < 3; i++) {
-            if (!board.playerAtCoordinates(i, i).equals(diagonalOwner)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean isSecondDiagonalFinished() {
-        Player diagonalOwner = board.getSecondDiagonalOwner();
-        return isSecondDiagonalOwnedByASinglePlayer(diagonalOwner);
-    }
-
-    private boolean isSecondDiagonalOwnedByASinglePlayer(Player diagonalOwner) {
-        for (int i = 0; i < 3; i++) {
-            if (!board.playerAtCoordinates(i, 2 - i).equals(diagonalOwner)) {
-                return false;
-            }
-        }
-        return true;
+    public Player getWinner() {
+        return winner;
     }
 
 }
