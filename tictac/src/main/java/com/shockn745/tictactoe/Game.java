@@ -1,11 +1,8 @@
 package com.shockn745.tictactoe;
 
+import com.shockn745.tictactoe.exceptions.GameNotFinishedException;
 import com.shockn745.tictactoe.exceptions.IllegalMoveException;
 import com.shockn745.tictactoe.iterator.BoardIterator;
-import com.shockn745.tictactoe.iterator.ColumnIterator;
-import com.shockn745.tictactoe.iterator.FirstDiagonalIterator;
-import com.shockn745.tictactoe.iterator.LineIterator;
-import com.shockn745.tictactoe.iterator.SecondDiagonalIterator;
 
 /**
  * Represents a game of TicTacToe.
@@ -22,7 +19,7 @@ public class Game {
     private final Board board;
     private Player previousPlayer = NO_PLAYER;
 
-    private Player winner = Player.noPlayer();
+    private Player winner = NO_PLAYER;
 
     public Game(Board board) {
         this.board = board;
@@ -40,22 +37,31 @@ public class Game {
         previousPlayer = currentMove.player;
     }
 
-    public boolean isFinished() { //todo change logic or naming : "isFinished" should not update the winner conceptually speaking
+    /**
+     * @return True if the game is finished, False otherwise
+     */
+    public boolean checkIfFinishedAndUpdateWinner() {
+        /*
+        Not sure that it's a good idea to mix responsibilities like this but the only other
+        solution I could think of would be to do the iteration process all over again when looking
+        for the winner. Which is also a terrible idea.
+        So no idea how to make this better . . . any idea ? Drop me a mail, or a pull request
+         */
         for (int i = 0; i < 3; i++) {
-            BoardIterator lineIterator = new LineIterator(board, i); // todo put iterator in the board
-            BoardIterator columnIterator = new ColumnIterator(board, i);
+            BoardIterator lineIterator = board.getLineIterator(i);
+            BoardIterator columnIterator = board.getColumnIterator(i);
             if (isSequenceScored(lineIterator) || isSequenceScored(columnIterator)) {
                 return true;
             }
         }
-        BoardIterator firstDiagonalIterator = new FirstDiagonalIterator(board);
-        BoardIterator secondDiagonalIterator = new SecondDiagonalIterator(board);
+        BoardIterator firstDiagonalIterator = board.getFirstDiagonalIterator();
+        BoardIterator secondDiagonalIterator = board.getSecondDiagonalIterator();
         return isSequenceScored(firstDiagonalIterator) || isSequenceScored(secondDiagonalIterator);
     }
 
     private boolean isSequenceScored(BoardIterator iterator) {
         Player sequenceWinner = getSequenceWinner(iterator);
-        if (!sequenceWinner.equals(Player.noPlayer())) {
+        if (!sequenceWinner.equals(NO_PLAYER)) {
             winner = sequenceWinner;
             return true;
         } else {
@@ -64,7 +70,7 @@ public class Game {
     }
 
     private Player getSequenceWinner(BoardIterator iterator) {
-        Player sequenceWinner = Player.noPlayer();
+        Player sequenceWinner = NO_PLAYER;
         Player sequenceOwner = iterator.first();
         boolean scored = isSequenceOwnedBySamePlayer(iterator, sequenceOwner);
         if (scored) {
@@ -81,7 +87,10 @@ public class Game {
         return true;
     }
 
-    public Player getWinner() {
+    public Player getWinner() throws GameNotFinishedException {
+        if (winner.equals(NO_PLAYER)) {
+            throw new GameNotFinishedException();
+        }
         return winner;
     }
 

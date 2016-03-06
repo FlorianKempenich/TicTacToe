@@ -1,6 +1,11 @@
 package com.shockn745.tictactoe;
 
 import com.shockn745.tictactoe.exceptions.IllegalMoveException;
+import com.shockn745.tictactoe.iterator.BoardIterator;
+import com.shockn745.tictactoe.iterator.ColumnIterator;
+import com.shockn745.tictactoe.iterator.FirstDiagonalIterator;
+import com.shockn745.tictactoe.iterator.LineIterator;
+import com.shockn745.tictactoe.iterator.SecondDiagonalIterator;
 
 public class Board {
 
@@ -57,4 +62,21 @@ public class Board {
                         "v\n" +
                         "Y\n";
     }
+
+    public BoardIterator getLineIterator(int lineIndex) {
+        return new LineIterator(this, lineIndex);
+    }
+
+    public BoardIterator getColumnIterator(int columnIterator) {
+        return new ColumnIterator(this, columnIterator);
+    }
+
+    public BoardIterator getFirstDiagonalIterator() {
+        return new FirstDiagonalIterator(this);
+    }
+
+    public BoardIterator getSecondDiagonalIterator() {
+        return new SecondDiagonalIterator(this);
+    }
+
 }

@@ -1,12 +1,10 @@
 package com.shockn745.tictactoe;
 
+import com.shockn745.tictactoe.exceptions.GameNotFinishedException;
 import com.shockn745.tictactoe.exceptions.IllegalMoveException;
-import com.shockn745.tictactoe.exceptions.InvalidMoveException;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import sun.security.provider.PolicySpiFile;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -16,40 +14,6 @@ import static org.junit.Assert.fail;
 public class GameTest {
 
     private Game game;
-
-    private static void scoreLinePlayerOne(Game game, int lineIndex) throws Exception {
-        int otherLine = lineIndex == 0 ? 1 : 0;
-        game.play(new Move(0, lineIndex, Player.player1()));
-        game.play(new Move(2, otherLine, Player.player2()));
-        game.play(new Move(1, lineIndex, Player.player1()));
-        game.play(new Move(1, otherLine, Player.player2()));
-        game.play(new Move(2, lineIndex, Player.player1()));
-    }
-
-    private static void scoreColumnPlayerOne(Game game, int columnIndex) throws Exception {
-        int otherColumn = columnIndex == 0 ? 1 : 0;
-        game.play(new Move(columnIndex, 0, Player.player1()));
-        game.play(new Move(otherColumn, 2, Player.player2()));
-        game.play(new Move(columnIndex, 1, Player.player1()));
-        game.play(new Move(otherColumn, 0, Player.player2()));
-        game.play(new Move(columnIndex, 2, Player.player1()));
-    }
-
-    private static void scoreFirstDiagonalPlayerOne(Game game) throws Exception {
-        game.play(new Move(0, 0, Player.player1()));
-        game.play(new Move(2, 0, Player.player2()));
-        game.play(new Move(1, 1, Player.player1()));
-        game.play(new Move(1, 0, Player.player2()));
-        game.play(new Move(2, 2, Player.player1()));
-    }
-
-    private static void scoreSecondDiagonalPlayerOne(Game game) throws Exception {
-        game.play(new Move(0, 2, Player.player1()));
-        game.play(new Move(2, 1, Player.player2()));
-        game.play(new Move(1, 1, Player.player1()));
-        game.play(new Move(1, 0, Player.player2()));
-        game.play(new Move(2, 0, Player.player1()));
-    }
 
     @Before
     public void setUp() throws Exception {
@@ -79,13 +43,22 @@ public class GameTest {
     @Test
     public void threeInALine_samePlayer_gameIsFinished() throws Exception {
         scoreLinePlayerOne(game, 0);
-        assertTrue("Game should be finished", game.isFinished());
+        assertTrue("Game should be finished", game.checkIfFinishedAndUpdateWinner());
+    }
+
+    private static void scoreLinePlayerOne(Game game, int lineIndex) throws Exception {
+        int otherLine = lineIndex == 0 ? 1 : 0;
+        game.play(new Move(0, lineIndex, Player.player1()));
+        game.play(new Move(2, otherLine, Player.player2()));
+        game.play(new Move(1, lineIndex, Player.player1()));
+        game.play(new Move(1, otherLine, Player.player2()));
+        game.play(new Move(2, lineIndex, Player.player1()));
     }
 
     @Test
     public void threeInALine_differentLine_samePlayer_gameIsFinished() throws Exception {
         scoreLinePlayerOne(game, 1);
-        assertTrue("Game should be finished", game.isFinished());
+        assertTrue("Game should be finished", game.checkIfFinishedAndUpdateWinner());
     }
 
     @Test
@@ -94,52 +67,83 @@ public class GameTest {
         game.play(new Move(1, 0, Player.player2()));
         game.play(new Move(2, 0, Player.player1()));
 
-        assertFalse("Game should NOT be finished", game.isFinished());
+        assertFalse("Game should NOT be finished", game.checkIfFinishedAndUpdateWinner());
     }
 
     @Test
     public void threeInAColumn_samePlayer_gameIsFinished() throws Exception {
         scoreColumnPlayerOne(game, 0);
-        assertTrue("Game should be finished", game.isFinished());
+        assertTrue("Game should be finished", game.checkIfFinishedAndUpdateWinner());
+    }
+
+    private static void scoreColumnPlayerOne(Game game, int columnIndex) throws Exception {
+        int otherColumn = columnIndex == 0 ? 1 : 0;
+        game.play(new Move(columnIndex, 0, Player.player1()));
+        game.play(new Move(otherColumn, 2, Player.player2()));
+        game.play(new Move(columnIndex, 1, Player.player1()));
+        game.play(new Move(otherColumn, 0, Player.player2()));
+        game.play(new Move(columnIndex, 2, Player.player1()));
     }
 
     @Test
     public void threeInFirstDiagonal_gameIsFinished() throws Exception {
         scoreFirstDiagonalPlayerOne(game);
-        assertTrue("Game should be finished", game.isFinished());
+        assertTrue("Game should be finished", game.checkIfFinishedAndUpdateWinner());
+    }
+
+    private static void scoreFirstDiagonalPlayerOne(Game game) throws Exception {
+        game.play(new Move(0, 0, Player.player1()));
+        game.play(new Move(2, 0, Player.player2()));
+        game.play(new Move(1, 1, Player.player1()));
+        game.play(new Move(1, 0, Player.player2()));
+        game.play(new Move(2, 2, Player.player1()));
     }
 
     @Test
     public void threeInSecondDiagonal_gameIsFinished() throws Exception {
         scoreSecondDiagonalPlayerOne(game);
-        assertTrue("Game should be finished", game.isFinished());
+        assertTrue("Game should be finished", game.checkIfFinishedAndUpdateWinner());
+    }
+
+    private static void scoreSecondDiagonalPlayerOne(Game game) throws Exception {
+        game.play(new Move(0, 2, Player.player1()));
+        game.play(new Move(2, 1, Player.player2()));
+        game.play(new Move(1, 1, Player.player1()));
+        game.play(new Move(1, 0, Player.player2()));
+        game.play(new Move(2, 0, Player.player1()));
     }
 
     @Test
     public void gameFinished_column_getWinner() throws Exception {
         scoreColumnPlayerOne(game, 0);
-        assertTrue(game.isFinished());
+        assertTrue(game.checkIfFinishedAndUpdateWinner());
         assertEquals(Player.player1(), game.getWinner());
     }
 
     @Test
     public void gameFinished_line_getWinner() throws Exception {
         scoreLinePlayerOne(game, 1);
-        assertTrue(game.isFinished());
+        assertTrue(game.checkIfFinishedAndUpdateWinner());
         assertEquals(Player.player1(), game.getWinner());
     }
 
     @Test
     public void gameFinished_firstDiagonal_getWinner() throws Exception {
         scoreFirstDiagonalPlayerOne(game);
-        assertTrue(game.isFinished());
+        assertTrue(game.checkIfFinishedAndUpdateWinner());
         assertEquals(Player.player1(), game.getWinner());
     }
 
     @Test
     public void gameFinished_secondDiagonal_getWinner() throws Exception {
         scoreSecondDiagonalPlayerOne(game);
-        assertTrue(game.isFinished());
+        assertTrue(game.checkIfFinishedAndUpdateWinner());
         assertEquals(Player.player1(), game.getWinner());
+    }
+
+    @Test(expected = GameNotFinishedException.class)
+    public void gameIsNotFinished_tryToGetTheWinner_throwException() throws Exception {
+        game.play(new Move(1, 2, Player.player1()));
+        game.getWinner();
     }
 }
