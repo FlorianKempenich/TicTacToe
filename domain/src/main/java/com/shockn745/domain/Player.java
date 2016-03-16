@@ -1,4 +1,4 @@
-package com.shockn745.domain.tictac;
+package com.shockn745.domain;
 
 import com.shockn745.domain.exceptions.InvalidPlayerException;
 

@@ -1,7 +1,7 @@
-package com.shockn745.domain.tictac.iterator;
+package com.shockn745.domain.iterator;
 
-import com.shockn745.domain.tictac.Board;
-import com.shockn745.domain.tictac.Player;
+import com.shockn745.domain.Board;
+import com.shockn745.domain.Player;
 
 public class SecondDiagonalIterator implements BoardIterator {
 
@@ -20,13 +20,13 @@ public class SecondDiagonalIterator implements BoardIterator {
 
     @Override
     public Player next() {
-        Player player = board.playerAtCoordinates(cursor, 2 - cursor);
+        Player player = board.getPlayerAtCoordinates(cursor, 2 - cursor);
         cursor++;
         return player;
     }
 
     @Override
     public Player first() {
-        return board.playerAtCoordinates(0, 2);
+        return board.getPlayerAtCoordinates(0, 2);
     }
 }

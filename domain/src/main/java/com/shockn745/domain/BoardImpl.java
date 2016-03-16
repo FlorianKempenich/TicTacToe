@@ -1,21 +1,20 @@
-package com.shockn745.domain.tictac;
+package com.shockn745.domain;
 
 import com.shockn745.domain.exceptions.IllegalMoveException;
-import com.shockn745.domain.tictac.iterator.BoardIterator;
-import com.shockn745.domain.tictac.iterator.ColumnIterator;
-import com.shockn745.domain.tictac.iterator.FirstDiagonalIterator;
-import com.shockn745.domain.tictac.iterator.LineIterator;
-import com.shockn745.domain.tictac.iterator.SecondDiagonalIterator;
+import com.shockn745.domain.iterator.BoardIterator;
+import com.shockn745.domain.iterator.ColumnIterator;
+import com.shockn745.domain.iterator.FirstDiagonalIterator;
+import com.shockn745.domain.iterator.LineIterator;
+import com.shockn745.domain.iterator.SecondDiagonalIterator;
 
-public class Board {
+public class BoardImpl implements Board {
 
     private static final Player NO_PLAYER = Player.noPlayer();
-    Player[][] board = new Player[3][3];
+    private Player[][] board = new Player[3][3];
 
-    public Board() {
+    public BoardImpl() {
         initializeTheBoard();
     }
-
 
     private void initializeTheBoard() {
         for (int i = 0; i < 3; i++) {
@@ -25,10 +24,10 @@ public class Board {
         }
     }
 
+    @Override
     public void addMove(Move move) throws IllegalMoveException {
         checkIfSquareAlreadyPlayed(move);
         addMoveToBoard(move);
-
     }
 
     private void addMoveToBoard(Move currentMove) {
@@ -44,11 +43,12 @@ public class Board {
     }
 
     private boolean coordinatesAlreadyPlayed(Move currentMove) {
-        Player squareOwner = playerAtCoordinates(currentMove.x, currentMove.y);
+        Player squareOwner = getPlayerAtCoordinates(currentMove.x, currentMove.y);
         return !squareOwner.equals(NO_PLAYER);
     }
 
-    public Player playerAtCoordinates(int x, int y) {
+    @Override
+    public Player getPlayerAtCoordinates(int x, int y) {
         return board[x][y];
     }
 
@@ -63,18 +63,22 @@ public class Board {
                         "Y\n";
     }
 
+    @Override
     public BoardIterator getLineIterator(int lineIndex) {
         return new LineIterator(this, lineIndex);
     }
 
+    @Override
     public BoardIterator getColumnIterator(int columnIterator) {
         return new ColumnIterator(this, columnIterator);
     }
 
+    @Override
     public BoardIterator getFirstDiagonalIterator() {
         return new FirstDiagonalIterator(this);
     }
 
+    @Override
     public BoardIterator getSecondDiagonalIterator() {
         return new SecondDiagonalIterator(this);
     }

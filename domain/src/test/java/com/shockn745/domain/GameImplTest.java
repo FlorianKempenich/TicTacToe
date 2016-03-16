@@ -1,12 +1,7 @@
-package com.shockn745.domain.tictac;
+package com.shockn745.domain;
 
 import com.shockn745.domain.exceptions.GameNotFinishedException;
 import com.shockn745.domain.exceptions.IllegalMoveException;
-
-import com.shockn745.domain.tictac.Board;
-import com.shockn745.domain.tictac.Game;
-import com.shockn745.domain.tictac.Move;
-import com.shockn745.domain.tictac.Player;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,14 +10,14 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-public class GameTest {
+public class GameImplTest {
 
     private Game game;
 
     @Before
     public void setUp() throws Exception {
-        Board board = new Board();
-        game = new Game(board);
+        Board board = new BoardImpl();
+        game = new GameImpl(board);
 
     }
 

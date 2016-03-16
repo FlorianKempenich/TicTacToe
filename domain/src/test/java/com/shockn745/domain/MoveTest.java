@@ -1,9 +1,6 @@
-package com.shockn745.domain.tictac;
+package com.shockn745.domain;
 
 import com.shockn745.domain.exceptions.InvalidMoveException;
-
-import com.shockn745.domain.tictac.Move;
-import com.shockn745.domain.tictac.Player;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

@@ -1,23 +1,23 @@
-package com.shockn745.domain.tictac.iterator;
+package com.shockn745.domain.iterator;
 
-import com.shockn745.domain.tictac.Board;
-import com.shockn745.domain.tictac.Move;
-import com.shockn745.domain.tictac.Player;
+import com.shockn745.domain.Board;
+import com.shockn745.domain.BoardImpl;
+import com.shockn745.domain.Move;
+import com.shockn745.domain.Player;
 import com.shockn745.domain.exceptions.IllegalMoveException;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class BoardIteratorTest {
+public class BoardImplIteratorTest {
 
     private Board board;
 
     @Before
     public void setUp() throws Exception {
-        board = new Board();
+        board = new BoardImpl();
         initBoard(board);
     }
 

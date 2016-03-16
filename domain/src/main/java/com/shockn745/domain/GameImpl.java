@@ -1,19 +1,15 @@
-package com.shockn745.domain.tictac;
+package com.shockn745.domain;
 
 import com.shockn745.domain.exceptions.GameNotFinishedException;
 import com.shockn745.domain.exceptions.IllegalMoveException;
-import com.shockn745.domain.tictac.iterator.BoardIterator;
+import com.shockn745.domain.iterator.BoardIterator;
 
 /**
- * Represents a game of TicTacToe.
- * <p/>
- * A game is finished when either one of the column, one of the lines, or one of the diagonal is
- * scored.
- * <p/>
- * A line is scored when the same player owns all the square in a line.
- * Same for column and diagonal.
+ * Represents a game of TicTacToe. <p/> A game is finished when either one of the column, one of the
+ * lines, or one of the diagonal is scored. <p/> A line is scored when the same player owns all the
+ * square in a line. Same for column and diagonal.
  */
-public class Game {
+public class GameImpl implements Game {
 
     private static final Player NO_PLAYER = Player.noPlayer();
     private final Board board;
@@ -21,10 +17,11 @@ public class Game {
 
     private Player winner = NO_PLAYER;
 
-    public Game(Board board) {
+    public GameImpl(Board board) {
         this.board = board;
     }
 
+    @Override
     public void play(Move move) throws IllegalMoveException {
         checkIfSamePlayerTwice(move);
         board.addMove(move);
@@ -40,6 +37,7 @@ public class Game {
     /**
      * @return True if the game is finished, False otherwise
      */
+    @Override
     public boolean checkIfFinishedAndUpdateWinner() {
         /*
         Not sure that it's a good idea to mix responsibilities like this but the only other
@@ -87,6 +85,7 @@ public class Game {
         return true;
     }
 
+    @Override
     public Player getWinner() throws GameNotFinishedException {
         if (winner.equals(NO_PLAYER)) {
             throw new GameNotFinishedException();
