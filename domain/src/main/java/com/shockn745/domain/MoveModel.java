@@ -1,5 +1,6 @@
 package com.shockn745.domain;
 
+import com.shockn745.application.Move;
 import com.shockn745.domain.exceptions.InvalidMoveException;
 
 public class MoveModel {
@@ -8,6 +9,10 @@ public class MoveModel {
     public final int y;
 
     public final Player player;
+
+    public MoveModel(Move move) {
+        this(move.x, move.y, move.player);
+    }
 
     public MoveModel(int x, int y, Player player) {
         this.y = y;

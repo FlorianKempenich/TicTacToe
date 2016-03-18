@@ -56,18 +56,6 @@ public class InitNewGameUseCaseTest {
         GameStatus status = gameStatusArgumentCaptor.getValue();
         int id = status.gameId;
 
-        assertEquals(makeEmptyGameStatus(id), status);
-    }
-
-    private static GameStatus makeEmptyGameStatus(int id) {
-
-        Player[][] board = new Player[3][3];
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                board[i][j] = Player.noPlayer();
-            }
-        }
-
-        return new GameStatus(id, board, Player.noPlayer(), Player.noPlayer());
+        assertEquals(UseCaseTestUtil.makeEmptyGameStatus(id), status);
     }
 }
