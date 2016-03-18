@@ -2,14 +2,14 @@ package com.shockn745.domain;
 
 import com.shockn745.domain.exceptions.InvalidMoveException;
 
-public class Move {
+public class MoveModel {
 
     public final int x;
     public final int y;
 
     public final Player player;
 
-    public Move(int x, int y, Player player) {
+    public MoveModel(int x, int y, Player player) {
         this.y = y;
         this.x = x;
         this.player = player;
@@ -46,13 +46,13 @@ public class Move {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Move move = (Move) o;
+        MoveModel move = (MoveModel) o;
 
         return x == move.x && y == move.y && player.equals(move.player);
 
     }
 
-    public boolean sameCoordinates(Move other) {
+    public boolean sameCoordinates(MoveModel other) {
         return x == other.x && y == other.y;
     }
 }

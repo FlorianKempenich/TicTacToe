@@ -25,24 +25,29 @@ public class BoardImpl implements Board {
     }
 
     @Override
-    public void addMove(Move move) throws IllegalMoveException {
+    public Player[][] getBoardStatus() {
+        return board;
+    }
+
+    @Override
+    public void addMove(MoveModel move) throws IllegalMoveException {
         checkIfSquareAlreadyPlayed(move);
         addMoveToBoard(move);
     }
 
-    private void addMoveToBoard(Move currentMove) {
+    private void addMoveToBoard(MoveModel currentMove) {
         int x = currentMove.x;
         int y = currentMove.y;
         board[x][y] = currentMove.player;
     }
 
-    private void checkIfSquareAlreadyPlayed(Move currentMove) throws IllegalMoveException {
+    private void checkIfSquareAlreadyPlayed(MoveModel currentMove) throws IllegalMoveException {
         if (coordinatesAlreadyPlayed(currentMove)) {
             throw new IllegalMoveException();
         }
     }
 
-    private boolean coordinatesAlreadyPlayed(Move currentMove) {
+    private boolean coordinatesAlreadyPlayed(MoveModel currentMove) {
         Player squareOwner = getPlayerAtCoordinates(currentMove.x, currentMove.y);
         return !squareOwner.equals(NO_PLAYER);
     }

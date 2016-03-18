@@ -1,5 +1,6 @@
 package com.shockn745.domain;
 
+import com.shockn745.application.GameStatus;
 import com.shockn745.domain.exceptions.GameNotFinishedException;
 import com.shockn745.domain.exceptions.IllegalMoveException;
 import com.shockn745.domain.iterator.BoardIterator;
@@ -22,12 +23,12 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public void play(Move move) throws IllegalMoveException {
+    public void play(MoveModel move) throws IllegalMoveException {
         checkIfSamePlayerTwice(move);
         board.addMove(move);
     }
 
-    private void checkIfSamePlayerTwice(Move currentMove) throws IllegalMoveException {
+    private void checkIfSamePlayerTwice(MoveModel currentMove) throws IllegalMoveException {
         if (previousPlayer.equals(currentMove.player)) {
             throw new IllegalMoveException("This player just played");
         }
@@ -93,4 +94,13 @@ public class GameImpl implements Game {
         return winner;
     }
 
+    @Override
+    public GameStatus makeStatus(int id) {
+        return new GameStatus(
+                id,
+                board.getBoardStatus(),
+                previousPlayer,
+                winner
+        );
+    }
 }

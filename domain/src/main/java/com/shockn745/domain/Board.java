@@ -8,7 +8,7 @@ import com.shockn745.domain.iterator.BoardIterator;
  */
 public interface Board {
 
-    void addMove(Move move) throws IllegalMoveException;
+    void addMove(MoveModel move) throws IllegalMoveException;
 
     Player getPlayerAtCoordinates(int x, int y);
 
@@ -19,5 +19,7 @@ public interface Board {
     BoardIterator getFirstDiagonalIterator();
 
     BoardIterator getSecondDiagonalIterator();
+
+    Player[][] getBoardStatus();
 
 }
