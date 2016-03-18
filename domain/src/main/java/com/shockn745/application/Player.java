@@ -1,7 +1,5 @@
 package com.shockn745.application;
 
-import com.shockn745.domain.exceptions.InvalidPlayerException;
-
 public class Player {
 
     // Unfortunately the use of enum is advised against
@@ -11,7 +9,7 @@ public class Player {
 
     private final int type;
 
-    private Player(int type) throws InvalidPlayerException {
+    private Player(int type) {
         this.type = type;
     }
 
