@@ -1,5 +1,6 @@
 package com.shockn745.domain;
 
+import com.shockn745.application.Player;
 import com.shockn745.domain.exceptions.IllegalMoveException;
 import com.shockn745.domain.iterator.BoardIterator;
 import com.shockn745.domain.iterator.ColumnIterator;
@@ -9,8 +10,8 @@ import com.shockn745.domain.iterator.SecondDiagonalIterator;
 
 public class BoardImpl implements Board {
 
-    private static final com.shockn745.application.Player NO_PLAYER = com.shockn745.application.Player.noPlayer();
-    private com.shockn745.application.Player[][] board = new com.shockn745.application.Player[3][3];
+    private static final Player NO_PLAYER = Player.noPlayer();
+    private Player[][] board = new Player[3][3];
 
     public BoardImpl() {
         initializeTheBoard();
@@ -25,7 +26,7 @@ public class BoardImpl implements Board {
     }
 
     @Override
-    public com.shockn745.application.Player[][] getBoardStatus() {
+    public Player[][] getBoardStatus() {
         return board;
     }
 
@@ -48,12 +49,12 @@ public class BoardImpl implements Board {
     }
 
     private boolean coordinatesAlreadyPlayed(MoveModel currentMove) {
-        com.shockn745.application.Player squareOwner = getPlayerAtCoordinates(currentMove.x, currentMove.y);
+        Player squareOwner = getPlayerAtCoordinates(currentMove.x, currentMove.y);
         return !squareOwner.equals(NO_PLAYER);
     }
 
     @Override
-    public com.shockn745.application.Player getPlayerAtCoordinates(int x, int y) {
+    public Player getPlayerAtCoordinates(int x, int y) {
         return board[x][y];
     }
 

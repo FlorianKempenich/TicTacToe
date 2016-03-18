@@ -1,5 +1,6 @@
 package com.shockn745.domain;
 
+import com.shockn745.application.Player;
 import com.shockn745.domain.exceptions.IllegalMoveException;
 import com.shockn745.domain.iterator.BoardIterator;
 
@@ -20,6 +21,6 @@ public interface Board {
 
     BoardIterator getSecondDiagonalIterator();
 
-    com.shockn745.application.Player[][] getBoardStatus();
+    Player[][] getBoardStatus();
 
 }
