@@ -1,4 +1,4 @@
-package com.shockn745.domain;
+package com.shockn745.application;
 
 import com.shockn745.domain.exceptions.InvalidPlayerException;
 

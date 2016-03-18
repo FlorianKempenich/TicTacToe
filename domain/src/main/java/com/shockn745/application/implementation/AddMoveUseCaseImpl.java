@@ -20,16 +20,15 @@ public class AddMoveUseCaseImpl implements AddMoveUseCase {
 
     @Override
     public void execute(Move move, int gameId, Callback callback) {
-
         MoveModel moveModel = new MoveModel(move);
         Game game = gameRepository.getGame(gameId);
 
         try {
             game.play(moveModel);
+            game.checkIfFinishedAndUpdateWinner();
+            callback.onSuccess(game.makeStatus(gameId));
         } catch (IllegalMoveException e) {
-            // todo test not happy path
+            callback.onError(new GameError(e.getMessage()));
         }
-
-        callback.onSuccess(game.makeStatus(gameId));
     }
 }

@@ -10,7 +10,7 @@ public interface Board {
 
     void addMove(MoveModel move) throws IllegalMoveException;
 
-    Player getPlayerAtCoordinates(int x, int y);
+    com.shockn745.application.Player getPlayerAtCoordinates(int x, int y);
 
     BoardIterator getLineIterator(int lineIndex);
 
@@ -20,6 +20,6 @@ public interface Board {
 
     BoardIterator getSecondDiagonalIterator();
 
-    Player[][] getBoardStatus();
+    com.shockn745.application.Player[][] getBoardStatus();
 
 }

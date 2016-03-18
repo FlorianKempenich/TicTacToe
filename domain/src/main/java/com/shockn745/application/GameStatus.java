@@ -1,6 +1,5 @@
 package com.shockn745.application;
 
-import com.shockn745.domain.Player;
 import java.util.Arrays;
 
 /**
@@ -20,24 +19,27 @@ public class GameStatus {
     this.winner = winner;
   }
 
-  @Override public int hashCode() {
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    GameStatus status = (GameStatus) o;
+
+    if (gameId != status.gameId) return false;
+    if (!Arrays.deepEquals(board, status.board)) return false;
+    if (previousPlayer != null ? !previousPlayer.equals(status.previousPlayer) : status.previousPlayer != null)
+      return false;
+    return winner != null ? winner.equals(status.winner) : status.winner == null;
+
+  }
+
+  @Override
+  public int hashCode() {
     int result = gameId;
     result = 31 * result + Arrays.deepHashCode(board);
     result = 31 * result + (previousPlayer != null ? previousPlayer.hashCode() : 0);
     result = 31 * result + (winner != null ? winner.hashCode() : 0);
     return result;
-  }
-
-  @Override public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-
-    GameStatus that = (GameStatus) o;
-
-    if (gameId != that.gameId) return false;
-    if (!Arrays.deepEquals(board, that.board)) return false;
-    return previousPlayer != null ? previousPlayer.equals(that.previousPlayer)
-        : that.previousPlayer == null && (winner != null ? winner.equals(that.winner)
-            : that.winner == null);
   }
 }

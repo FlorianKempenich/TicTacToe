@@ -12,18 +12,18 @@ public class MoveModelTest {
 
     @Test
     public void testHappyPath() throws Exception {
-        MoveModel move = new MoveModel(0, 2, Player.player1());
+        MoveModel move = new MoveModel(0, 2, com.shockn745.application.Player.player1());
 
         assertEquals(0, move.x);
         assertEquals(2, move.y);
-        assertEquals(Player.player1(), move.player);
+        assertEquals(com.shockn745.application.Player.player1(), move.player);
 
     }
 
     @Test
     public void invalidMove_throwException() throws Exception {
         try {
-            new MoveModel(22, 34, Player.player1());
+            new MoveModel(22, 34, com.shockn745.application.Player.player1());
             fail();
         } catch (InvalidMoveException e) {
             assertEquals("Out of bounds coordinates", e.getMessage());
@@ -32,10 +32,10 @@ public class MoveModelTest {
 
     @Test
     public void testEqualityOnMoves() throws Exception {
-        assertEquals(new MoveModel(0, 0, Player.player1()), new MoveModel(0, 0, Player.player1()));
-        assertNotEquals(new MoveModel(0, 0, Player.player1()), new MoveModel(0, 0, Player.player2()));
-        assertNotEquals(new MoveModel(1, 0, Player.player1()), new MoveModel(0, 0, Player.player1()));
-        assertNotEquals(new MoveModel(0, 1, Player.player1()), new MoveModel(0, 0, Player.player1()));
+        assertEquals(new MoveModel(0, 0, com.shockn745.application.Player.player1()), new MoveModel(0, 0, com.shockn745.application.Player.player1()));
+        assertNotEquals(new MoveModel(0, 0, com.shockn745.application.Player.player1()), new MoveModel(0, 0, com.shockn745.application.Player.player2()));
+        assertNotEquals(new MoveModel(1, 0, com.shockn745.application.Player.player1()), new MoveModel(0, 0, com.shockn745.application.Player.player1()));
+        assertNotEquals(new MoveModel(0, 1, com.shockn745.application.Player.player1()), new MoveModel(0, 0, com.shockn745.application.Player.player1()));
     }
 
 
@@ -52,8 +52,8 @@ public class MoveModelTest {
 
     @Test
     public void testIf2MovesHaveSameCoordinates() throws Exception {
-        MoveModel first = new MoveModel(1, 2, Player.player1());
-        MoveModel second = new MoveModel(1, 2, Player.player2());
+        MoveModel first = new MoveModel(1, 2, com.shockn745.application.Player.player1());
+        MoveModel second = new MoveModel(1, 2, com.shockn745.application.Player.player2());
 
         assertTrue(first.sameCoordinates(second));
     }
@@ -61,7 +61,7 @@ public class MoveModelTest {
     @Test
     public void playWithNoPlayer_throwIllegalMoveException() throws Exception {
         try {
-            new MoveModel(1, 2, Player.noPlayer());
+            new MoveModel(1, 2, com.shockn745.application.Player.noPlayer());
             fail();
         } catch (InvalidMoveException e) {
             assertEquals("Invalid player. Play only with PLAYER 1 OR PLAYER 2", e.getMessage());

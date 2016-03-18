@@ -1,6 +1,6 @@
 package com.shockn745.domain;
 
-import com.shockn745.application.GameStatus;
+import com.shockn745.application.*;
 import com.shockn745.domain.exceptions.GameNotFinishedException;
 import com.shockn745.domain.exceptions.IllegalMoveException;
 
@@ -13,7 +13,7 @@ public interface Game {
 
     boolean checkIfFinishedAndUpdateWinner();
 
-    Player getWinner() throws GameNotFinishedException;
+    com.shockn745.application.Player getWinner() throws GameNotFinishedException;
 
     GameStatus makeStatus(int id);
 }

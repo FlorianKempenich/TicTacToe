@@ -1,7 +1,5 @@
 package com.shockn745.application;
 
-import com.shockn745.domain.Player;
-
 /**
  * @author Kempenich Florian
  */

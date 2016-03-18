@@ -9,8 +9,8 @@ import com.shockn745.domain.iterator.SecondDiagonalIterator;
 
 public class BoardImpl implements Board {
 
-    private static final Player NO_PLAYER = Player.noPlayer();
-    private Player[][] board = new Player[3][3];
+    private static final com.shockn745.application.Player NO_PLAYER = com.shockn745.application.Player.noPlayer();
+    private com.shockn745.application.Player[][] board = new com.shockn745.application.Player[3][3];
 
     public BoardImpl() {
         initializeTheBoard();
@@ -25,7 +25,7 @@ public class BoardImpl implements Board {
     }
 
     @Override
-    public Player[][] getBoardStatus() {
+    public com.shockn745.application.Player[][] getBoardStatus() {
         return board;
     }
 
@@ -43,17 +43,17 @@ public class BoardImpl implements Board {
 
     private void checkIfSquareAlreadyPlayed(MoveModel currentMove) throws IllegalMoveException {
         if (coordinatesAlreadyPlayed(currentMove)) {
-            throw new IllegalMoveException();
+            throw new IllegalMoveException("This square has already been played");
         }
     }
 
     private boolean coordinatesAlreadyPlayed(MoveModel currentMove) {
-        Player squareOwner = getPlayerAtCoordinates(currentMove.x, currentMove.y);
+        com.shockn745.application.Player squareOwner = getPlayerAtCoordinates(currentMove.x, currentMove.y);
         return !squareOwner.equals(NO_PLAYER);
     }
 
     @Override
-    public Player getPlayerAtCoordinates(int x, int y) {
+    public com.shockn745.application.Player getPlayerAtCoordinates(int x, int y) {
         return board[x][y];
     }
 
