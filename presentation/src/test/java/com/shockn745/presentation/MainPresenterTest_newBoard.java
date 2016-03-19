@@ -16,14 +16,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
 
 /**
  * @author Kempenich Florian
@@ -41,6 +37,8 @@ public class MainPresenterTest_newBoard {
     @Mock
     AddMoveUseCase addMoveUseCase;
     @Captor
+    ArgumentCaptor<InitNewGameUseCase.Callback> initArgumentCaptor;
+    @Captor
     ArgumentCaptor<AddMoveUseCase.Callback> addMoveArgumentCaptor;
     @Captor
     ArgumentCaptor<String> textCaptor;
@@ -55,6 +53,14 @@ public class MainPresenterTest_newBoard {
     public void onCreate_initNewGame() throws Exception {
         presenter.onCreate();
         verify(initNewGameUseCase).execute(any(InitNewGameUseCase.Callback.class));
+    }
+
+    @Test
+    public void onCreate_displayNameFirstPlayer() throws Exception {
+        presenter.onCreate();
+        verify(initNewGameUseCase).execute(initArgumentCaptor.capture());
+        initArgumentCaptor.getValue().newGameReady(NullObjects.makeEmptyGameStatus(GAME_ID));
+        verify(view).setCurrentPlayerName(eq("Player 1"));
     }
 
     @Test

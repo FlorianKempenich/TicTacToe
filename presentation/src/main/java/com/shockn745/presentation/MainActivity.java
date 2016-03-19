@@ -3,7 +3,8 @@ package com.shockn745.presentation;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Button;
+import android.view.View;
+import android.widget.TextView;
 
 import com.example.data.InMemoryGameRepository;
 import com.shockn745.GameRepository;
@@ -22,6 +23,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Bind(R.id.main_tictac_view)
     TicTacView ticTacView;
 
+    @Bind(R.id.main_current_player_textview)
+    TextView currentPlayer;
+
+    @Bind(R.id.main_winner_textview)
+    TextView winner;
 
     private MainContract.Presenter presenter;
 
@@ -53,5 +59,29 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void setSquareText(String text, int x, int y) {
         ticTacView.setSquareText(text, x, y);
+    }
+
+    @Override
+    public void setCurrentPlayerName(String text) {
+        currentPlayer.setText(text);
+    }
+
+    @Override
+    public void displayWinner(String winnerName) {
+        String winnerText = String.format(getString(R.string.winner), winnerName);
+        winner.setText(winnerText);
+        winner.setVisibility(View.VISIBLE);
+        currentPlayer.setVisibility(View.GONE);
+    }
+
+    @OnClick(R.id.main_reset_game_button)
+    public void resetGame() {
+        presenter.resetGame();
+        resetViewVisibility();
+    }
+
+    private void resetViewVisibility() {
+        winner.setVisibility(View.GONE);
+        currentPlayer.setVisibility(View.VISIBLE);
     }
 }

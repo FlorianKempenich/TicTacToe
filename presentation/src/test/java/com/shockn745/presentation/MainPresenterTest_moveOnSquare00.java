@@ -6,7 +6,6 @@ import com.shockn745.application.InitNewGameUseCase;
 import com.shockn745.application.Move;
 import com.shockn745.application.Player;
 import com.shockn745.presentation.testutils.GameStatusUtil;
-import com.shockn745.utils.NullObjects;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +14,6 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.eq;
@@ -23,14 +21,15 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 /**
+ * Test for the main presenter after a move on the first square
+ *
  * @author Kempenich Florian
  */
 public class MainPresenterTest_moveOnSquare00 {
 
     private static final int GAME_ID = 1;
 
-    MainPresenter presenter;
-    GameStatus statusAfterFirstMoveOn00;
+    MainContract.Presenter presenter;
 
     @Mock
     MainContract.View view;
@@ -40,14 +39,11 @@ public class MainPresenterTest_moveOnSquare00 {
     AddMoveUseCase addMoveUseCase;
     @Captor
     ArgumentCaptor<AddMoveUseCase.Callback> addMoveArgumentCaptor;
-    @Captor
-    ArgumentCaptor<String> textCaptor;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         presenter = new MainPresenter(view, initNewGameUseCase, addMoveUseCase);
-        statusAfterFirstMoveOn00 = GameStatusUtil.makeAfterFirstMoveOn00(GAME_ID);
 
         // Play first move
         presenter.onSquareClicked(0, 0);
@@ -55,8 +51,6 @@ public class MainPresenterTest_moveOnSquare00 {
         GameStatus status = GameStatusUtil.makeAfterFirstMoveOn00(GAME_ID);
         addMoveArgumentCaptor.getValue().onSuccess(status);
     }
-
-
 
     @Test
     public void clickOnButton_AddSecondMoveWithSecondPlayer() throws Exception {
@@ -67,12 +61,13 @@ public class MainPresenterTest_moveOnSquare00 {
     @Test
     public void clickOnOccupiedSquare_ignoreClick() throws Exception {
         presenter.onSquareClicked(0, 0);
-        verify(addMoveUseCase).execute(any(Move.class), anyInt(), addMoveArgumentCaptor.capture());
-        GameStatus status = GameStatusUtil.makeAfterFirstMoveOn00(GAME_ID);
-        addMoveArgumentCaptor.getValue().onSuccess(status);
-
-        presenter.onSquareClicked(0, 0);
         verifyNoMoreInteractions(addMoveUseCase);
     }
 
+    @Test
+    public void resetGame_initANewGame() throws Exception {
+        presenter.resetGame();
+        verify(initNewGameUseCase).execute(any(InitNewGameUseCase.Callback.class));
+
+    }
 }

@@ -12,11 +12,29 @@
             android:background="@color/colorAccent"/>
 
     <TextView
-            android:id="@+id/main_player_textview"
+            android:id="@+id/main_current_player_textview"
             android:layout_marginTop="50dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="28sp"
             android:layout_gravity="center"
             tools:text="Player 1"/>
+
+    <TextView
+            android:id="@+id/main_winner_textview"
+            android:layout_marginTop="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="28sp"
+            android:layout_gravity="center"
+            tools:text="Winner : Player 1"
+            android:visibility="gone"/>
+
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/main_reset_game_button"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:text="Reset game"/>
 </LinearLayout>
