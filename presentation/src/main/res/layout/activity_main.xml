@@ -3,64 +3,79 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:padding="@dimen/activity_vertical_margin"
-              android:orientation="vertical"
-              tools:context="com.shockn745.presentation.MainActivity">
+        android:orientation="vertical">
 
     <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="150dp"
+            android:padding="@dimen/activity_vertical_margin"
+            android:orientation="vertical"
+            tools:context="com.shockn745.presentation.MainActivity">
 
-        <Button
-                android:id="@+id/button00"
-                tools:text="x"
-                style="@style/TicTacButton"/>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
-        <Button
-                android:id="@+id/button10"
-                tools:text="o"
-                style="@style/TicTacButton"/>
+            <Button
+                    android:id="@+id/button00"
+                    tools:text="x"
+                    style="@style/TicTacButton"/>
 
-        <Button
-                android:id="@+id/button20"
-                style="@style/TicTacButton"/>
+            <Button
+                    android:id="@+id/button10"
+                    tools:text="o"
+                    style="@style/TicTacButton"/>
+
+            <Button
+                    android:id="@+id/button20"
+                    style="@style/TicTacButton"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+            <Button
+                    android:id="@+id/button01"
+                    style="@style/TicTacButton"/>
+
+            <Button
+                    android:id="@+id/button11"
+                    style="@style/TicTacButton"/>
+
+            <Button
+                    android:id="@+id/button21"
+                    style="@style/TicTacButton"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+            <Button
+                    android:id="@+id/button02"
+                    style="@style/TicTacButton"/>
+
+            <Button
+                    android:id="@+id/button12"
+                    style="@style/TicTacButton"/>
+
+            <Button
+                    android:id="@+id/button22"
+                    style="@style/TicTacButton"/>
+        </LinearLayout>
+
     </LinearLayout>
 
-    <LinearLayout
+    <com.shockn745.presentation.TicTacView
+            android:id="@+id/main_tictac_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-        <Button
-                android:id="@+id/button01"
-                style="@style/TicTacButton"/>
-
-        <Button
-                android:id="@+id/button11"
-                style="@style/TicTacButton"/>
-
-        <Button
-                android:id="@+id/button21"
-                style="@style/TicTacButton"/>
-    </LinearLayout>
-
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-        <Button
-                android:id="@+id/button02"
-                style="@style/TicTacButton"/>
-
-        <Button
-                android:id="@+id/button12"
-                style="@style/TicTacButton"/>
-
-        <Button
-                android:id="@+id/button22"
-                style="@style/TicTacButton"/>
-    </LinearLayout>
-
+            android:layout_height="300dp"
+            android:background="@color/colorAccent"/>
 </LinearLayout>
