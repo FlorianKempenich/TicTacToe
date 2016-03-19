@@ -28,8 +28,9 @@ public class MainViewTest {
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule(MainActivity.class);
 
     @Test
-    public void listGoesOverTheFold() {
+    public void clickOnButton_xDisplayed() {
         onView(withId(R.id.button00)).perform(click());
         onView(withId(R.id.button00)).check(matches(withText("x")));
     }
+
 }

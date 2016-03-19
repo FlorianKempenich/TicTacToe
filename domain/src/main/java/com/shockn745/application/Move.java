@@ -17,7 +17,7 @@ public class Move {
 
     @Override
     public String toString() {
-        return "Move: x=" + x + " y=" + y;
+        return "Move: x=" + x + " y=" + y + " player=" + player.toString();
     }
 
     @Override

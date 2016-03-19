@@ -51,7 +51,16 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void onSquareClicked(int x, int y) {
         if (squareIsFree(x, y)) {
-            addMoveUseCase.execute(new Move(x, y, Player.player1()), currentGameStatus.gameId, addMoveCallback);
+            Player currentPlayer = getNextPlayer(currentGameStatus.lastPlayer);
+            addMoveUseCase.execute(new Move(x, y, currentPlayer), currentGameStatus.gameId, addMoveCallback);
+        }
+    }
+
+    private Player getNextPlayer(Player previousPlayer) {
+        if (previousPlayer.equals(Player.player1())) {
+            return Player.player2();
+        } else {
+            return Player.player1();
         }
     }
 
@@ -89,6 +98,6 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     private void onAddMoveError(GameError error) {
-
+        //todo do something ?
     }
 }

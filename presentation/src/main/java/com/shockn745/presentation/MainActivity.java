@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Bind(R.id.main_tictac_view)
     TicTacView ticTacView;
 
+
     private MainContract.Presenter presenter;
 
     @Override
