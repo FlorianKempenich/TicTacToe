@@ -1,6 +1,7 @@
 package com.shockn745.application;
 
 import com.shockn745.GameRepository;
+import com.shockn745.testutil.UseCaseTestUtil;
 
 import org.junit.Before;
 import org.junit.Test;

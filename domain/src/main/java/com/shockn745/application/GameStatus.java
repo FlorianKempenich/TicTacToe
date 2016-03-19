@@ -9,13 +9,13 @@ public class GameStatus {
 
   public final int gameId;
   public final Player[][] board;
-  public final Player previousPlayer;
+  public final Player lastPlayer;
   public final Player winner;
 
-  public GameStatus(int gameId, Player[][] board, Player previousPlayer, Player winner) {
+  public GameStatus(int gameId, Player[][] board, Player lastPlayer, Player winner) {
     this.gameId = gameId;
     this.board = board;
-    this.previousPlayer = previousPlayer;
+    this.lastPlayer = lastPlayer;
     this.winner = winner;
   }
 
@@ -28,7 +28,7 @@ public class GameStatus {
 
     if (gameId != status.gameId) return false;
     if (!Arrays.deepEquals(board, status.board)) return false;
-    if (previousPlayer != null ? !previousPlayer.equals(status.previousPlayer) : status.previousPlayer != null)
+    if (lastPlayer != null ? !lastPlayer.equals(status.lastPlayer) : status.lastPlayer != null)
       return false;
     return winner != null ? winner.equals(status.winner) : status.winner == null;
 
@@ -38,7 +38,7 @@ public class GameStatus {
   public int hashCode() {
     int result = gameId;
     result = 31 * result + Arrays.deepHashCode(board);
-    result = 31 * result + (previousPlayer != null ? previousPlayer.hashCode() : 0);
+    result = 31 * result + (lastPlayer != null ? lastPlayer.hashCode() : 0);
     result = 31 * result + (winner != null ? winner.hashCode() : 0);
     return result;
   }

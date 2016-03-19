@@ -8,6 +8,7 @@ import com.shockn745.domain.BoardImpl;
 import com.shockn745.domain.Game;
 import com.shockn745.domain.GameImpl;
 import com.shockn745.domain.MoveModel;
+import com.shockn745.testutil.UseCaseTestUtil;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -106,7 +107,7 @@ public class AddMoveUseCaseTest {
 
     @Test
     public void addLastMove_GameFinished_correctWinner() throws Exception {
-        // Setup game -- Play all the moves except last one -- Player 1 wins on first column
+        // Setup game -- Play all the moves except last one -- Player 1 wins on first line
         emptyGame.play(new MoveModel(0,0, Player.player1()));
         emptyGame.play(new MoveModel(1,1, Player.player2()));
         emptyGame.play(new MoveModel(1,0, Player.player1()));

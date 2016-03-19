@@ -1,4 +1,4 @@
-package com.shockn745.domain;
+package com.shockn745.presentation;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
