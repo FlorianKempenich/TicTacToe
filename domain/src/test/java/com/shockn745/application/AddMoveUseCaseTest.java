@@ -18,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -133,6 +134,18 @@ public class AddMoveUseCaseTest {
         GameStatus result = gameStatusArgumentCaptor.getValue();
 
         assertEquals(expectedStatus, result);
+    }
+
+    @Test
+    public void addMove_GameNotFoundInRepository_Error() throws Exception {
+        int invalidId = -1;
+        when(gameRepository.contains(eq(invalidId))).thenReturn(false);
+        when(gameRepository.getGame(eq(invalidId))).thenReturn(null);
+
+        addMoveUseCase.execute(new Move(0,0, Player.player1()), invalidId, callback);
+        verify(callback).onError(gameErrorArgumentCaptor.capture());
+
+        assertEquals("Game not found : ID=" + invalidId, gameErrorArgumentCaptor.getValue().reason);
     }
 
     //TODO test case when game in repository not available

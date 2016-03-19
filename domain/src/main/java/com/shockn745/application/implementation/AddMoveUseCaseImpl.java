@@ -21,14 +21,25 @@ public class AddMoveUseCaseImpl implements AddMoveUseCase {
     @Override
     public void execute(Move move, int gameId, Callback callback) {
         MoveModel moveModel = new MoveModel(move);
-        Game game = gameRepository.getGame(gameId);
+        if (gameRepository.contains(gameId)) {
+            executeWithValidGameId(gameId, callback, moveModel);
+        } else {
+            callback.onError(new GameError("Game not found : ID=" + gameId));
+        }
+    }
 
+    private void executeWithValidGameId(int gameId, Callback callback, MoveModel moveModel) {
         try {
-            game.play(moveModel);
-            game.checkIfFinishedAndUpdateWinner();
-            callback.onSuccess(game.makeStatus(gameId));
+            playMove(gameId, callback, moveModel);
         } catch (IllegalMoveException e) {
             callback.onError(new GameError(e.getMessage()));
         }
+    }
+
+    private void playMove(int gameId, Callback callback, MoveModel moveModel) throws IllegalMoveException {
+        Game game = gameRepository.getGame(gameId);
+        game.play(moveModel);
+        game.checkIfFinishedAndUpdateWinner();
+        callback.onSuccess(game.makeStatus(gameId));
     }
 }
