@@ -7,22 +7,19 @@ import com.shockn745.domain.iterator.ColumnIterator;
 import com.shockn745.domain.iterator.FirstDiagonalIterator;
 import com.shockn745.domain.iterator.LineIterator;
 import com.shockn745.domain.iterator.SecondDiagonalIterator;
+import com.shockn745.utils.NullObjects;
 
 public class BoardImpl implements Board {
 
     private static final Player NO_PLAYER = Player.noPlayer();
-    private Player[][] board = new Player[3][3];
+    private Player[][] board;
 
     public BoardImpl() {
         initializeTheBoard();
     }
 
     private void initializeTheBoard() {
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                board[i][j] = NO_PLAYER;
-            }
-        }
+        board = NullObjects.makeEmptyBoard();
     }
 
     @Override

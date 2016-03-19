@@ -5,6 +5,12 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 
+import com.example.data.InMemoryGameRepository;
+import com.shockn745.GameRepository;
+import com.shockn745.application.AddMoveUseCase;
+import com.shockn745.application.InitNewGameUseCase;
+import com.shockn745.application.implementation.AddMoveUseCaseImpl;
+import com.shockn745.application.implementation.InitNewGameUseCaseImpl;
 import com.shockn745.domain.R;
 
 import butterknife.Bind;
@@ -32,11 +38,22 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Bind(R.id.button22)
     Button button22;
 
+    private MainContract.Presenter presenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        initPresenter();
+        presenter.onCreate();
+    }
+
+    private void initPresenter() {
+        GameRepository gameRepository = new InMemoryGameRepository();
+        InitNewGameUseCase initNewGameUseCase = new InitNewGameUseCaseImpl(gameRepository);
+        AddMoveUseCase addMoveUseCase = new AddMoveUseCaseImpl(gameRepository);
+        presenter = new MainPresenter(this, initNewGameUseCase, addMoveUseCase);
     }
 
     @OnClick(R.id.button00)
@@ -45,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     void onClicked(int x, int y) {
+        presenter.onSquareClicked(x, y);
         Snackbar.make(button00, "Button : x=" + x + " y=" + y + " clicked!", Snackbar.LENGTH_SHORT).show();
     }
 
@@ -90,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void setSquareText(String text, int x, int y) {
-        //do nothing
+        if (x == 0 && y == 0)
+            button00.setText(text);
     }
 }

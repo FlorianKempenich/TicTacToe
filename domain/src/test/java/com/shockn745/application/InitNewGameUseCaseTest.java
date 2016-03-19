@@ -1,7 +1,7 @@
 package com.shockn745.application;
 
 import com.shockn745.GameRepository;
-import com.shockn745.testutil.UseCaseTestUtil;
+import com.shockn745.utils.NullObjects;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -57,6 +57,6 @@ public class InitNewGameUseCaseTest {
         GameStatus status = gameStatusArgumentCaptor.getValue();
         int id = status.gameId;
 
-        assertEquals(UseCaseTestUtil.makeEmptyGameStatus(id), status);
+        assertEquals(NullObjects.makeEmptyGameStatus(id), status);
     }
 }

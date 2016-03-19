@@ -6,13 +6,19 @@ import com.shockn745.application.InitNewGameUseCase;
 import com.shockn745.application.Move;
 import com.shockn745.application.Player;
 import com.shockn745.application.implementation.GameError;
+import com.shockn745.utils.NullObjects;
 
 /**
  * @author Kempenich Florian
  */
 public class MainPresenter implements MainContract.Presenter {
-
     private final MainContract.View view;
+
+    private final InitNewGameUseCase initNewGameUseCase;
+    private final AddMoveUseCase addMoveUseCase;
+
+    private GameStatus currentGameStatus = NullObjects.makeEmptyGameStatus(-1);
+
     private final AddMoveUseCase.Callback addMoveCallback = new AddMoveUseCase.Callback() {
         @Override
         public void onSuccess(GameStatus status) {
@@ -24,13 +30,9 @@ public class MainPresenter implements MainContract.Presenter {
             onAddMoveError(error);
         }
     };
-    private final InitNewGameUseCase initNewGameUseCase;
-    private final AddMoveUseCase addMoveUseCase;
-    private int gameId;
     private final InitNewGameUseCase.Callback initCallback = new InitNewGameUseCase.Callback() {
         @Override
         public void newGameReady(GameStatus newGame) {
-            gameId = newGame.gameId;
             onGameStatusReceived(newGame);
         }
     };
@@ -48,20 +50,31 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onSquareClicked(int x, int y) {
-        addMoveUseCase.execute(new Move(x, y, Player.player1()), gameId, addMoveCallback);
+        if (squareIsFree(x, y)) {
+            addMoveUseCase.execute(new Move(x, y, Player.player1()), currentGameStatus.gameId, addMoveCallback);
+        }
+    }
+
+    private boolean squareIsFree(int x, int y) {
+        return currentGameStatus.board[x][y].equals(Player.noPlayer());
     }
 
     private void onGameStatusReceived(GameStatus gameStatus) {
-        Player[][] board = gameStatus.board;
-        updateView(board);
+        currentGameStatus = gameStatus;
+        updateView();
     }
 
-    private void updateView(Player[][] board) {
+    private void updateView() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                view.setSquareText(getSymbolForPlayer(board[i][j]), i, j);
+                updateSpecificSquareView(i, j);
             }
         }
+    }
+
+    private void updateSpecificSquareView(int x, int y) {
+        Player playerInSquare = currentGameStatus.board[x][y];
+        view.setSquareText(getSymbolForPlayer(playerInSquare), x, y);
     }
 
     private String getSymbolForPlayer(Player player) {

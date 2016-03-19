@@ -1,4 +1,4 @@
-package com.shockn745.testutil;
+package com.shockn745.utils;
 
 import com.shockn745.application.GameStatus;
 import com.shockn745.application.Player;
@@ -6,14 +6,14 @@ import com.shockn745.application.Player;
 /**
  * @author Kempenich Florian
  */
-public class UseCaseTestUtil {
+public class NullObjects {
 
     public static GameStatus makeEmptyGameStatus(int id) {
-        Player[][] board = makeEmtpyBoard();
+        Player[][] board = makeEmptyBoard();
         return new GameStatus(id, board, Player.noPlayer(), Player.noPlayer());
     }
 
-    public static Player[][] makeEmtpyBoard() {
+    public static Player[][] makeEmptyBoard() {
         Player[][] board = new Player[3][3];
 
         for (int i = 0; i < 3; i++) {

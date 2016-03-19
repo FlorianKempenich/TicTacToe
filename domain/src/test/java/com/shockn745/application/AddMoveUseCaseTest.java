@@ -8,7 +8,7 @@ import com.shockn745.domain.BoardImpl;
 import com.shockn745.domain.Game;
 import com.shockn745.domain.GameImpl;
 import com.shockn745.domain.MoveModel;
-import com.shockn745.testutil.UseCaseTestUtil;
+import com.shockn745.utils.NullObjects;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -66,7 +66,7 @@ public class AddMoveUseCaseTest {
         GameStatus resultStatus = gameStatusArgumentCaptor.getValue();
 
         // Make gameStatus with move on first square
-        Player[][] expectedBoard = UseCaseTestUtil.makeEmtpyBoard();
+        Player[][] expectedBoard = NullObjects.makeEmptyBoard();
         expectedBoard[0][0] = Player.player1();
         GameStatus expectedStatus = new GameStatus(GAME_ID, expectedBoard, Player.player1(), Player.noPlayer());
 
@@ -115,7 +115,7 @@ public class AddMoveUseCaseTest {
         // Last play : 2-0 Player 1 : Left for use-case
 
         // Make expected game status
-        Player[][] expectedBoard = UseCaseTestUtil.makeEmtpyBoard();
+        Player[][] expectedBoard = NullObjects.makeEmptyBoard();
         expectedBoard[0][0] = Player.player1();
         expectedBoard[1][1] = Player.player2();
         expectedBoard[1][0] = Player.player1();
@@ -134,4 +134,6 @@ public class AddMoveUseCaseTest {
 
         assertEquals(expectedStatus, result);
     }
+
+    //TODO test case when game in repository not available
 }
