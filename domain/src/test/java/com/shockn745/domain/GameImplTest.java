@@ -1,5 +1,6 @@
 package com.shockn745.domain;
 
+import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Player;
 import com.shockn745.domain.exceptions.GameNotFinishedException;
 import com.shockn745.domain.exceptions.IllegalMoveException;
@@ -146,5 +147,19 @@ public class GameImplTest {
     public void gameIsNotFinished_tryToGetTheWinner_throwException() throws Exception {
         game.play(new MoveModel(1, 2, Player.player1()));
         game.getWinner();
+    }
+
+    @Test
+    public void illegalMoveOnOccupiedSquare_doNotSavePreviousPlayer() throws Exception {
+        game.play(new MoveModel(0, 0, Player.player1()));
+
+        try {
+            game.play(new MoveModel(0, 0, Player.player2()));
+            fail();
+        } catch (IllegalMoveException e) {
+            GameStatus status = game.makeStatus(-1);
+            assertEquals(Player.player1(), status.lastPlayer);
+        }
+
     }
 }

@@ -26,17 +26,15 @@ public class GameImpl implements Game {
 
     @Override
     public void play(MoveModel move) throws IllegalMoveException {
-        System.out.print(board);
-        System.out.print(previousPlayer);
         checkIfSamePlayerTwice(move);
         board.addMove(move);
+        previousPlayer = move.player;
     }
 
     private void checkIfSamePlayerTwice(MoveModel currentMove) throws IllegalMoveException {
         if (previousPlayer.equals(currentMove.player)) {
             throw new IllegalMoveException("This player just played");
         }
-        previousPlayer = currentMove.player;
     }
 
     /**

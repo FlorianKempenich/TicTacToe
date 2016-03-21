@@ -47,6 +47,7 @@ public class AddMoveFromNetworkUseCaseImpl implements AddMoveFromNetworkUseCase 
 
         try {
             game.play(new MoveModel(move));
+            game.checkIfFinishedAndUpdateWinner();
             GameStatus status = game.makeStatus(gameId);
 
             // notify listeners
