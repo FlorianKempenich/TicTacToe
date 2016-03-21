@@ -1,4 +1,4 @@
-package com.shockn745.presentation;
+package com.shockn745.presentation.game;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -54,12 +54,12 @@ public class TicTacView extends LinearLayout implements View.OnClickListener {
     }
 
     private void addLine(int lineIndex) {
-        LinearLayout firstLine = new LinearLayout(getContext());
+        LinearLayout line = new LinearLayout(getContext());
         for (int i = 0; i < 3; i++) {
             Button button = buttons[i][lineIndex];
-            firstLine.addView(button, makeSquareLayoutParams());
+            line.addView(button, makeSquareLayoutParams());
         }
-        addView(firstLine, makeLineLayoutParams());
+        addView(line, makeLineLayoutParams());
     }
 
     private LayoutParams makeSquareLayoutParams() {
