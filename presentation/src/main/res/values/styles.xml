@@ -8,8 +8,5 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="TicTacButtonThemeOverlay" parent="ThemeOverlay.AppCompat">
-        <item name="android:colorAccent"  tools:targetApi="21">#FFFFFF</item>
-    </style>
 
 </resources>

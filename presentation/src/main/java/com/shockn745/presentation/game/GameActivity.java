@@ -40,13 +40,16 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     View secondPlayerBackground;
 
     private GameContract.Presenter presenter;
+    private GameAnimations gameAnimations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        new GameTransitionInitializer().initTransitions(this);
+        gameAnimations = new GameAnimations();
+        gameAnimations.initTransitions(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        gameAnimations.setPlayerBackgrounds(firstPlayerBackground, secondPlayerBackground);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.game_toolbar);
         setSupportActionBar(toolbar);
@@ -65,6 +68,13 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         presenter = new GamePresenter(this, initNewGameUseCase, addMoveUseCase);
     }
 
+    private void resetViewVisibility() {
+        winner.setVisibility(View.GONE);
+        currentPlayer.setVisibility(View.VISIBLE);
+        firstPlayerBackground.setVisibility(View.VISIBLE);
+        secondPlayerBackground.setVisibility(View.INVISIBLE);
+    }
+
     @Override
     public void onSquareClicked(int x, int y) {
         presenter.onSquareClicked(x, y);
@@ -78,11 +88,9 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     @Override
     public void setCurrentPlayer(Player player) {
         if (player.equals(Player.player1())) {
-            firstPlayerBackground.setVisibility(View.VISIBLE);
-            secondPlayerBackground.setVisibility(View.GONE);
+            gameAnimations.transitionToFirstPlayerBackground();
         } else {
-            firstPlayerBackground.setVisibility(View.GONE);
-            secondPlayerBackground.setVisibility(View.VISIBLE);
+            gameAnimations.transitionToSecondPlayerBackground();
         }
         String playerName = presenter.getPlayerName(player);
         currentPlayer.setText(playerName);
@@ -117,13 +125,6 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
                 resetActivity,
                 ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
         );
-    }
-
-    private void resetViewVisibility() {
-        winner.setVisibility(View.GONE);
-        currentPlayer.setVisibility(View.VISIBLE);
-        firstPlayerBackground.setVisibility(View.VISIBLE);
-        secondPlayerBackground.setVisibility(View.GONE);
     }
 
     @Override

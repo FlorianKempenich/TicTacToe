@@ -84,6 +84,18 @@ public class GamePresenter implements GameContract.Presenter {
         }
     }
 
+    @NonNull
+    @Override
+    public String getPlayerName(Player player) {
+        if (player.equals(Player.player1())) {
+            return "Player 1";
+        } else if (player.equals(Player.player2())) {
+            return "Player 2";
+        } else {
+            return "NO_PLAYER";
+        }
+    }
+
     private void onGameStatusReceived(GameStatus gameStatus) {
         currentGameStatus = gameStatus;
         updateView();
@@ -91,8 +103,15 @@ public class GamePresenter implements GameContract.Presenter {
 
     private void updateView() {
         updateBoardView();
-        updatePlayerName();
-        checkForWinnerAndUpdateView();
+        if (isGameWon()) {
+            displayWinner();
+        } else {
+            updatePlayerName();
+        }
+    }
+
+    private void displayWinner() {
+        view.displayWinner(getPlayerName(currentGameStatus.winner));
     }
 
     private void updateBoardView() {
@@ -119,10 +138,8 @@ public class GamePresenter implements GameContract.Presenter {
         return "";
     }
 
-    private void checkForWinnerAndUpdateView() {
-        if (!currentGameStatus.winner.equals(Player.noPlayer())) {
-            view.displayWinner(getPlayerName(currentGameStatus.winner));
-        }
+    private boolean isGameWon() {
+        return !currentGameStatus.winner.equals(Player.noPlayer());
     }
 
     private void updatePlayerName() {
@@ -132,18 +149,6 @@ public class GamePresenter implements GameContract.Presenter {
     private String getCurrentPlayerName() {
         Player currentPlayer = getCurrentPlayer();
         return getPlayerName(currentPlayer);
-    }
-
-    @NonNull
-    @Override
-    public String getPlayerName(Player player) {
-        if (player.equals(Player.player1())) {
-            return "Player 1";
-        } else if (player.equals(Player.player2())) {
-            return "Player 2";
-        } else {
-            return "NO_PLAYER";
-        }
     }
 
     private void onAddMoveError(GameError error) {
