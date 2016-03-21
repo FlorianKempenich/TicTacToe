@@ -1,4 +1,4 @@
-package com.shockn745.presentation;
+package com.shockn745.presentation.game;
 
 import android.support.annotation.NonNull;
 
@@ -13,8 +13,8 @@ import com.shockn745.utils.NullObjects;
 /**
  * @author Kempenich Florian
  */
-public class MainPresenter implements MainContract.Presenter {
-    private final MainContract.View view;
+public class GamePresenter implements GameContract.Presenter {
+    private final GameContract.View view;
 
     private final InitNewGameUseCase initNewGameUseCase;
     private final AddMoveUseCase addMoveUseCase;
@@ -39,7 +39,7 @@ public class MainPresenter implements MainContract.Presenter {
         }
     };
 
-    public MainPresenter(MainContract.View view, InitNewGameUseCase initNewGameUseCase, AddMoveUseCase addMoveUseCase) {
+    public GamePresenter(GameContract.View view, InitNewGameUseCase initNewGameUseCase, AddMoveUseCase addMoveUseCase) {
         this.view = view;
         this.initNewGameUseCase = initNewGameUseCase;
         this.addMoveUseCase = addMoveUseCase;

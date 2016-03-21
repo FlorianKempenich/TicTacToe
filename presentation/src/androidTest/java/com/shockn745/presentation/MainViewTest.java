@@ -4,15 +4,12 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
-import com.shockn745.domain.R;
+import com.shockn745.presentation.game.GameActivity;
 
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 /**
@@ -23,7 +20,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 public class MainViewTest {
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule(MainActivity.class);
+    public ActivityTestRule<GameActivity> mActivityRule = new ActivityTestRule(GameActivity.class);
 
 //    @Test
 //    public void clickOnButton_xDisplayed() {

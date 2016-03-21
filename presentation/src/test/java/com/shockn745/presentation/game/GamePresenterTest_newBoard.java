@@ -1,10 +1,12 @@
-package com.shockn745.presentation;
+package com.shockn745.presentation.game;
 
 import com.shockn745.application.AddMoveUseCase;
 import com.shockn745.application.GameStatus;
 import com.shockn745.application.InitNewGameUseCase;
 import com.shockn745.application.Move;
 import com.shockn745.application.Player;
+import com.shockn745.presentation.game.GameContract;
+import com.shockn745.presentation.game.GamePresenter;
 import com.shockn745.presentation.testutils.GameStatusUtil;
 import com.shockn745.utils.NullObjects;
 
@@ -24,14 +26,14 @@ import static org.mockito.Mockito.verify;
 /**
  * @author Kempenich Florian
  */
-public class MainPresenterTest_newBoard {
+public class GamePresenterTest_newBoard {
 
     private static final int GAME_ID = 1;
 
-    MainPresenter presenter;
+    GamePresenter presenter;
 
     @Mock
-    MainContract.View view;
+    GameContract.View view;
     @Mock
     InitNewGameUseCase initNewGameUseCase;
     @Mock
@@ -46,7 +48,7 @@ public class MainPresenterTest_newBoard {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        presenter = new MainPresenter(view, initNewGameUseCase, addMoveUseCase);
+        presenter = new GamePresenter(view, initNewGameUseCase, addMoveUseCase);
     }
 
     @Test

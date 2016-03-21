@@ -1,9 +1,18 @@
-package com.shockn745.presentation;
+package com.shockn745.presentation.game;
 
+import android.annotation.TargetApi;
+import android.app.ActivityOptions;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
 import android.widget.TextView;
 
 import com.example.data.InMemoryGameRepository;
@@ -18,7 +27,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity implements MainContract.View, TicTacView.OnSquareClickedListener {
+public class GameActivity extends AppCompatActivity implements GameContract.View, TicTacView.OnSquareClickedListener {
 
     @Bind(R.id.main_tictac_view)
     TicTacView ticTacView;
@@ -29,14 +38,17 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Bind(R.id.main_winner_textview)
     TextView winner;
 
-    private MainContract.Presenter presenter;
+    private GameContract.Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        new GameTransitionInitializer().initTransitions(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        setSupportActionBar(toolbar);
         ticTacView.setListener(this);
 
         initPresenter();
@@ -47,13 +59,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         GameRepository gameRepository = new InMemoryGameRepository();
         InitNewGameUseCase initNewGameUseCase = new InitNewGameUseCaseImpl(gameRepository);
         AddMoveUseCase addMoveUseCase = new AddMoveUseCaseImpl(gameRepository);
-        presenter = new MainPresenter(this, initNewGameUseCase, addMoveUseCase);
+        presenter = new GamePresenter(this, initNewGameUseCase, addMoveUseCase);
     }
 
     @Override
     public void onSquareClicked(int x, int y) {
         presenter.onSquareClicked(x, y);
-        Snackbar.make(ticTacView, "Button : x=" + x + " y=" + y + " clicked!", Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
@@ -76,12 +87,34 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @OnClick(R.id.main_reset_game_button)
     public void resetGame() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            resetGamePreLollipop();
+        } else {
+            resetGamePostLollipop();
+        }
+    }
+
+    private void resetGamePreLollipop() {
         presenter.resetGame();
         resetViewVisibility();
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void resetGamePostLollipop() {
+        Intent resetActivity = new Intent(this, GameActivity.class);
+        startActivity(
+                resetActivity,
+                ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+        );
     }
 
     private void resetViewVisibility() {
         winner.setVisibility(View.GONE);
         currentPlayer.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }

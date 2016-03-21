@@ -1,9 +1,9 @@
-package com.shockn745.presentation;
+package com.shockn745.presentation.game;
 
 /**
  * @author Kempenich Florian
  */
-public interface MainContract {
+public interface GameContract {
     interface View {
         void setSquareText(String text, int x, int y);
 
