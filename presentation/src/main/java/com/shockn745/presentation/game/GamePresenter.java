@@ -2,11 +2,11 @@ package com.shockn745.presentation.game;
 
 import android.support.annotation.NonNull;
 
-import com.shockn745.application.driving.AddMoveUseCase;
-import com.shockn745.application.driving.GameStatus;
-import com.shockn745.application.driving.InitNewGameUseCase;
-import com.shockn745.application.driving.Move;
-import com.shockn745.application.driving.Player;
+import com.shockn745.application.driving.presentation.AddMoveUseCase;
+import com.shockn745.application.driving.dto.GameStatus;
+import com.shockn745.application.driving.presentation.InitNewGameUseCase;
+import com.shockn745.application.driving.dto.Move;
+import com.shockn745.application.driving.dto.Player;
 import com.shockn745.application.driving.implementation.GameError;
 import com.shockn745.utils.NullObjects;
 

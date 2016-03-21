@@ -1,4 +1,4 @@
-package com.shockn745.application.driving;
+package com.shockn745.application.driving.dto;
 
 public class Player {
 

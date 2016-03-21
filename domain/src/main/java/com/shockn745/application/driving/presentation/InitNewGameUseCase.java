@@ -1,4 +1,6 @@
-package com.shockn745.application.driving;
+package com.shockn745.application.driving.presentation;
+
+import com.shockn745.application.driving.dto.GameStatus;
 
 /**
  * @author Kempenich Florian

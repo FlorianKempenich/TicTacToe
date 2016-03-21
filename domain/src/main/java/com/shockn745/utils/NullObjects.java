@@ -1,7 +1,7 @@
 package com.shockn745.utils;
 
-import com.shockn745.application.driving.GameStatus;
-import com.shockn745.application.driving.Player;
+import com.shockn745.application.driving.dto.GameStatus;
+import com.shockn745.application.driving.dto.Player;
 
 /**
  * @author Kempenich Florian

@@ -12,9 +12,9 @@ import android.widget.TextView;
 
 import com.example.data.InMemoryGameRepository;
 import com.shockn745.application.driven.GameRepository;
-import com.shockn745.application.driving.AddMoveUseCase;
-import com.shockn745.application.driving.InitNewGameUseCase;
-import com.shockn745.application.driving.Player;
+import com.shockn745.application.driving.presentation.AddMoveUseCase;
+import com.shockn745.application.driving.presentation.InitNewGameUseCase;
+import com.shockn745.application.driving.dto.Player;
 import com.shockn745.application.driving.implementation.AddMoveUseCaseImpl;
 import com.shockn745.application.driving.implementation.InitNewGameUseCaseImpl;
 import com.shockn745.domain.R;

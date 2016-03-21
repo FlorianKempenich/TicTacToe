@@ -1,4 +1,4 @@
-package com.shockn745.application.driving;
+package com.shockn745.application.driving.dto;
 
 import java.util.Arrays;
 

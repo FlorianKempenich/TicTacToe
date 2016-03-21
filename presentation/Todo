@@ -1,0 +1,6 @@
+TODO file
+
+WINNING TRANSITION
+- Get list of winning squares from domain
+- Animate in elevation and color winning line
+- Shared element transition to next screen with winning square

@@ -1,5 +1,7 @@
-package com.shockn745.application.driving;
+package com.shockn745.application.driving.presentation;
 
+import com.shockn745.application.driving.dto.GameStatus;
+import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.implementation.GameError;
 
 /**
