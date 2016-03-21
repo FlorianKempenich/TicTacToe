@@ -1,4 +1,4 @@
-package com.shockn745.application;
+package com.shockn745.application.driving.implementation;
 
 import com.shockn745.application.driven.GameRepository;
 import com.shockn745.application.driving.dto.GameStatus;

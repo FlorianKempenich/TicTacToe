@@ -1,4 +1,4 @@
-package com.shockn745.application.driving.network;
+package com.shockn745.application.driving.presentation;
 
 import com.shockn745.application.driven.NetworkListenerRepository;
 import com.shockn745.application.driving.dto.GameStatus;

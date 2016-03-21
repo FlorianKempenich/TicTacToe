@@ -18,6 +18,7 @@ import com.shockn745.application.driving.dto.Player;
 import com.shockn745.application.driving.implementation.AddMoveUseCaseImpl;
 import com.shockn745.application.driving.implementation.InitNewGameUseCaseImpl;
 import com.shockn745.domain.R;
+import com.shockn745.presentation.other.FakeMoveFromNetworkGenerator;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -42,6 +43,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     private GameContract.Presenter presenter;
     private GameAnimations gameAnimations;
     private TicTacView.ClickCoordinates clickedCoordinates = new TicTacView.ClickCoordinates(0, 0);
+    private FakeMoveFromNetworkGenerator fakeMoveFromNetworkGenerator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +115,10 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         } else {
             resetGamePostLollipop();
         }
+    }
+
+    @OnClick(R.id.game_fake_network_move_button)
+    public void makeFakeNetworkMove() {
     }
 
     private void resetGamePreLollipop() {

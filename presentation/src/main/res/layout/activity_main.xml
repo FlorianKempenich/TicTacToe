@@ -74,5 +74,12 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
                 android:text="Reset game"/>
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/game_fake_network_move_button"
+                android:layout_gravity="center_horizontal"
+                android:text="Fake network move"/>
     </LinearLayout>
 </FrameLayout>
