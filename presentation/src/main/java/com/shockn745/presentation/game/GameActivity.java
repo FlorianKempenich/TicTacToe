@@ -41,11 +41,12 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
 
     private GameContract.Presenter presenter;
     private GameAnimations gameAnimations;
+    private TicTacView.ClickCoordinates clickedCoordinates = new TicTacView.ClickCoordinates(0, 0);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        gameAnimations = new GameAnimations();
-        gameAnimations.initTransitions(this);
+        gameAnimations = new GameAnimations(this);
+        gameAnimations.initTransitions();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -76,7 +77,8 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     }
 
     @Override
-    public void onSquareClicked(int x, int y) {
+    public void onSquareClicked(int x, int y, TicTacView.ClickCoordinates coordinates) {
+        clickedCoordinates = coordinates;
         presenter.onSquareClicked(x, y);
     }
 
@@ -88,9 +90,9 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     @Override
     public void setCurrentPlayer(Player player) {
         if (player.equals(Player.player1())) {
-            gameAnimations.transitionToFirstPlayerBackground();
+            gameAnimations.transitionToFirstPlayerBackground(clickedCoordinates);
         } else {
-            gameAnimations.transitionToSecondPlayerBackground();
+            gameAnimations.transitionToSecondPlayerBackground(clickedCoordinates);
         }
         String playerName = presenter.getPlayerName(player);
         currentPlayer.setText(playerName);

@@ -3,6 +3,7 @@ package com.shockn745.presentation.game;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.graphics.Point;
 import android.os.Build;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.transition.Explode;
@@ -10,6 +11,7 @@ import android.transition.Fade;
 import android.transition.Slide;
 import android.transition.Transition;
 import android.transition.TransitionSet;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -25,14 +27,20 @@ public class GameAnimations {
     private View firstPlayerBackground;
     private View secondPlayerBackground;
 
-    public void initTransitions(GameActivity activity) {
+    private final GameActivity activity;
+
+    public GameAnimations(GameActivity activity) {
+        this.activity = activity;
+    }
+
+    public void initTransitions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            initTransitionsAfterLollipop(activity);
+            initTransitionsAfterLollipop();
         }
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void initTransitionsAfterLollipop(GameActivity activity) {
+    private void initTransitionsAfterLollipop() {
         activity.getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         activity.getWindow().setSharedElementsUseOverlay(true);
         activity.getWindow().setEnterTransition(makeEnterTransition());
@@ -80,34 +88,38 @@ public class GameAnimations {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public void transitionToFirstPlayerBackground() {
+    public void transitionToFirstPlayerBackground(TicTacView.ClickCoordinates coordinates) {
         firstPlayerBackground.setVisibility(View.VISIBLE);
         secondPlayerBackground.setVisibility(View.GONE);
         if (firstPlayerBackground.isAttachedToWindow()) {
-            Animator reveal = makeCircularReveal(firstPlayerBackground);
+            Animator reveal = makeCircularReveal(firstPlayerBackground, coordinates);
             reveal.start();
         }
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public Animator makeCircularReveal(View myView) {
-        // get the center for the clipping circle
-        int cx = myView.getWidth() / 2;
-        int cy = myView.getHeight() / 2;
+    public Animator makeCircularReveal(View myView, TicTacView.ClickCoordinates coordinates) {
+        // get the center for the clipping circle (center of the button)
+        int cx = (int) coordinates.x;
+        int cy = (int) coordinates.y;
 
-        // get the final radius for the clipping circle
-        float finalRadius = (float) Math.hypot(cx, cy);
+        // Make radius depending on screen size
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point screenSize = new Point();
+        display.getSize(screenSize);
+        float finalRadius = (float) Math.hypot(screenSize.x, screenSize.y);
 
-        // create the animator for this view (the start radius is zero)
-        return ViewAnimationUtils.createCircularReveal(myView, cx, cy, 0, finalRadius);
+        Animator reveal = ViewAnimationUtils.createCircularReveal(myView, cx, cy, 0, finalRadius);
+        reveal.setDuration(700);
+        return reveal;
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public void transitionToSecondPlayerBackground() {
+    public void transitionToSecondPlayerBackground(TicTacView.ClickCoordinates coordinates) {
         firstPlayerBackground.setVisibility(View.VISIBLE);
         secondPlayerBackground.setVisibility(View.VISIBLE);
         if (firstPlayerBackground.isAttachedToWindow()) {
-            Animator reveal = makeCircularReveal(secondPlayerBackground);
+            Animator reveal = makeCircularReveal(secondPlayerBackground, coordinates);
             reveal.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
