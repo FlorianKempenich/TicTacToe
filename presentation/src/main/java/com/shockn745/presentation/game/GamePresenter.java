@@ -2,12 +2,15 @@ package com.shockn745.presentation.game;
 
 import android.support.annotation.NonNull;
 
-import com.shockn745.application.driving.presentation.AddMoveUseCase;
+import com.shockn745.application.driven.NetworkListenerRepository;
 import com.shockn745.application.driving.dto.GameStatus;
-import com.shockn745.application.driving.presentation.InitNewGameUseCase;
 import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.dto.Player;
 import com.shockn745.application.driving.implementation.GameError;
+import com.shockn745.application.driving.presentation.AddMoveUseCase;
+import com.shockn745.application.driving.presentation.InitNewGameUseCase;
+import com.shockn745.application.driving.presentation.RegisterNetworkGameListenerUseCase;
+import com.shockn745.presentation.other.FakeMoveFromNetworkGenerator;
 import com.shockn745.utils.NullObjects;
 
 /**
@@ -18,6 +21,7 @@ public class GamePresenter implements GameContract.Presenter {
 
     private final InitNewGameUseCase initNewGameUseCase;
     private final AddMoveUseCase addMoveUseCase;
+    private final RegisterNetworkGameListenerUseCase registerNetworkGameListenerUseCase;
 
     private GameStatus currentGameStatus = NullObjects.makeEmptyGameStatus(-1);
 
@@ -36,18 +40,33 @@ public class GamePresenter implements GameContract.Presenter {
         @Override
         public void newGameReady(GameStatus newGame) {
             onGameStatusReceived(newGame);
+            registerNetworkListener();
         }
     };
+    private final NetworkListenerRepository.GameNetworkListener gameNetworkListener =
+            new NetworkListenerRepository.GameNetworkListener() {
+                @Override
+                public void onNewMoveFromNetwork(GameStatus status) {
+                    onGameStatusReceived(status);
+                }
+            };
 
-    public GamePresenter(GameContract.View view, InitNewGameUseCase initNewGameUseCase, AddMoveUseCase addMoveUseCase) {
+    public GamePresenter(GameContract.View view, InitNewGameUseCase initNewGameUseCase,
+                         RegisterNetworkGameListenerUseCase registerNetworkGameListenerUseCase,
+                         AddMoveUseCase addMoveUseCase) {
         this.view = view;
         this.initNewGameUseCase = initNewGameUseCase;
         this.addMoveUseCase = addMoveUseCase;
+        this.registerNetworkGameListenerUseCase = registerNetworkGameListenerUseCase;
     }
 
     @Override
     public void onCreate() {
         initNewGameUseCase.execute(initCallback);
+    }
+
+    private void registerNetworkListener() {
+        registerNetworkGameListenerUseCase.registerListener(gameNetworkListener, currentGameStatus.gameId);
     }
 
     @Override
@@ -153,5 +172,11 @@ public class GamePresenter implements GameContract.Presenter {
 
     private void onAddMoveError(GameError error) {
         //todo do something ?
+        view.displayDebugSnackbar(error.reason);
+    }
+
+    @Override
+    public int getGameId() {
+        return currentGameStatus.gameId;
     }
 }

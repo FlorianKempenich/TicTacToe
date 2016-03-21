@@ -13,6 +13,8 @@ public interface GameContract {
         void setCurrentPlayer(Player player);
 
         void displayWinner(String winnerName);
+
+        void displayDebugSnackbar(String message);
     }
 
     interface Presenter {
@@ -23,5 +25,8 @@ public interface GameContract {
         void onSquareClicked(int x, int y);
 
         String getPlayerName(Player player);
+
+        //todo remove : used for FakeMoveGenerator
+        int getGameId();
     }
 }

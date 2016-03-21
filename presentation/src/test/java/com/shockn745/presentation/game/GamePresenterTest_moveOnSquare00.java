@@ -5,6 +5,7 @@ import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.presentation.InitNewGameUseCase;
 import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.dto.Player;
+import com.shockn745.application.driving.presentation.RegisterNetworkGameListenerUseCase;
 import com.shockn745.presentation.testutils.GameStatusUtil;
 
 import org.junit.Before;
@@ -36,6 +37,8 @@ public class GamePresenterTest_moveOnSquare00 {
     @Mock
     InitNewGameUseCase initNewGameUseCase;
     @Mock
+    RegisterNetworkGameListenerUseCase registerNetworkGameListenerUseCase;
+    @Mock
     AddMoveUseCase addMoveUseCase;
     @Captor
     ArgumentCaptor<AddMoveUseCase.Callback> addMoveArgumentCaptor;
@@ -43,7 +46,8 @@ public class GamePresenterTest_moveOnSquare00 {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        presenter = new GamePresenter(view, initNewGameUseCase, addMoveUseCase);
+        presenter = new GamePresenter(view, initNewGameUseCase,
+                registerNetworkGameListenerUseCase, addMoveUseCase);
 
         // Play first move
         presenter.onSquareClicked(0, 0);

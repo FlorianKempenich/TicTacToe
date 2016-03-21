@@ -5,11 +5,16 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.shockn745.application.driven.NetworkListenerRepository;
+import com.shockn745.application.driving.dto.Move;
+import com.shockn745.application.driving.implementation.RegisterNetworkGameListenerUseCaseImpl;
+import com.shockn745.application.driving.presentation.RegisterNetworkGameListenerUseCase;
 import com.shockn745.data.InMemoryGameRepository;
 import com.shockn745.application.driven.GameRepository;
 import com.shockn745.application.driving.presentation.AddMoveUseCase;
@@ -18,6 +23,7 @@ import com.shockn745.application.driving.dto.Player;
 import com.shockn745.application.driving.implementation.AddMoveUseCaseImpl;
 import com.shockn745.application.driving.implementation.InitNewGameUseCaseImpl;
 import com.shockn745.domain.R;
+import com.shockn745.network.NetworkListenerRepositoryImpl;
 import com.shockn745.presentation.other.FakeMoveFromNetworkGenerator;
 
 import butterknife.Bind;
@@ -64,11 +70,19 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         resetViewVisibility();
     }
 
+    /**
+     * Replace with dependency injection
+     */
     private void initPresenter() {
         GameRepository gameRepository = new InMemoryGameRepository();
+        NetworkListenerRepository networkListenerRepository = new NetworkListenerRepositoryImpl();
         InitNewGameUseCase initNewGameUseCase = new InitNewGameUseCaseImpl(gameRepository);
         AddMoveUseCase addMoveUseCase = new AddMoveUseCaseImpl(gameRepository);
-        presenter = new GamePresenter(this, initNewGameUseCase, addMoveUseCase);
+        RegisterNetworkGameListenerUseCase registerNetworkGameListenerUseCase =
+                new RegisterNetworkGameListenerUseCaseImpl(networkListenerRepository);
+        fakeMoveFromNetworkGenerator = new FakeMoveFromNetworkGenerator(gameRepository, networkListenerRepository);
+        presenter = new GamePresenter(this, initNewGameUseCase,
+                registerNetworkGameListenerUseCase, addMoveUseCase);
     }
 
     private void resetViewVisibility() {
@@ -119,6 +133,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
 
     @OnClick(R.id.game_fake_network_move_button)
     public void makeFakeNetworkMove() {
+        fakeMoveFromNetworkGenerator.makeFakeMoveFromNetwork(new Move(0, 0, Player.player1()), presenter.getGameId());
     }
 
     private void resetGamePreLollipop() {
@@ -138,5 +153,10 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     @Override
     public void onBackPressed() {
         finish();
+    }
+
+    @Override
+    public void displayDebugSnackbar(String message) {
+        Snackbar.make(ticTacView, "Debug : " + message, Snackbar.LENGTH_SHORT).show();
     }
 }

@@ -6,6 +6,7 @@ import com.shockn745.domain.exceptions.GameNotFinishedException;
 import com.shockn745.domain.exceptions.IllegalMoveException;
 import com.shockn745.domain.iterator.BoardIterator;
 
+
 /**
  * Represents a game of TicTacToe. <p/> A game is finished when either one of the column, one of the
  * lines, or one of the diagonal is scored. <p/> A line is scored when the same player owns all the
@@ -25,6 +26,8 @@ public class GameImpl implements Game {
 
     @Override
     public void play(MoveModel move) throws IllegalMoveException {
+        System.out.print(board);
+        System.out.print(previousPlayer);
         checkIfSamePlayerTwice(move);
         board.addMove(move);
     }

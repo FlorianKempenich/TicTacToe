@@ -47,15 +47,15 @@ public class AddMoveFromNetworkUseCaseImpl implements AddMoveFromNetworkUseCase 
 
         try {
             game.play(new MoveModel(move));
+            GameStatus status = game.makeStatus(gameId);
+
+            // notify listeners
+            for (NetworkListenerRepository.GameNetworkListener listener : getListeners(gameId)) {
+                listener.onNewMoveFromNetwork(status);
+            }
         } catch (IllegalMoveException e) {
             e.printStackTrace(); // todo handle error when adding move to board
         }
 
-        GameStatus status = game.makeStatus(gameId);
-
-        // notify listeners
-        for (NetworkListenerRepository.GameNetworkListener listener : getListeners(gameId)) {
-            listener.onNewMoveFromNetwork(status);
-        }
     }
 }

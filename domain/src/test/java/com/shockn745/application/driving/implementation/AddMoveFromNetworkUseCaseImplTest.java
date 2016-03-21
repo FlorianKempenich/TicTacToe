@@ -10,6 +10,7 @@ import com.shockn745.domain.Board;
 import com.shockn745.domain.BoardImpl;
 import com.shockn745.domain.Game;
 import com.shockn745.domain.GameImpl;
+import com.shockn745.domain.MoveModel;
 import com.shockn745.utils.NullObjects;
 
 import org.junit.Before;
@@ -25,6 +26,7 @@ import java.util.Set;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 /**
@@ -32,7 +34,8 @@ import static org.mockito.Mockito.when;
  */
 public class AddMoveFromNetworkUseCaseImplTest {
 
-    private final int GAME_ID = 1;
+    private final int EMPTY_GAME_ID = 1;
+    private final int MOVE_ON_00_GAME_ID = 2;
 
     AddMoveFromNetworkUseCase addMoveFromNetworkUseCase;
 
@@ -55,11 +58,14 @@ public class AddMoveFromNetworkUseCaseImplTest {
 
 
         // Mock listener repo behavior
-        when(listenersRepository.getListeners(GAME_ID)).thenReturn(makeSetWithListener(listener));
+        when(listenersRepository.getListeners(EMPTY_GAME_ID)).thenReturn(makeSetWithListener(listener));
 
         // Mock game repo behavior
-        when(gameRepository.contains(GAME_ID)).thenReturn(true);
-        when(gameRepository.getGame(GAME_ID)).thenReturn(makeEmptyGame());
+        when(gameRepository.contains(EMPTY_GAME_ID)).thenReturn(true);
+        when(gameRepository.getGame(EMPTY_GAME_ID)).thenReturn(makeEmptyGame());
+
+        when(gameRepository.contains(MOVE_ON_00_GAME_ID)).thenReturn(true);
+        when(gameRepository.getGame(MOVE_ON_00_GAME_ID)).thenReturn(makeGameWithMoveOn00());
     }
 
     private static Set<NetworkListenerRepository.GameNetworkListener> makeSetWithListener(
@@ -74,16 +80,22 @@ public class AddMoveFromNetworkUseCaseImplTest {
         return new GameImpl(board);
     }
 
+    private static Game makeGameWithMoveOn00() throws Exception {
+        Game game = makeEmptyGame();
+        game.play(new MoveModel(0, 0, Player.player1()));
+        return game;
+    }
+
     @Test
     public void addMove_listenerCalled() throws Exception {
-        addMoveFromNetworkUseCase.execute(new Move(0, 0, Player.player1()), GAME_ID);
+        addMoveFromNetworkUseCase.execute(new Move(0, 0, Player.player1()), EMPTY_GAME_ID);
         verify(listener).onNewMoveFromNetwork(any(GameStatus.class));
 
     }
 
     @Test
     public void addMove_MoveAdded() throws Exception {
-        addMoveFromNetworkUseCase.execute(new Move(0, 0, Player.player1()), GAME_ID);
+        addMoveFromNetworkUseCase.execute(new Move(0, 0, Player.player1()), EMPTY_GAME_ID);
         verify(listener).onNewMoveFromNetwork(gameStatusCaptor.capture());
 
         GameStatus status = gameStatusCaptor.getValue();
@@ -93,8 +105,15 @@ public class AddMoveFromNetworkUseCaseImplTest {
         board[0][0] = Player.player1();
         Player lastPlayer = Player.player1();
         Player winner = Player.noPlayer();
-        expectedStatus = new GameStatus(GAME_ID, board, lastPlayer, winner);
+        expectedStatus = new GameStatus(EMPTY_GAME_ID, board, lastPlayer, winner);
 
         assertEquals(expectedStatus, status);
+    }
+
+    @Test
+    public void illegalMove_doNotCallListeners() throws Exception {
+        addMoveFromNetworkUseCase.execute(new Move(0, 0, Player.player1()), MOVE_ON_00_GAME_ID);
+        verifyNoMoreInteractions(listener);
+
     }
 }

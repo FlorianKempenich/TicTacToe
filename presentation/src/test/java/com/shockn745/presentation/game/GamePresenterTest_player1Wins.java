@@ -5,6 +5,7 @@ import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.presentation.InitNewGameUseCase;
 import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.dto.Player;
+import com.shockn745.application.driving.presentation.RegisterNetworkGameListenerUseCase;
 import com.shockn745.presentation.testutils.GameStatusUtil;
 import com.shockn745.utils.NullObjects;
 
@@ -37,6 +38,8 @@ public class GamePresenterTest_player1Wins {
     @Mock
     InitNewGameUseCase initNewGameUseCase;
     @Mock
+    RegisterNetworkGameListenerUseCase registerNetworkGameListenerUseCase;
+    @Mock
     AddMoveUseCase addMoveUseCase;
     @Captor
     ArgumentCaptor<AddMoveUseCase.Callback> addMoveArgumentCaptor;
@@ -44,7 +47,8 @@ public class GamePresenterTest_player1Wins {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        presenter = new GamePresenter(view, initNewGameUseCase, addMoveUseCase);
+        presenter = new GamePresenter(view, initNewGameUseCase,
+                registerNetworkGameListenerUseCase, addMoveUseCase);
         statusAfterFirstMoveOn00 = GameStatusUtil.makeAfterFirstMoveOn00(GAME_ID);
     }
 
