@@ -1,6 +1,6 @@
-package com.shockn745.application;
+package com.shockn745.application.driving;
 
-import com.shockn745.application.implementation.GameError;
+import com.shockn745.application.driving.implementation.GameError;
 
 /**
  * @author Kempenich Florian

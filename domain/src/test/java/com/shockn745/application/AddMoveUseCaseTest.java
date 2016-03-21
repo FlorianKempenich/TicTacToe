@@ -1,8 +1,11 @@
 package com.shockn745.application;
 
-import com.shockn745.GameRepository;
-import com.shockn745.application.implementation.AddMoveUseCaseImpl;
-import com.shockn745.application.implementation.GameError;
+import com.shockn745.application.driven.GameRepository;
+import com.shockn745.application.driving.GameStatus;
+import com.shockn745.application.driving.Move;
+import com.shockn745.application.driving.Player;
+import com.shockn745.application.driving.implementation.AddMoveUseCaseImpl;
+import com.shockn745.application.driving.implementation.GameError;
 import com.shockn745.domain.Board;
 import com.shockn745.domain.BoardImpl;
 import com.shockn745.domain.Game;
@@ -28,14 +31,14 @@ import static org.mockito.Mockito.when;
 public class AddMoveUseCaseTest {
 
     private static final int GAME_ID = 1;
-    AddMoveUseCase addMoveUseCase;
+    com.shockn745.application.driving.AddMoveUseCase addMoveUseCase;
     Game emptyGame;
     @Mock
     GameRepository gameRepository;
     @Mock
-    AddMoveUseCase.Callback callback;
+    com.shockn745.application.driving.AddMoveUseCase.Callback callback;
     @Captor
-    ArgumentCaptor<GameStatus> gameStatusArgumentCaptor;
+    ArgumentCaptor<com.shockn745.application.driving.GameStatus> gameStatusArgumentCaptor;
     @Captor
     ArgumentCaptor<GameError> gameErrorArgumentCaptor;
 
@@ -59,25 +62,25 @@ public class AddMoveUseCaseTest {
 
     @Test
     public void addMoveToEmptyGame_Success_verifyMoveAddedRightPosition() throws Exception {
-        Move move = new Move(0, 0, Player.player1());
+        com.shockn745.application.driving.Move move = new com.shockn745.application.driving.Move(0, 0, com.shockn745.application.driving.Player.player1());
 
         addMoveUseCase.execute(move, GAME_ID, callback);
         verify(callback).onSuccess(gameStatusArgumentCaptor.capture());
 
-        GameStatus resultStatus = gameStatusArgumentCaptor.getValue();
+        com.shockn745.application.driving.GameStatus resultStatus = gameStatusArgumentCaptor.getValue();
 
         // Make gameStatus with move on first square
-        Player[][] expectedBoard = NullObjects.makeEmptyBoard();
-        expectedBoard[0][0] = Player.player1();
-        GameStatus expectedStatus = new GameStatus(GAME_ID, expectedBoard, Player.player1(), Player.noPlayer());
+        com.shockn745.application.driving.Player[][] expectedBoard = NullObjects.makeEmptyBoard();
+        expectedBoard[0][0] = com.shockn745.application.driving.Player.player1();
+        com.shockn745.application.driving.GameStatus expectedStatus = new com.shockn745.application.driving.GameStatus(GAME_ID, expectedBoard, com.shockn745.application.driving.Player.player1(), com.shockn745.application.driving.Player.noPlayer());
 
         assertEquals(expectedStatus, resultStatus);
     }
 
     @Test
     public void add2MovesToTheSameSquare_Error_checkErrorMessage() throws Exception {
-        Move move1 = new Move(0,0, Player.player1());
-        Move move2 = new Move(0,0, Player.player2());
+        com.shockn745.application.driving.Move move1 = new com.shockn745.application.driving.Move(0,0, com.shockn745.application.driving.Player.player1());
+        com.shockn745.application.driving.Move move2 = new com.shockn745.application.driving.Move(0,0, com.shockn745.application.driving.Player.player2());
 
         // Add first move to emptyGame
         emptyGame.play(new MoveModel(move1));
@@ -92,8 +95,8 @@ public class AddMoveUseCaseTest {
 
     @Test
     public void add2MovesSamePlayer_Error_checkErrorMessage() throws Exception {
-        Move move1 = new Move(0,0, Player.player1());
-        Move move2 = new Move(1,1, Player.player1());
+        com.shockn745.application.driving.Move move1 = new com.shockn745.application.driving.Move(0,0, com.shockn745.application.driving.Player.player1());
+        com.shockn745.application.driving.Move move2 = new com.shockn745.application.driving.Move(1,1, com.shockn745.application.driving.Player.player1());
 
         // Add first move to emptyGame
         emptyGame.play(new MoveModel(move1));
@@ -109,26 +112,26 @@ public class AddMoveUseCaseTest {
     @Test
     public void addLastMove_GameFinished_correctWinner() throws Exception {
         // Setup game -- Play all the moves except last one -- Player 1 wins on first line
-        emptyGame.play(new MoveModel(0,0, Player.player1()));
-        emptyGame.play(new MoveModel(1,1, Player.player2()));
-        emptyGame.play(new MoveModel(1,0, Player.player1()));
-        emptyGame.play(new MoveModel(2,2, Player.player2()));
+        emptyGame.play(new MoveModel(0,0, com.shockn745.application.driving.Player.player1()));
+        emptyGame.play(new MoveModel(1,1, com.shockn745.application.driving.Player.player2()));
+        emptyGame.play(new MoveModel(1,0, com.shockn745.application.driving.Player.player1()));
+        emptyGame.play(new MoveModel(2,2, com.shockn745.application.driving.Player.player2()));
         // Last play : 2-0 Player 1 : Left for use-case
 
         // Make expected game status
-        Player[][] expectedBoard = NullObjects.makeEmptyBoard();
-        expectedBoard[0][0] = Player.player1();
-        expectedBoard[1][1] = Player.player2();
-        expectedBoard[1][0] = Player.player1();
-        expectedBoard[2][2] = Player.player2();
-        expectedBoard[2][0] = Player.player1();
+        com.shockn745.application.driving.Player[][] expectedBoard = NullObjects.makeEmptyBoard();
+        expectedBoard[0][0] = com.shockn745.application.driving.Player.player1();
+        expectedBoard[1][1] = com.shockn745.application.driving.Player.player2();
+        expectedBoard[1][0] = com.shockn745.application.driving.Player.player1();
+        expectedBoard[2][2] = com.shockn745.application.driving.Player.player2();
+        expectedBoard[2][0] = com.shockn745.application.driving.Player.player1();
 
-        Player lastPlayer = Player.player1();
-        Player winner = Player.player1();
+        com.shockn745.application.driving.Player lastPlayer = com.shockn745.application.driving.Player.player1();
+        com.shockn745.application.driving.Player winner = com.shockn745.application.driving.Player.player1();
 
-        GameStatus expectedStatus = new GameStatus(GAME_ID, expectedBoard, lastPlayer, winner);
+        com.shockn745.application.driving.GameStatus expectedStatus = new com.shockn745.application.driving.GameStatus(GAME_ID, expectedBoard, lastPlayer, winner);
 
-        addMoveUseCase.execute(new Move(2, 0, Player.player1()), GAME_ID, callback);
+        addMoveUseCase.execute(new com.shockn745.application.driving.Move(2, 0, com.shockn745.application.driving.Player.player1()), GAME_ID, callback);
         verify(callback).onSuccess(gameStatusArgumentCaptor.capture());
 
         GameStatus result = gameStatusArgumentCaptor.getValue();

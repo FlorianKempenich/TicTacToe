@@ -1,6 +1,6 @@
 package com.shockn745.domain;
 
-import com.shockn745.application.Player;
+import com.shockn745.application.driving.Player;
 import com.shockn745.domain.exceptions.IllegalMoveException;
 import com.shockn745.domain.iterator.BoardIterator;
 import com.shockn745.domain.iterator.ColumnIterator;

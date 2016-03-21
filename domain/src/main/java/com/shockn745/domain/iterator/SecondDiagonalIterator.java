@@ -1,7 +1,7 @@
 package com.shockn745.domain.iterator;
 
 import com.shockn745.domain.Board;
-import com.shockn745.application.Player;
+import com.shockn745.application.driving.Player;
 
 public class SecondDiagonalIterator implements BoardIterator {
 

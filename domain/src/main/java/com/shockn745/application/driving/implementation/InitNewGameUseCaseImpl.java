@@ -1,8 +1,8 @@
-package com.shockn745.application.implementation;
+package com.shockn745.application.driving.implementation;
 
-import com.shockn745.GameRepository;
-import com.shockn745.application.GameStatus;
-import com.shockn745.application.InitNewGameUseCase;
+import com.shockn745.application.driven.GameRepository;
+import com.shockn745.application.driving.GameStatus;
+import com.shockn745.application.driving.InitNewGameUseCase;
 import com.shockn745.domain.Board;
 import com.shockn745.domain.BoardImpl;
 import com.shockn745.domain.Game;

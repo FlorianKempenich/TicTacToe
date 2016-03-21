@@ -1,7 +1,7 @@
 package com.shockn745.presentation.testutils;
 
-import com.shockn745.application.GameStatus;
-import com.shockn745.application.Player;
+import com.shockn745.application.driving.GameStatus;
+import com.shockn745.application.driving.Player;
 import com.shockn745.utils.NullObjects;
 
 /**

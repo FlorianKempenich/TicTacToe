@@ -5,22 +5,17 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.transition.Slide;
-import android.view.Gravity;
 import android.view.View;
-import android.view.Window;
 import android.widget.TextView;
 
 import com.example.data.InMemoryGameRepository;
-import com.shockn745.GameRepository;
-import com.shockn745.application.AddMoveUseCase;
-import com.shockn745.application.InitNewGameUseCase;
-import com.shockn745.application.implementation.AddMoveUseCaseImpl;
-import com.shockn745.application.implementation.InitNewGameUseCaseImpl;
+import com.shockn745.application.driven.GameRepository;
+import com.shockn745.application.driving.AddMoveUseCase;
+import com.shockn745.application.driving.InitNewGameUseCase;
+import com.shockn745.application.driving.implementation.AddMoveUseCaseImpl;
+import com.shockn745.application.driving.implementation.InitNewGameUseCaseImpl;
 import com.shockn745.domain.R;
 
 import butterknife.Bind;

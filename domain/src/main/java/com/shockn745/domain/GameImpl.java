@@ -1,6 +1,5 @@
 package com.shockn745.domain;
 
-import com.shockn745.application.*;
 import com.shockn745.domain.exceptions.GameNotFinishedException;
 import com.shockn745.domain.exceptions.IllegalMoveException;
 import com.shockn745.domain.iterator.BoardIterator;
@@ -12,11 +11,11 @@ import com.shockn745.domain.iterator.BoardIterator;
  */
 public class GameImpl implements Game {
 
-    private static final com.shockn745.application.Player NO_PLAYER = com.shockn745.application.Player.noPlayer();
+    private static final com.shockn745.application.driving.Player NO_PLAYER = com.shockn745.application.driving.Player.noPlayer();
     private final Board board;
-    private com.shockn745.application.Player previousPlayer = NO_PLAYER;
+    private com.shockn745.application.driving.Player previousPlayer = NO_PLAYER;
 
-    private com.shockn745.application.Player winner = NO_PLAYER;
+    private com.shockn745.application.driving.Player winner = NO_PLAYER;
 
     public GameImpl(Board board) {
         this.board = board;
@@ -59,7 +58,7 @@ public class GameImpl implements Game {
     }
 
     private boolean isSequenceScored(BoardIterator iterator) {
-        com.shockn745.application.Player sequenceWinner = getSequenceWinner(iterator);
+        com.shockn745.application.driving.Player sequenceWinner = getSequenceWinner(iterator);
         if (!sequenceWinner.equals(NO_PLAYER)) {
             winner = sequenceWinner;
             return true;
@@ -68,9 +67,9 @@ public class GameImpl implements Game {
         }
     }
 
-    private com.shockn745.application.Player getSequenceWinner(BoardIterator iterator) {
-        com.shockn745.application.Player sequenceWinner = NO_PLAYER;
-        com.shockn745.application.Player sequenceOwner = iterator.first();
+    private com.shockn745.application.driving.Player getSequenceWinner(BoardIterator iterator) {
+        com.shockn745.application.driving.Player sequenceWinner = NO_PLAYER;
+        com.shockn745.application.driving.Player sequenceOwner = iterator.first();
         boolean scored = isSequenceOwnedBySamePlayer(iterator, sequenceOwner);
         if (scored) {
             sequenceWinner = sequenceOwner;
@@ -78,7 +77,7 @@ public class GameImpl implements Game {
         return sequenceWinner;
     }
 
-    private boolean isSequenceOwnedBySamePlayer(BoardIterator iterator, com.shockn745.application.Player sequenceOwner) {
+    private boolean isSequenceOwnedBySamePlayer(BoardIterator iterator, com.shockn745.application.driving.Player sequenceOwner) {
         if (sequenceOwner.equals(NO_PLAYER)) return false;
         while (iterator.hasNext()) {
             if (!iterator.next().equals(sequenceOwner)) return false;
@@ -87,7 +86,7 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public com.shockn745.application.Player getWinner() throws GameNotFinishedException {
+    public com.shockn745.application.driving.Player getWinner() throws GameNotFinishedException {
         if (winner.equals(NO_PLAYER)) {
             throw new GameNotFinishedException();
         }
@@ -95,8 +94,8 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public GameStatus makeStatus(int id) {
-        return new GameStatus(
+    public com.shockn745.application.driving.GameStatus makeStatus(int id) {
+        return new com.shockn745.application.driving.GameStatus(
                 id,
                 board.getBoardStatus(),
                 previousPlayer,

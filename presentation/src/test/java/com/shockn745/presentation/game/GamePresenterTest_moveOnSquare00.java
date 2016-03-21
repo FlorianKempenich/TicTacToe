@@ -1,12 +1,10 @@
 package com.shockn745.presentation.game;
 
-import com.shockn745.application.AddMoveUseCase;
-import com.shockn745.application.GameStatus;
-import com.shockn745.application.InitNewGameUseCase;
-import com.shockn745.application.Move;
-import com.shockn745.application.Player;
-import com.shockn745.presentation.game.GameContract;
-import com.shockn745.presentation.game.GamePresenter;
+import com.shockn745.application.driving.AddMoveUseCase;
+import com.shockn745.application.driving.GameStatus;
+import com.shockn745.application.driving.InitNewGameUseCase;
+import com.shockn745.application.driving.Move;
+import com.shockn745.application.driving.Player;
 import com.shockn745.presentation.testutils.GameStatusUtil;
 
 import org.junit.Before;

@@ -1,6 +1,8 @@
 package com.shockn745.application;
 
-import com.shockn745.GameRepository;
+import com.shockn745.application.driven.GameRepository;
+import com.shockn745.application.driving.GameStatus;
+import com.shockn745.application.driving.implementation.InitNewGameUseCaseImpl;
 import com.shockn745.utils.NullObjects;
 
 import org.junit.Before;
@@ -33,19 +35,19 @@ public class InitNewGameUseCaseTest {
     likely file or inMemory)
      */
 
-    InitNewGameUseCase initNewGameUseCase;
+    com.shockn745.application.driving.InitNewGameUseCase initNewGameUseCase;
 
     @Mock
     GameRepository gameRepository;
     @Mock
-    InitNewGameUseCase.Callback callback;
+    com.shockn745.application.driving.InitNewGameUseCase.Callback callback;
     @Captor
-    ArgumentCaptor<GameStatus> gameStatusArgumentCaptor;
+    ArgumentCaptor<com.shockn745.application.driving.GameStatus> gameStatusArgumentCaptor;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        initNewGameUseCase = new com.shockn745.application.implementation.InitNewGameUseCaseImpl(gameRepository);
+        initNewGameUseCase = new InitNewGameUseCaseImpl(gameRepository);
     }
 
     @Test

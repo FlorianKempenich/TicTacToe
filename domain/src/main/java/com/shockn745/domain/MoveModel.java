@@ -1,6 +1,5 @@
 package com.shockn745.domain;
 
-import com.shockn745.application.*;
 import com.shockn745.domain.exceptions.InvalidMoveException;
 
 public class MoveModel {
@@ -8,13 +7,13 @@ public class MoveModel {
     public final int x;
     public final int y;
 
-    public final com.shockn745.application.Player player;
+    public final com.shockn745.application.driving.Player player;
 
-    public MoveModel(Move move) {
+    public MoveModel(com.shockn745.application.driving.Move move) {
         this(move.x, move.y, move.player);
     }
 
-    public MoveModel(int x, int y, com.shockn745.application.Player player) {
+    public MoveModel(int x, int y, com.shockn745.application.driving.Player player) {
         this.y = y;
         this.x = x;
         this.player = player;
@@ -26,7 +25,7 @@ public class MoveModel {
             throw new InvalidMoveException("Out of bounds coordinates");
         } else if (player == null) {
             throw new InvalidMoveException("Null player, INITIALIZE PLAYER");
-        } else if (player.equals(com.shockn745.application.Player.noPlayer())) {
+        } else if (player.equals(com.shockn745.application.driving.Player.noPlayer())) {
             throw new InvalidMoveException("Invalid player. Play only with PLAYER 1 OR PLAYER 2");
         }
     }

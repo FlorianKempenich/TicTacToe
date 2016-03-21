@@ -1,4 +1,4 @@
-package com.shockn745;
+package com.shockn745.application.driven;
 
 import com.shockn745.domain.Game;
 

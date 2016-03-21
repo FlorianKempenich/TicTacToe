@@ -1,8 +1,8 @@
-package com.shockn745.application.implementation;
+package com.shockn745.application.driving.implementation;
 
-import com.shockn745.GameRepository;
-import com.shockn745.application.AddMoveUseCase;
-import com.shockn745.application.Move;
+import com.shockn745.application.driven.GameRepository;
+import com.shockn745.application.driving.AddMoveUseCase;
+import com.shockn745.application.driving.Move;
 import com.shockn745.domain.Game;
 import com.shockn745.domain.MoveModel;
 import com.shockn745.domain.exceptions.IllegalMoveException;

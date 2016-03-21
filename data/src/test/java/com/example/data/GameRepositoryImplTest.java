@@ -1,6 +1,6 @@
 package com.example.data;
 
-import com.shockn745.GameRepository;
+import com.shockn745.application.driven.GameRepository;
 import com.shockn745.domain.Board;
 import com.shockn745.domain.BoardImpl;
 import com.shockn745.domain.Game;
