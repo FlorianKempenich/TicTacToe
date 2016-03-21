@@ -10,7 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.data.InMemoryGameRepository;
+import com.shockn745.data.InMemoryGameRepository;
 import com.shockn745.application.driven.GameRepository;
 import com.shockn745.application.driving.presentation.AddMoveUseCase;
 import com.shockn745.application.driving.presentation.InitNewGameUseCase;

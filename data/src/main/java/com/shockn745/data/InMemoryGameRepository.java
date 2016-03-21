@@ -1,4 +1,4 @@
-package com.example.data;
+package com.shockn745.data;
 
 import com.shockn745.application.driven.GameRepository;
 import com.shockn745.domain.Game;

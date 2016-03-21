@@ -17,7 +17,7 @@ public class RegisterNetworkGameListenerUseCaseImpl implements RegisterNetworkGa
     }
 
     @Override
-    public void registerListener(GameNetworkListener listener, int gameId) {
+    public void registerListener(NetworkListenerRepository.GameNetworkListener listener, int gameId) {
         throw new NotImplementedException();
     }
 }

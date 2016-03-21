@@ -1,5 +1,6 @@
 package com.shockn745.application.driving.network;
 
+import com.shockn745.application.driven.NetworkListenerRepository;
 import com.shockn745.application.driving.dto.GameStatus;
 
 /**
@@ -7,9 +8,5 @@ import com.shockn745.application.driving.dto.GameStatus;
  */
 public interface RegisterNetworkGameListenerUseCase {
 
-    interface GameNetworkListener {
-        void onNewMoveFromNetwork(GameStatus status);
-    }
-
-    void registerListener(GameNetworkListener listener, int gameId);
+    void registerListener(NetworkListenerRepository.GameNetworkListener listener, int gameId);
 }
