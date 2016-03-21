@@ -126,7 +126,7 @@ public class GamePresenter implements GameContract.Presenter {
     }
 
     private void updatePlayerName() {
-        view.setCurrentPlayerName(getCurrentPlayerName());
+        view.setCurrentPlayer(getCurrentPlayer());
     }
 
     private String getCurrentPlayerName() {
@@ -135,7 +135,8 @@ public class GamePresenter implements GameContract.Presenter {
     }
 
     @NonNull
-    private String getPlayerName(Player player) {
+    @Override
+    public String getPlayerName(Player player) {
         if (player.equals(Player.player1())) {
             return "Player 1";
         } else if (player.equals(Player.player2())) {

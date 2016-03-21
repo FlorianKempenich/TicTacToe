@@ -60,7 +60,7 @@ public class GamePresenterTest_newBoard {
         presenter.onCreate();
         verify(initNewGameUseCase).execute(initArgumentCaptor.capture());
         initArgumentCaptor.getValue().newGameReady(NullObjects.makeEmptyGameStatus(GAME_ID));
-        verify(view).setCurrentPlayerName(eq("Player 1"));
+        verify(view).setCurrentPlayer(eq(Player.player1()));
     }
 
     @Test

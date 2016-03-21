@@ -36,9 +36,7 @@ public class GameTransitionInitializer {
     private Transition makeEnterTransition() {
         Slide slide = new Slide(Gravity.BOTTOM);
         slide.setDuration(1500);
-        slide.excludeTarget(android.R.id.statusBarBackground, true);
-        slide.excludeTarget(android.R.id.navigationBarBackground, true);
-        slide.excludeTarget(R.id.main_toolbar, true);
+        excludeTargets(slide);
         slide.setInterpolator(new FastOutSlowInInterpolator());
         return slide;
     }
@@ -47,10 +45,17 @@ public class GameTransitionInitializer {
     private Transition makeExitTransition() {
         Explode explode = new Explode();
         explode.setDuration(1500);
-        explode.excludeTarget(android.R.id.statusBarBackground, true);
-        explode.excludeTarget(android.R.id.navigationBarBackground, true);
-        explode.excludeTarget(R.id.main_toolbar, true);
+        excludeTargets(explode);
         explode.setInterpolator(new FastOutSlowInInterpolator());
         return explode;
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void excludeTargets(Transition transition) {
+        transition.excludeTarget(android.R.id.statusBarBackground, true);
+        transition.excludeTarget(android.R.id.navigationBarBackground, true);
+        transition.excludeTarget(R.id.game_toolbar, true);
+        transition.excludeTarget(R.id.game_first_player_background, true);
+        transition.excludeTarget(R.id.game_second_player_background, true);
     }
 }

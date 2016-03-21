@@ -1,5 +1,8 @@
 package com.shockn745.presentation.game;
 
+
+import com.shockn745.application.driving.Player;
+
 /**
  * @author Kempenich Florian
  */
@@ -7,7 +10,7 @@ public interface GameContract {
     interface View {
         void setSquareText(String text, int x, int y);
 
-        void setCurrentPlayerName(String text);
+        void setCurrentPlayer(Player player);
 
         void displayWinner(String winnerName);
     }
@@ -18,5 +21,7 @@ public interface GameContract {
         void resetGame();
 
         void onSquareClicked(int x, int y);
+
+        String getPlayerName(Player player);
     }
 }

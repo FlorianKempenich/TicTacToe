@@ -2,10 +2,13 @@ package com.shockn745.presentation.game;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+
+import com.shockn745.domain.R;
 
 /**
  * @author Kempenich Florian
@@ -47,7 +50,12 @@ public class TicTacView extends LinearLayout implements View.OnClickListener {
     }
 
     private Button makeNewSquare() {
-        Button button = new Button(getContext());
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        Button button = (Button) inflater.inflate(
+                R.layout.tic_tac_view_square,
+                new LinearLayout(getContext()), // used to generate the layout params
+                false
+        );
         int id = View.generateViewId();
         button.setId(id);
         return button;

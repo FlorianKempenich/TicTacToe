@@ -14,6 +14,7 @@ import com.example.data.InMemoryGameRepository;
 import com.shockn745.application.driven.GameRepository;
 import com.shockn745.application.driving.AddMoveUseCase;
 import com.shockn745.application.driving.InitNewGameUseCase;
+import com.shockn745.application.driving.Player;
 import com.shockn745.application.driving.implementation.AddMoveUseCaseImpl;
 import com.shockn745.application.driving.implementation.InitNewGameUseCaseImpl;
 import com.shockn745.domain.R;
@@ -24,14 +25,19 @@ import butterknife.OnClick;
 
 public class GameActivity extends AppCompatActivity implements GameContract.View, TicTacView.OnSquareClickedListener {
 
-    @Bind(R.id.main_tictac_view)
+    @Bind(R.id.game_tictac_view)
     TicTacView ticTacView;
 
-    @Bind(R.id.main_current_player_textview)
+    @Bind(R.id.game_current_player_textview)
     TextView currentPlayer;
 
-    @Bind(R.id.main_winner_textview)
+    @Bind(R.id.game_winner_textview)
     TextView winner;
+
+    @Bind(R.id.game_first_player_background)
+    View firstPlayerBackground;
+    @Bind(R.id.game_second_player_background)
+    View secondPlayerBackground;
 
     private GameContract.Presenter presenter;
 
@@ -42,12 +48,14 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.game_toolbar);
         setSupportActionBar(toolbar);
         ticTacView.setListener(this);
 
         initPresenter();
         presenter.onCreate();
+
+        resetViewVisibility();
     }
 
     private void initPresenter() {
@@ -68,8 +76,16 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     }
 
     @Override
-    public void setCurrentPlayerName(String text) {
-        currentPlayer.setText(text);
+    public void setCurrentPlayer(Player player) {
+        if (player.equals(Player.player1())) {
+            firstPlayerBackground.setVisibility(View.VISIBLE);
+            secondPlayerBackground.setVisibility(View.GONE);
+        } else {
+            firstPlayerBackground.setVisibility(View.GONE);
+            secondPlayerBackground.setVisibility(View.VISIBLE);
+        }
+        String playerName = presenter.getPlayerName(player);
+        currentPlayer.setText(playerName);
     }
 
     @Override
@@ -80,7 +96,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         currentPlayer.setVisibility(View.GONE);
     }
 
-    @OnClick(R.id.main_reset_game_button)
+    @OnClick(R.id.game_reset_game_button)
     public void resetGame() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             resetGamePreLollipop();
@@ -106,6 +122,8 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     private void resetViewVisibility() {
         winner.setVisibility(View.GONE);
         currentPlayer.setVisibility(View.VISIBLE);
+        firstPlayerBackground.setVisibility(View.VISIBLE);
+        secondPlayerBackground.setVisibility(View.GONE);
     }
 
     @Override

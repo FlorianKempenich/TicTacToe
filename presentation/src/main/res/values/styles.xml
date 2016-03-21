@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -8,10 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="TicTacButton">
-        <item name="android:layout_weight">1</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_width">0dp</item>
+    <style name="TicTacButtonThemeOverlay" parent="ThemeOverlay.AppCompat">
+        <item name="android:colorAccent"  tools:targetApi="21">#FFFFFF</item>
     </style>
 
 </resources>
