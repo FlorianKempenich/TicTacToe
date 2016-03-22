@@ -7,6 +7,7 @@ import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.network.AddMoveFromNetworkUseCase;
 import com.shockn745.domain.Game;
+import com.shockn745.domain.GameFactory;
 import com.shockn745.domain.MoveModel;
 import com.shockn745.domain.exceptions.IllegalMoveException;
 
@@ -19,12 +20,15 @@ public class AddMoveFromNetworkUseCaseImpl implements AddMoveFromNetworkUseCase 
 
     private final GameRepository gameRepository;
     private final NetworkListenerRepository networkListenerRepository;
+    private final GameFactory gameFactory;
 
     public AddMoveFromNetworkUseCaseImpl(
             GameRepository gameRepository,
-            NetworkListenerRepository networkListenerRepository) {
+            NetworkListenerRepository networkListenerRepository,
+            GameFactory gameFactory) {
         this.gameRepository = gameRepository;
         this.networkListenerRepository = networkListenerRepository;
+        this.gameFactory = gameFactory;
     }
 
     @Override

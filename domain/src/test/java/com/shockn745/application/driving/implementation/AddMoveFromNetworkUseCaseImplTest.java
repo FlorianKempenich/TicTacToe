@@ -10,6 +10,8 @@ import com.shockn745.application.driving.network.AddMoveFromNetworkUseCase;
 import com.shockn745.domain.Board;
 import com.shockn745.domain.BoardImpl;
 import com.shockn745.domain.Game;
+import com.shockn745.domain.GameFactory;
+import com.shockn745.domain.GameFactoryImpl;
 import com.shockn745.domain.GameImpl;
 import com.shockn745.domain.MoveModel;
 import com.shockn745.utils.NullObjects;
@@ -25,6 +27,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -52,13 +55,16 @@ public class AddMoveFromNetworkUseCaseImplTest {
     ArgumentCaptor<GameStatus> gameStatusCaptor;
     @Captor
     ArgumentCaptor<GameError> gameErrorCaptor;
+    @Mock
+    GameFactory gameFactory;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         addMoveFromNetworkUseCase = new AddMoveFromNetworkUseCaseImpl(
                 gameRepository,
-                listenersRepository
+                listenersRepository,
+                gameFactory
         );
 
 
@@ -82,8 +88,8 @@ public class AddMoveFromNetworkUseCaseImplTest {
     }
 
     private static Game makeEmptyGame() {
-        Board board = new BoardImpl();
-        return new GameImpl(board);
+        GameFactory factory = new GameFactoryImpl();
+        return factory.makeNewGame();
     }
 
     private static Game makeGameWithMoveOn00() throws Exception {

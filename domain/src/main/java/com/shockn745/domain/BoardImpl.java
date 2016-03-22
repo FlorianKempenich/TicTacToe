@@ -14,8 +14,8 @@ public class BoardImpl implements Board {
     private static final Player NO_PLAYER = Player.noPlayer();
     private Player[][] board;
 
-    public BoardImpl() {
-        initializeTheBoard();
+    public BoardImpl(Player[][] board) {
+        this.board = board;
     }
 
     private void initializeTheBoard() {

@@ -5,6 +5,8 @@ import com.shockn745.domain.BoardImpl;
 import com.shockn745.domain.MoveModel;
 import com.shockn745.application.driving.dto.Player;
 import com.shockn745.domain.exceptions.IllegalMoveException;
+import com.shockn745.utils.NullObjects;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,7 +19,7 @@ public class BoardImplIteratorTest {
 
     @Before
     public void setUp() throws Exception {
-        board = new BoardImpl();
+        board = new BoardImpl(NullObjects.makeEmptyBoard());
         initBoard(board);
     }
 

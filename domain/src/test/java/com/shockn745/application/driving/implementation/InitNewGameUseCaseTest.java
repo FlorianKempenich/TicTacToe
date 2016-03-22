@@ -1,9 +1,12 @@
 package com.shockn745.application.driving.implementation;
 
 import com.shockn745.application.driven.GameRepository;
+import com.shockn745.application.driven.GameStatusRepository;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.implementation.InitNewGameUseCaseImpl;
 import com.shockn745.application.driving.presentation.InitNewGameUseCase;
+import com.shockn745.domain.GameFactory;
+import com.shockn745.domain.GameFactoryImpl;
 import com.shockn745.utils.NullObjects;
 
 import org.junit.Before;
@@ -41,6 +44,8 @@ public class InitNewGameUseCaseTest {
     @Mock
     GameRepository gameRepository;
     @Mock
+    GameStatusRepository gameStatusRepository;
+    @Mock
     InitNewGameUseCase.Callback callback;
     @Captor
     ArgumentCaptor<GameStatus> gameStatusArgumentCaptor;
@@ -48,7 +53,8 @@ public class InitNewGameUseCaseTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        initNewGameUseCase = new InitNewGameUseCaseImpl(gameRepository);
+        GameFactory gameFactory = new GameFactoryImpl();
+        initNewGameUseCase = new InitNewGameUseCaseImpl(gameRepository, gameStatusRepository, gameFactory);
     }
 
     @Test

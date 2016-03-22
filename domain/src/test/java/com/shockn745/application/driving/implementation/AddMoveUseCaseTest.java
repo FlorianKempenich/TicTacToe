@@ -9,6 +9,8 @@ import com.shockn745.application.driving.presentation.AddMoveUseCase;
 import com.shockn745.domain.Board;
 import com.shockn745.domain.BoardImpl;
 import com.shockn745.domain.Game;
+import com.shockn745.domain.GameFactory;
+import com.shockn745.domain.GameFactoryImpl;
 import com.shockn745.domain.GameImpl;
 import com.shockn745.domain.MoveModel;
 import com.shockn745.utils.NullObjects;
@@ -41,18 +43,20 @@ public class AddMoveUseCaseTest {
     ArgumentCaptor<GameStatus> gameStatusArgumentCaptor;
     @Captor
     ArgumentCaptor<GameError> gameErrorArgumentCaptor;
+    @Mock
+    GameFactory gameFactory;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        addMoveUseCase = new AddMoveUseCaseImpl(gameRepository);
+        addMoveUseCase = new AddMoveUseCaseImpl(gameRepository, gameFactory);
         initEmptyGame();
         addEmptyGameToRepository();
     }
 
     private void initEmptyGame() {
-        Board board = new BoardImpl();
-        emptyGame = new GameImpl(board);
+        GameFactory factory = new GameFactoryImpl();
+        emptyGame = factory.makeNewGame();
     }
 
     private void addEmptyGameToRepository() {

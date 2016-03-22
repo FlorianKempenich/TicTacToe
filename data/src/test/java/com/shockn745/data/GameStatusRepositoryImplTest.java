@@ -5,6 +5,8 @@ import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.domain.Board;
 import com.shockn745.domain.BoardImpl;
 import com.shockn745.domain.Game;
+import com.shockn745.domain.GameFactory;
+import com.shockn745.domain.GameFactoryImpl;
 import com.shockn745.domain.GameImpl;
 
 import org.junit.Before;
@@ -43,8 +45,8 @@ public class GameStatusRepositoryImplTest {
     }
 
     private static GameStatus makeNewGameStatus(int id) {
-        Board board = new BoardImpl();
-        Game game = new GameImpl(board);
+        GameFactory factory = new GameFactoryImpl();
+        Game game = factory.makeNewGame();
         return game.makeStatus(id);
     }
 

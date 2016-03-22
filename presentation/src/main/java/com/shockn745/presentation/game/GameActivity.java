@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.shockn745.application.driven.GameRepository;
+import com.shockn745.application.driven.GameStatusRepository;
 import com.shockn745.application.driven.NetworkListenerRepository;
 import com.shockn745.application.driving.dto.GameError;
 import com.shockn745.application.driving.dto.Move;
@@ -24,6 +25,9 @@ import com.shockn745.application.driving.presentation.AddMoveUseCase;
 import com.shockn745.application.driving.presentation.InitNewGameUseCase;
 import com.shockn745.application.driving.presentation.RegisterNetworkGameListenerUseCase;
 import com.shockn745.data.InMemoryGameRepository;
+import com.shockn745.data.InMemoryGameStatusRepository;
+import com.shockn745.domain.GameFactory;
+import com.shockn745.domain.GameFactoryImpl;
 import com.shockn745.domain.R;
 import com.shockn745.network.NetworkListenerRepositoryImpl;
 import com.shockn745.presentation.other.FakeMoveFromNetworkGenerator;
@@ -78,9 +82,12 @@ public class GameActivity extends AppCompatActivity
      */
     private void initPresenter() {
         GameRepository gameRepository = new InMemoryGameRepository();
+        GameStatusRepository gameStatusRepository = new InMemoryGameStatusRepository();
         NetworkListenerRepository networkListenerRepository = new NetworkListenerRepositoryImpl();
-        InitNewGameUseCase initNewGameUseCase = new InitNewGameUseCaseImpl(gameRepository);
-        AddMoveUseCase addMoveUseCase = new AddMoveUseCaseImpl(gameRepository);
+        GameFactory gameFactory = new GameFactoryImpl();
+        InitNewGameUseCase initNewGameUseCase =
+                new InitNewGameUseCaseImpl(gameRepository, gameStatusRepository, gameFactory);
+        AddMoveUseCase addMoveUseCase = new AddMoveUseCaseImpl(gameRepository, gameFactory);
         RegisterNetworkGameListenerUseCase registerNetworkGameListenerUseCase =
                 new RegisterNetworkGameListenerUseCaseImpl(networkListenerRepository);
         fakeMoveFromNetworkGenerator =

@@ -19,8 +19,8 @@ public class GameImplTest {
 
     @Before
     public void setUp() throws Exception {
-        Board board = new BoardImpl();
-        game = new GameImpl(board);
+        GameFactory factory = new GameFactoryImpl();
+        game = factory.makeNewGame();
 
     }
 
@@ -160,6 +160,5 @@ public class GameImplTest {
             GameStatus status = game.makeStatus(-1);
             assertEquals(Player.player1(), status.lastPlayer);
         }
-
     }
 }

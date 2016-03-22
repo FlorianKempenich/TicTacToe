@@ -17,11 +17,20 @@ public class GameImpl implements Game {
     private static final Player NO_PLAYER = Player.noPlayer();
     private final Board board;
     private Player previousPlayer = NO_PLAYER;
+    private final int gameId;
 
     private Player winner = NO_PLAYER;
 
-    public GameImpl(Board board) {
+    public GameImpl(Board board, int gameId) {
         this.board = board;
+        this.gameId = gameId;
+    }
+
+    public GameImpl(Board board, GameStatus status) {
+        this.board = board;
+        this.gameId = status.gameId;
+        this.previousPlayer = status.lastPlayer;
+        this.winner = status.winner;
     }
 
     @Override
@@ -104,5 +113,10 @@ public class GameImpl implements Game {
                 previousPlayer,
                 winner
         );
+    }
+
+    @Override
+    public GameStatus makeStatus() {
+        return makeStatus(gameId);
     }
 }

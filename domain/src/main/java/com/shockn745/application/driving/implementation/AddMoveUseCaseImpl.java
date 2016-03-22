@@ -4,6 +4,7 @@ import com.shockn745.application.driven.GameRepository;
 import com.shockn745.application.driving.dto.*;
 import com.shockn745.application.driving.presentation.AddMoveUseCase;
 import com.shockn745.domain.Game;
+import com.shockn745.domain.GameFactory;
 import com.shockn745.domain.MoveModel;
 import com.shockn745.domain.exceptions.IllegalMoveException;
 
@@ -13,9 +14,13 @@ import com.shockn745.domain.exceptions.IllegalMoveException;
 public class AddMoveUseCaseImpl implements AddMoveUseCase {
 
     private final GameRepository gameRepository;
+    private final GameFactory gameFactory;
 
-    public AddMoveUseCaseImpl(GameRepository gameRepository) {
+    public AddMoveUseCaseImpl(
+            GameRepository gameRepository,
+            GameFactory gameFactory) {
         this.gameRepository = gameRepository;
+        this.gameFactory = gameFactory;
     }
 
     @Override

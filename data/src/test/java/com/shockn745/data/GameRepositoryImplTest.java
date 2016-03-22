@@ -4,6 +4,8 @@ import com.shockn745.application.driven.GameRepository;
 import com.shockn745.domain.Board;
 import com.shockn745.domain.BoardImpl;
 import com.shockn745.domain.Game;
+import com.shockn745.domain.GameFactory;
+import com.shockn745.domain.GameFactoryImpl;
 import com.shockn745.domain.GameImpl;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +26,6 @@ public class GameRepositoryImplTest {
 
     }
 
-
     @Test
     public void saveMultipleGames_allPresent() throws Exception {
         int id1 = repository.saveGame(makeNewGame());
@@ -37,8 +38,8 @@ public class GameRepositoryImplTest {
     }
 
     private static Game makeNewGame() {
-        Board board = new BoardImpl();
-        return new GameImpl(board);
+        GameFactory factory = new GameFactoryImpl();
+        return factory.makeNewGame();
     }
 
     @Test
