@@ -21,11 +21,6 @@ public class GameImpl implements Game {
 
     private Player winner = NO_PLAYER;
 
-    public GameImpl(Board board, int gameId) {
-        this.board = board;
-        this.gameId = gameId;
-    }
-
     public GameImpl(Board board, GameStatus status) {
         this.board = board;
         this.gameId = status.gameId;
@@ -113,5 +108,39 @@ public class GameImpl implements Game {
                 previousPlayer,
                 winner
         );
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        GameImpl game = (GameImpl) o;
+
+        if (gameId != game.gameId) {
+            return false;
+        }
+        if (board != null ? !board.equals(game.board) : game.board != null) {
+            return false;
+        }
+        if (previousPlayer != null ? !previousPlayer.equals(game.previousPlayer)
+                : game.previousPlayer != null) {
+            return false;
+        }
+        return winner != null ? winner.equals(game.winner) : game.winner == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = board != null ? board.hashCode() : 0;
+        result = 31 * result + (previousPlayer != null ? previousPlayer.hashCode() : 0);
+        result = 31 * result + gameId;
+        result = 31 * result + (winner != null ? winner.hashCode() : 0);
+        return result;
     }
 }

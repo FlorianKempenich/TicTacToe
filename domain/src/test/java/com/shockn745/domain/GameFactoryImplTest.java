@@ -49,4 +49,15 @@ public class GameFactoryImplTest {
         Game game = gameFactory.makeGame(status);
         assertEquals(status, game.makeStatus());
     }
+
+    @Test
+    public void createNewGame_makeStatus_createNewGameWithStatus_gamesAreIdentical()
+            throws Exception {
+        Game newGame = gameFactory.makeNewGame();
+        GameStatus status = newGame.makeStatus();
+
+        Game fromStatus = gameFactory.makeGame(status);
+
+        assertEquals(newGame, fromStatus);
+    }
 }

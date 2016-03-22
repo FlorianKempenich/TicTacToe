@@ -9,6 +9,8 @@ import com.shockn745.domain.iterator.LineIterator;
 import com.shockn745.domain.iterator.SecondDiagonalIterator;
 import com.shockn745.utils.NullObjects;
 
+import java.util.Arrays;
+
 public class BoardImpl implements Board {
 
     private static final Player NO_PLAYER = Player.noPlayer();
@@ -86,4 +88,23 @@ public class BoardImpl implements Board {
         return new SecondDiagonalIterator(this);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        BoardImpl board1 = (BoardImpl) o;
+
+        return Arrays.deepEquals(board, board1.board);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.deepHashCode(board);
+    }
 }
