@@ -54,7 +54,7 @@ public class InitNewGameUseCaseTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         GameFactory gameFactory = new GameFactoryImpl();
-        initNewGameUseCase = new InitNewGameUseCaseImpl(gameRepository, gameStatusRepository, gameFactory);
+        initNewGameUseCase = new InitNewGameUseCaseImpl(gameStatusRepository, gameFactory);
     }
 
     @Test

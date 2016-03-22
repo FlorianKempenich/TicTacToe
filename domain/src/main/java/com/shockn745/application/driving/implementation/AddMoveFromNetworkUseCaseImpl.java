@@ -1,6 +1,7 @@
 package com.shockn745.application.driving.implementation;
 
 import com.shockn745.application.driven.GameRepository;
+import com.shockn745.application.driven.GameStatusRepository;
 import com.shockn745.application.driven.NetworkListenerRepository;
 import com.shockn745.application.driving.dto.GameError;
 import com.shockn745.application.driving.dto.GameStatus;
@@ -19,14 +20,17 @@ import java.util.Set;
 public class AddMoveFromNetworkUseCaseImpl implements AddMoveFromNetworkUseCase {
 
     private final GameRepository gameRepository;
+    private final GameStatusRepository gameStatusRepository;
     private final NetworkListenerRepository networkListenerRepository;
     private final GameFactory gameFactory;
 
     public AddMoveFromNetworkUseCaseImpl(
             GameRepository gameRepository,
+            GameStatusRepository gameStatusRepository,
             NetworkListenerRepository networkListenerRepository,
             GameFactory gameFactory) {
         this.gameRepository = gameRepository;
+        this.gameStatusRepository = gameStatusRepository;
         this.networkListenerRepository = networkListenerRepository;
         this.gameFactory = gameFactory;
     }
@@ -39,7 +43,7 @@ public class AddMoveFromNetworkUseCaseImpl implements AddMoveFromNetworkUseCase 
     }
 
     private boolean shouldExecute(int gameId) {
-        return getListeners(gameId) != null && gameRepository.contains(gameId);
+        return getListeners(gameId) != null && gameStatusRepository.contains(gameId);
     }
 
     private Set<NetworkListenerRepository.GameNetworkListener> getListeners(int gameId) {
@@ -47,21 +51,32 @@ public class AddMoveFromNetworkUseCaseImpl implements AddMoveFromNetworkUseCase 
     }
 
     private void playMoveAndNotifyListeners(Move move, int gameId, Callback errorCallback) {
-        Game game = gameRepository.getGame(gameId);
+        GameStatus gameStatus = gameStatusRepository.getGame(gameId);
+        Game game = gameFactory.makeGame(gameStatus);
 
         try {
-            game.play(new MoveModel(move));
-            game.checkIfFinishedAndUpdateWinner();
-            GameStatus status = game.makeStatus(gameId);
-
-            // notify listeners
-            for (NetworkListenerRepository.GameNetworkListener listener : getListeners(gameId)) {
-                listener.onNewMoveFromNetwork(status);
-            }
+            GameStatus status = playMoveAndGetStatus(move, gameId, game);
+            gameStatusRepository.saveGame(status);
+            notifyListeners(gameId, status);
         } catch (IllegalMoveException e) {
             GameError error = new GameError(e.getMessage());
             errorCallback.onError(error);
         }
 
     }
+
+    private GameStatus playMoveAndGetStatus(Move move, int gameId, Game game)
+            throws IllegalMoveException {
+        game.play(new MoveModel(move));
+        game.checkIfFinishedAndUpdateWinner();
+        return game.makeStatus();
+    }
+
+    private void notifyListeners(int gameId, GameStatus status) {
+        for (NetworkListenerRepository.GameNetworkListener listener : getListeners(gameId)) {
+            listener.onNewMoveFromNetwork(status);
+        }
+    }
+
+
 }

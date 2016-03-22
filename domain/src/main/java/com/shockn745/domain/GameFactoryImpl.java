@@ -1,7 +1,6 @@
 package com.shockn745.domain;
 
 import com.shockn745.application.driving.dto.GameStatus;
-import com.shockn745.application.driving.dto.Player;
 import com.shockn745.utils.NullObjects;
 
 /**
@@ -11,12 +10,9 @@ public class GameFactoryImpl implements GameFactory {
 
     @Override
     public Game makeNewGame() {
-        Player[][] emptyBoard = NullObjects.makeEmptyBoard();
+        GameStatus newGameStatus = NullObjects.makeEmptyGameStatus(GameStatus.NO_ID);
 
-        GameStatus newGameStatus =
-                new GameStatus(GameStatus.NO_ID, emptyBoard, Player.noPlayer(), Player.noPlayer());
-
-        Board board = new BoardImpl(emptyBoard);
+        Board board = new BoardImpl(newGameStatus.board);
         return new GameImpl(board, newGameStatus);
     }
 

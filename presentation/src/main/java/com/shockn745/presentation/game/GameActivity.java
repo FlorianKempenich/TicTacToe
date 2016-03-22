@@ -91,7 +91,7 @@ public class GameActivity extends AppCompatActivity
         RegisterNetworkGameListenerUseCase registerNetworkGameListenerUseCase =
                 new RegisterNetworkGameListenerUseCaseImpl(networkListenerRepository);
         fakeMoveFromNetworkGenerator =
-                new FakeMoveFromNetworkGenerator(gameRepository, gameFactory, networkListenerRepository);
+                new FakeMoveFromNetworkGenerator(gameStatusRepository, gameFactory, networkListenerRepository);
         presenter = new GamePresenter(this, initNewGameUseCase,
                 registerNetworkGameListenerUseCase, addMoveUseCase
         );

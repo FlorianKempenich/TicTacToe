@@ -21,6 +21,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -43,18 +44,14 @@ public class AddMoveUseCaseTest {
     ArgumentCaptor<GameStatus> gameStatusArgumentCaptor;
     @Captor
     ArgumentCaptor<GameError> gameErrorArgumentCaptor;
+    GameFactory gameFactory;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        GameFactory gameFactory = new GameFactoryImpl();
-        addMoveUseCase = new AddMoveUseCaseImpl(gameRepository, gameStatusRepository, gameFactory);
-        initEmptyGame();
-    }
-
-    private void initEmptyGame() {
-        GameFactory factory = new GameFactoryImpl();
-        game = factory.makeNewGame();
+        gameFactory = new GameFactoryImpl();
+        addMoveUseCase = new AddMoveUseCaseImpl(gameStatusRepository, gameFactory);
+        game = gameFactory.makeNewGame();
     }
 
     private void updateGameInRepository() {
@@ -63,10 +60,17 @@ public class AddMoveUseCaseTest {
     }
 
     @Test
+    public void addMoveToEmptyGame_Success_updateGameStateInRepository() throws Exception {
+        updateGameInRepository();
+        Move move = new Move(0, 0, Player.player1());
+        addMoveUseCase.execute(move, GAME_ID, callback);
+        verify(gameStatusRepository).saveGame(any(GameStatus.class));
+    }
+
+    @Test
     public void addMoveToEmptyGame_Success_verifyMoveAddedRightPosition() throws Exception {
         updateGameInRepository();
         Move move = new Move(0, 0, Player.player1());
-
         addMoveUseCase.execute(move, GAME_ID, callback);
         verify(callback).onSuccess(gameStatusArgumentCaptor.capture());
 
@@ -156,6 +160,4 @@ public class AddMoveUseCaseTest {
 
         assertEquals("Game not found : ID=" + invalidId, gameErrorArgumentCaptor.getValue().reason);
     }
-
-    //TODO test case when game in repository not available
 }

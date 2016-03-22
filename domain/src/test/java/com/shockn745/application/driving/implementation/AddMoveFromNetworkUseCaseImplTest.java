@@ -1,18 +1,16 @@
 package com.shockn745.application.driving.implementation;
 
 import com.shockn745.application.driven.GameRepository;
+import com.shockn745.application.driven.GameStatusRepository;
 import com.shockn745.application.driven.NetworkListenerRepository;
 import com.shockn745.application.driving.dto.GameError;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.dto.Player;
 import com.shockn745.application.driving.network.AddMoveFromNetworkUseCase;
-import com.shockn745.domain.Board;
-import com.shockn745.domain.BoardImpl;
 import com.shockn745.domain.Game;
 import com.shockn745.domain.GameFactory;
 import com.shockn745.domain.GameFactoryImpl;
-import com.shockn745.domain.GameImpl;
 import com.shockn745.domain.MoveModel;
 import com.shockn745.utils.NullObjects;
 
@@ -22,12 +20,12 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.internal.matchers.Null;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -38,8 +36,8 @@ import static org.mockito.Mockito.when;
  */
 public class AddMoveFromNetworkUseCaseImplTest {
 
-    private final int EMPTY_GAME_ID = 1;
-    private final int MOVE_ON_00_GAME_ID = 2;
+    private static final int EMPTY_GAME_ID = 1;
+    private static final int MOVE_ON_00_GAME_ID = 2;
 
     AddMoveFromNetworkUseCase addMoveFromNetworkUseCase;
 
@@ -48,6 +46,8 @@ public class AddMoveFromNetworkUseCaseImplTest {
     @Mock
     GameRepository gameRepository;
     @Mock
+    GameStatusRepository gameStatusRepository;
+    @Mock
     NetworkListenerRepository.GameNetworkListener listener;
     @Mock
     AddMoveFromNetworkUseCase.Callback errorCallback;
@@ -55,14 +55,14 @@ public class AddMoveFromNetworkUseCaseImplTest {
     ArgumentCaptor<GameStatus> gameStatusCaptor;
     @Captor
     ArgumentCaptor<GameError> gameErrorCaptor;
-    @Mock
-    GameFactory gameFactory;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
+        GameFactory gameFactory = new GameFactoryImpl();
         addMoveFromNetworkUseCase = new AddMoveFromNetworkUseCaseImpl(
                 gameRepository,
+                gameStatusRepository,
                 listenersRepository,
                 gameFactory
         );
@@ -73,11 +73,11 @@ public class AddMoveFromNetworkUseCaseImplTest {
                 listener));
 
         // Mock game repo behavior
-        when(gameRepository.contains(EMPTY_GAME_ID)).thenReturn(true);
-        when(gameRepository.getGame(EMPTY_GAME_ID)).thenReturn(makeEmptyGame());
+        when(gameStatusRepository.contains(EMPTY_GAME_ID)).thenReturn(true);
+        when(gameStatusRepository.getGame(EMPTY_GAME_ID)).thenReturn(makeEmptyGameStatus());
 
-        when(gameRepository.contains(MOVE_ON_00_GAME_ID)).thenReturn(true);
-        when(gameRepository.getGame(MOVE_ON_00_GAME_ID)).thenReturn(makeGameWithMoveOn00());
+        when(gameStatusRepository.contains(MOVE_ON_00_GAME_ID)).thenReturn(true);
+        when(gameStatusRepository.getGame(MOVE_ON_00_GAME_ID)).thenReturn(makeGameStatusWithMoveOn00());
     }
 
     private static Set<NetworkListenerRepository.GameNetworkListener> makeSetWithListener(
@@ -87,15 +87,25 @@ public class AddMoveFromNetworkUseCaseImplTest {
         return set;
     }
 
-    private static Game makeEmptyGame() {
+    private static GameStatus makeEmptyGameStatus() {
         GameFactory factory = new GameFactoryImpl();
-        return factory.makeNewGame();
+        GameStatus emptyGameStatus = NullObjects.makeEmptyGameStatus(EMPTY_GAME_ID);
+        return factory.makeGame(emptyGameStatus).makeStatus();
     }
 
-    private static Game makeGameWithMoveOn00() throws Exception {
-        Game game = makeEmptyGame();
+    private static GameStatus makeGameStatusWithMoveOn00() throws Exception {
+        GameFactory factory = new GameFactoryImpl();
+        GameStatus emptyGameStatus = NullObjects.makeEmptyGameStatus(MOVE_ON_00_GAME_ID);
+        Game game = factory.makeGame(emptyGameStatus);
         game.play(new MoveModel(0, 0, Player.player1()));
-        return game;
+        return game.makeStatus();
+    }
+
+    @Test
+    public void addMoveToEmptyGame_Success_updateGameStateInRepository() throws Exception {
+        Move move = new Move(0, 0, Player.player1());
+        addMoveFromNetworkUseCase.execute(move, EMPTY_GAME_ID, errorCallback);
+        verify(gameStatusRepository).saveGame(any(GameStatus.class));
     }
 
     @Test
