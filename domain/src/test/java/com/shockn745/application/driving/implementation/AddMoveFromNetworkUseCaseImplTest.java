@@ -2,6 +2,7 @@ package com.shockn745.application.driving.implementation;
 
 import com.shockn745.application.driven.GameRepository;
 import com.shockn745.application.driven.NetworkListenerRepository;
+import com.shockn745.application.driving.dto.GameError;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.dto.Player;
@@ -45,8 +46,12 @@ public class AddMoveFromNetworkUseCaseImplTest {
     GameRepository gameRepository;
     @Mock
     NetworkListenerRepository.GameNetworkListener listener;
+    @Mock
+    AddMoveFromNetworkUseCase.Callback errorCallback;
     @Captor
     ArgumentCaptor<GameStatus> gameStatusCaptor;
+    @Captor
+    ArgumentCaptor<GameError> gameErrorCaptor;
 
     @Before
     public void setUp() throws Exception {
@@ -58,7 +63,8 @@ public class AddMoveFromNetworkUseCaseImplTest {
 
 
         // Mock listener repo behavior
-        when(listenersRepository.getListeners(EMPTY_GAME_ID)).thenReturn(makeSetWithListener(listener));
+        when(listenersRepository.getListeners(EMPTY_GAME_ID)).thenReturn(makeSetWithListener(
+                listener));
 
         // Mock game repo behavior
         when(gameRepository.contains(EMPTY_GAME_ID)).thenReturn(true);
@@ -88,14 +94,22 @@ public class AddMoveFromNetworkUseCaseImplTest {
 
     @Test
     public void addMove_listenerCalled() throws Exception {
-        addMoveFromNetworkUseCase.execute(new Move(0, 0, Player.player1()), EMPTY_GAME_ID);
+        addMoveFromNetworkUseCase.execute(
+                new Move(0, 0, Player.player1()),
+                EMPTY_GAME_ID,
+                errorCallback
+        );
         verify(listener).onNewMoveFromNetwork(any(GameStatus.class));
 
     }
 
     @Test
     public void addMove_MoveAdded() throws Exception {
-        addMoveFromNetworkUseCase.execute(new Move(0, 0, Player.player1()), EMPTY_GAME_ID);
+        addMoveFromNetworkUseCase.execute(
+                new Move(0, 0, Player.player1()),
+                EMPTY_GAME_ID,
+                errorCallback
+        );
         verify(listener).onNewMoveFromNetwork(gameStatusCaptor.capture());
 
         GameStatus status = gameStatusCaptor.getValue();
@@ -112,8 +126,25 @@ public class AddMoveFromNetworkUseCaseImplTest {
 
     @Test
     public void illegalMove_doNotCallListeners() throws Exception {
-        addMoveFromNetworkUseCase.execute(new Move(0, 0, Player.player1()), MOVE_ON_00_GAME_ID);
+        addMoveFromNetworkUseCase.execute(
+                new Move(0, 0, Player.player1()),
+                MOVE_ON_00_GAME_ID,
+                errorCallback
+        );
         verifyNoMoreInteractions(listener);
+    }
 
+    @Test
+    public void illegalMove_notifyErrorCallback() throws Exception {
+        addMoveFromNetworkUseCase.execute(
+                new Move(0, 1, Player.player1()),
+                MOVE_ON_00_GAME_ID,
+                errorCallback
+        );
+
+        verify(errorCallback).onError(gameErrorCaptor.capture());
+        GameError error = gameErrorCaptor.getValue();
+
+        assertEquals("This player just played", error.reason);
     }
 }

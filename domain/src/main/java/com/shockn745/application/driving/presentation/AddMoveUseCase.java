@@ -2,7 +2,7 @@ package com.shockn745.application.driving.presentation;
 
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Move;
-import com.shockn745.application.driving.implementation.GameError;
+import com.shockn745.application.driving.dto.GameError;
 
 /**
  * @author Kempenich Florian

@@ -6,11 +6,10 @@ import com.shockn745.application.driven.NetworkListenerRepository;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.dto.Player;
-import com.shockn745.application.driving.implementation.GameError;
+import com.shockn745.application.driving.dto.GameError;
 import com.shockn745.application.driving.presentation.AddMoveUseCase;
 import com.shockn745.application.driving.presentation.InitNewGameUseCase;
 import com.shockn745.application.driving.presentation.RegisterNetworkGameListenerUseCase;
-import com.shockn745.presentation.other.FakeMoveFromNetworkGenerator;
 import com.shockn745.utils.NullObjects;
 
 /**

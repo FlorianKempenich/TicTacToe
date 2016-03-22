@@ -19,11 +19,13 @@ public class FakeMoveFromNetworkGenerator {
 
     private final AddMoveFromNetworkUseCase addMoveFromNetworkUseCase;
 
-    public FakeMoveFromNetworkGenerator(GameRepository gameRepository, NetworkListenerRepository networkListenerRepository) {
+    public FakeMoveFromNetworkGenerator(GameRepository gameRepository,
+                                        NetworkListenerRepository networkListenerRepository) {
         this.addMoveFromNetworkUseCase = new AddMoveFromNetworkUseCaseImpl(gameRepository, networkListenerRepository);
     }
 
-    public void makeFakeMoveFromNetwork(Move move, int gameId) {
-        addMoveFromNetworkUseCase.execute(move, gameId);
+    public void makeFakeMoveFromNetwork(Move move, int gameId,
+                                        AddMoveFromNetworkUseCase.Callback errorCallback) {
+        addMoveFromNetworkUseCase.execute(move, gameId, errorCallback);
     }
 }

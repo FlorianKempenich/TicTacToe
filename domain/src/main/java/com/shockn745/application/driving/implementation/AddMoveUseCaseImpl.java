@@ -1,8 +1,8 @@
 package com.shockn745.application.driving.implementation;
 
 import com.shockn745.application.driven.GameRepository;
+import com.shockn745.application.driving.dto.*;
 import com.shockn745.application.driving.presentation.AddMoveUseCase;
-import com.shockn745.application.driving.dto.Move;
 import com.shockn745.domain.Game;
 import com.shockn745.domain.MoveModel;
 import com.shockn745.domain.exceptions.IllegalMoveException;
@@ -24,7 +24,7 @@ public class AddMoveUseCaseImpl implements AddMoveUseCase {
         if (gameRepository.contains(gameId)) {
             executeWithValidGameId(gameId, callback, moveModel);
         } else {
-            callback.onError(new GameError("Game not found : ID=" + gameId));
+            callback.onError(new com.shockn745.application.driving.dto.GameError("Game not found : ID=" + gameId));
         }
     }
 
@@ -32,7 +32,7 @@ public class AddMoveUseCaseImpl implements AddMoveUseCase {
         try {
             playMove(gameId, callback, moveModel);
         } catch (IllegalMoveException e) {
-            callback.onError(new GameError(e.getMessage()));
+            callback.onError(new com.shockn745.application.driving.dto.GameError(e.getMessage()));
         }
     }
 

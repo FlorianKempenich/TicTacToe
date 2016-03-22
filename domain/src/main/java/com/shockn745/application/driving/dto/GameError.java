@@ -1,4 +1,4 @@
-package com.shockn745.application.driving.implementation;
+package com.shockn745.application.driving.dto;
 
 /**
  * @author Kempenich Florian

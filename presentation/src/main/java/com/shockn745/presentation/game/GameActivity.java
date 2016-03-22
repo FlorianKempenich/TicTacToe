@@ -11,17 +11,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
-import com.shockn745.application.driven.NetworkListenerRepository;
-import com.shockn745.application.driving.dto.Move;
-import com.shockn745.application.driving.implementation.RegisterNetworkGameListenerUseCaseImpl;
-import com.shockn745.application.driving.presentation.RegisterNetworkGameListenerUseCase;
-import com.shockn745.data.InMemoryGameRepository;
 import com.shockn745.application.driven.GameRepository;
-import com.shockn745.application.driving.presentation.AddMoveUseCase;
-import com.shockn745.application.driving.presentation.InitNewGameUseCase;
+import com.shockn745.application.driven.NetworkListenerRepository;
+import com.shockn745.application.driving.dto.GameError;
+import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.dto.Player;
 import com.shockn745.application.driving.implementation.AddMoveUseCaseImpl;
 import com.shockn745.application.driving.implementation.InitNewGameUseCaseImpl;
+import com.shockn745.application.driving.implementation.RegisterNetworkGameListenerUseCaseImpl;
+import com.shockn745.application.driving.network.AddMoveFromNetworkUseCase;
+import com.shockn745.application.driving.presentation.AddMoveUseCase;
+import com.shockn745.application.driving.presentation.InitNewGameUseCase;
+import com.shockn745.application.driving.presentation.RegisterNetworkGameListenerUseCase;
+import com.shockn745.data.InMemoryGameRepository;
 import com.shockn745.domain.R;
 import com.shockn745.network.NetworkListenerRepositoryImpl;
 import com.shockn745.presentation.other.FakeMoveFromNetworkGenerator;
@@ -30,7 +32,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class GameActivity extends AppCompatActivity implements GameContract.View, TicTacView.OnSquareClickedListener {
+public class GameActivity extends AppCompatActivity
+        implements GameContract.View, TicTacView.OnSquareClickedListener {
 
     @Bind(R.id.game_tictac_view)
     TicTacView ticTacView;
@@ -80,9 +83,11 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         AddMoveUseCase addMoveUseCase = new AddMoveUseCaseImpl(gameRepository);
         RegisterNetworkGameListenerUseCase registerNetworkGameListenerUseCase =
                 new RegisterNetworkGameListenerUseCaseImpl(networkListenerRepository);
-        fakeMoveFromNetworkGenerator = new FakeMoveFromNetworkGenerator(gameRepository, networkListenerRepository);
+        fakeMoveFromNetworkGenerator =
+                new FakeMoveFromNetworkGenerator(gameRepository, networkListenerRepository);
         presenter = new GamePresenter(this, initNewGameUseCase,
-                registerNetworkGameListenerUseCase, addMoveUseCase);
+                registerNetworkGameListenerUseCase, addMoveUseCase
+        );
     }
 
     private void resetViewVisibility() {
@@ -122,6 +127,11 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         currentPlayer.setVisibility(View.GONE);
     }
 
+    @Override
+    public void displayDebugSnackbar(String message) {
+        Snackbar.make(ticTacView, "Debug : " + message, Snackbar.LENGTH_SHORT).show();
+    }
+
     @OnClick(R.id.game_reset_game_button)
     public void resetGame() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
@@ -129,11 +139,6 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         } else {
             resetGamePostLollipop();
         }
-    }
-
-    @OnClick(R.id.game_fake_network_move_button)
-    public void makeFakeNetworkMove() {
-        fakeMoveFromNetworkGenerator.makeFakeMoveFromNetwork(new Move(0, 0, Player.player1()), presenter.getGameId());
     }
 
     private void resetGamePreLollipop() {
@@ -150,13 +155,22 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         );
     }
 
-    @Override
-    public void onBackPressed() {
-        finish();
+    @OnClick(R.id.game_fake_network_move_button)
+    public void makeFakeNetworkMove() {
+        fakeMoveFromNetworkGenerator.makeFakeMoveFromNetwork(
+                new Move(0, 0, Player.player1()),
+                presenter.getGameId(),
+                new AddMoveFromNetworkUseCase.Callback() {
+                    @Override
+                    public void onError(GameError e) {
+                        displayDebugSnackbar(e.reason);
+                    }
+                }
+        );
     }
 
     @Override
-    public void displayDebugSnackbar(String message) {
-        Snackbar.make(ticTacView, "Debug : " + message, Snackbar.LENGTH_SHORT).show();
+    public void onBackPressed() {
+        finish();
     }
 }

@@ -2,13 +2,13 @@ package com.shockn745.application.driving.implementation;
 
 import com.shockn745.application.driven.GameRepository;
 import com.shockn745.application.driven.NetworkListenerRepository;
+import com.shockn745.application.driving.dto.GameError;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.network.AddMoveFromNetworkUseCase;
 import com.shockn745.domain.Game;
 import com.shockn745.domain.MoveModel;
 import com.shockn745.domain.exceptions.IllegalMoveException;
-import com.shockn745.utils.NullObjects;
 
 import java.util.Set;
 
@@ -28,9 +28,9 @@ public class AddMoveFromNetworkUseCaseImpl implements AddMoveFromNetworkUseCase 
     }
 
     @Override
-    public void execute(Move move, int gameId) {
+    public void execute(Move move, int gameId, Callback errorCallback) {
         if (shouldExecute(gameId)) {
-            playMoveAndNotifyListeners(move, gameId);
+            playMoveAndNotifyListeners(move, gameId, errorCallback);
         }
     }
 
@@ -42,7 +42,7 @@ public class AddMoveFromNetworkUseCaseImpl implements AddMoveFromNetworkUseCase 
         return networkListenerRepository.getListeners(gameId);
     }
 
-    private void playMoveAndNotifyListeners(Move move, int gameId) {
+    private void playMoveAndNotifyListeners(Move move, int gameId, Callback errorCallback) {
         Game game = gameRepository.getGame(gameId);
 
         try {
@@ -55,7 +55,8 @@ public class AddMoveFromNetworkUseCaseImpl implements AddMoveFromNetworkUseCase 
                 listener.onNewMoveFromNetwork(status);
             }
         } catch (IllegalMoveException e) {
-            e.printStackTrace(); // todo handle error when adding move to board
+            GameError error = new GameError(e.getMessage());
+            errorCallback.onError(error);
         }
 
     }
