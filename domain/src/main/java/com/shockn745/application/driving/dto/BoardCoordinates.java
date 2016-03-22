@@ -13,6 +13,19 @@ public class BoardCoordinates {
         this.y = y;
     }
 
+    public static BoardCoordinates noCoordinates() {
+        return new BoardCoordinates(-1, -1);
+    }
+
+    @Override
+    public String toString() {
+        if (this.equals(BoardCoordinates.noCoordinates())) {
+            return "No coordinates";
+        } else {
+            return "(" + x + ", " + y + ")";
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

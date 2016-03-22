@@ -20,7 +20,8 @@ public class BoardCoordinatesModel {
         return new BoardCoordinatesModel(-1, -1);
     }
 
-    private BoardCoordinatesModel(int x, int y) {
+    // todo revert to private after migrating Move to coordinate system
+    public BoardCoordinatesModel(int x, int y) {
         this.x = x;
         this.y = y;
     }

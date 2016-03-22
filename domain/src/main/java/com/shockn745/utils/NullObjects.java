@@ -1,5 +1,6 @@
 package com.shockn745.utils;
 
+import com.shockn745.application.driving.dto.BoardCoordinates;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Player;
 
@@ -10,7 +11,7 @@ public class NullObjects {
 
     public static GameStatus makeEmptyGameStatus(int id) {
         Player[][] board = makeEmptyBoard();
-        return new GameStatus(id, board, Player.noPlayer(), Player.noPlayer());
+        return new GameStatus(id, board, Player.noPlayer(), Player.noPlayer(), BoardCoordinates.noCoordinates());
     }
 
     public static Player[][] makeEmptyBoard() {

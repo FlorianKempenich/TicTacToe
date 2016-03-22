@@ -13,12 +13,14 @@ public class GameStatus {
     public final Player[][] board;
     public final Player lastPlayer;
     public final Player winner;
+    public final BoardCoordinates lastPlayedSquare;
 
-    public GameStatus(int gameId, Player[][] board, Player lastPlayer, Player winner) {
+    public GameStatus(int gameId, Player[][] board, Player lastPlayer, Player winner, BoardCoordinates lastPlayedSquare) {
         this.gameId = gameId;
         this.board = board;
         this.lastPlayer = lastPlayer;
         this.winner = winner;
+        this.lastPlayedSquare = lastPlayedSquare;
     }
 
     /**
@@ -28,7 +30,7 @@ public class GameStatus {
      * @return New GameStatus with updated id
      */
     public GameStatus updateWithId(int id) {
-        return new GameStatus(id, this.board, this.lastPlayer, this.winner);
+        return new GameStatus(id, this.board, this.lastPlayer, this.winner, this.lastPlayedSquare);
     }
 
     @Override

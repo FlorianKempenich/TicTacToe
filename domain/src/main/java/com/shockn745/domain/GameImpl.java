@@ -1,5 +1,6 @@
 package com.shockn745.domain;
 
+import com.shockn745.application.driving.dto.BoardCoordinates;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Player;
 import com.shockn745.domain.exceptions.GameNotFinishedException;
@@ -16,16 +17,18 @@ public class GameImpl implements Game {
 
     private static final Player NO_PLAYER = Player.noPlayer();
     private final Board board;
-    private Player previousPlayer = NO_PLAYER;
     private final int gameId;
+    private Player previousPlayer = NO_PLAYER;
+    private BoardCoordinatesModel lastSquarePlayed;
 
     private Player winner = NO_PLAYER;
 
-    public GameImpl(Board board, GameStatus status) {
+    public GameImpl(Board board, GameStatus status, BoardCoordinatesModel lastSquarePlayed) {
         this.board = board;
         this.gameId = status.gameId;
         this.previousPlayer = status.lastPlayer;
         this.winner = status.winner;
+        this.lastSquarePlayed = lastSquarePlayed;
     }
 
     @Override
@@ -33,6 +36,7 @@ public class GameImpl implements Game {
         checkIfSamePlayerTwice(move);
         board.addMove(move);
         previousPlayer = move.player;
+        lastSquarePlayed = new BoardCoordinatesModel(move.x, move.y);
     }
 
     private void checkIfSamePlayerTwice(MoveModel currentMove) throws IllegalMoveException {
@@ -85,19 +89,27 @@ public class GameImpl implements Game {
     }
 
     private boolean isSequenceOwnedBySamePlayer(BoardIterator iterator, Player sequenceOwner) {
-        if (sequenceOwner.equals(NO_PLAYER)) return false;
+        if (sequenceOwner.equals(NO_PLAYER)) {
+            return false;
+        }
         while (iterator.hasNext()) {
-            if (!iterator.next().equals(sequenceOwner)) return false;
+            if (!iterator.next().equals(sequenceOwner)) {
+                return false;
+            }
         }
         return true;
     }
 
     @Override
     public Player getWinner() throws GameNotFinishedException {
-        if (winner.equals(NO_PLAYER)) {
+        if (!isGameFinished()) {
             throw new GameNotFinishedException();
         }
         return winner;
+    }
+
+    private boolean isGameFinished() {
+        return !winner.equals(NO_PLAYER);
     }
 
     @Override
@@ -106,8 +118,28 @@ public class GameImpl implements Game {
                 gameId,
                 board.getBoardStatus(),
                 previousPlayer,
-                winner
+                winner,
+                map(lastSquarePlayed)
         );
+    }
+
+    // todo put this AND "make status" to a dedicated mapper
+    private BoardCoordinates map(BoardCoordinatesModel coordinatesModel) {
+        if (coordinatesModel.equals(BoardCoordinatesModel.noCoordinates())) {
+            return BoardCoordinates.noCoordinates();
+        } else {
+            return new BoardCoordinates(lastSquarePlayed.x, lastSquarePlayed.y);
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int result = board != null ? board.hashCode() : 0;
+        result = 31 * result + (previousPlayer != null ? previousPlayer.hashCode() : 0);
+        result = 31 * result + gameId;
+        result = 31 * result + (lastSquarePlayed != null ? lastSquarePlayed.hashCode() : 0);
+        result = 31 * result + (winner != null ? winner.hashCode() : 0);
+        return result;
     }
 
     @Override
@@ -131,16 +163,11 @@ public class GameImpl implements Game {
                 : game.previousPlayer != null) {
             return false;
         }
+        if (lastSquarePlayed != null ? !lastSquarePlayed.equals(game.lastSquarePlayed)
+                : game.lastSquarePlayed != null) {
+            return false;
+        }
         return winner != null ? winner.equals(game.winner) : game.winner == null;
 
-    }
-
-    @Override
-    public int hashCode() {
-        int result = board != null ? board.hashCode() : 0;
-        result = 31 * result + (previousPlayer != null ? previousPlayer.hashCode() : 0);
-        result = 31 * result + gameId;
-        result = 31 * result + (winner != null ? winner.hashCode() : 0);
-        return result;
     }
 }

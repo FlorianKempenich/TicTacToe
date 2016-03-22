@@ -1,5 +1,6 @@
 package com.shockn745.domain;
 
+import com.shockn745.application.driving.dto.BoardCoordinates;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Player;
 import com.shockn745.domain.exceptions.GameNotFinishedException;
@@ -44,11 +45,11 @@ public class GameImplTest {
 
     @Test
     public void threeInALine_samePlayer_gameIsFinished() throws Exception {
-        scoreLinePlayerOne(game, 0);
+        scoreRowPlayerOne(game, 0);
         assertTrue("Game should be finished", game.checkIfFinishedAndUpdateWinner());
     }
 
-    private static void scoreLinePlayerOne(Game game, int lineIndex) throws Exception {
+    private static void scoreRowPlayerOne(Game game, int lineIndex) throws Exception {
         int otherLine = lineIndex == 0 ? 1 : 0;
         game.play(new MoveModel(0, lineIndex, Player.player1()));
         game.play(new MoveModel(2, otherLine, Player.player2()));
@@ -59,7 +60,7 @@ public class GameImplTest {
 
     @Test
     public void threeInALine_differentLine_samePlayer_gameIsFinished() throws Exception {
-        scoreLinePlayerOne(game, 1);
+        scoreRowPlayerOne(game, 1);
         assertTrue("Game should be finished", game.checkIfFinishedAndUpdateWinner());
     }
 
@@ -124,7 +125,7 @@ public class GameImplTest {
 
     @Test
     public void gameFinished_line_getWinner() throws Exception {
-        scoreLinePlayerOne(game, 1);
+        scoreRowPlayerOne(game, 1);
         assertTrue(game.checkIfFinishedAndUpdateWinner());
         assertEquals(Player.player1(), game.getWinner());
     }
@@ -163,10 +164,12 @@ public class GameImplTest {
     }
 
     @Test
-    public void gamefinished_column_getWinStatus() throws Exception {
-        scoreColumnPlayerOne(game, 0);
+    public void gamefinished_firstRow_getLastPlayedSquare() throws Exception {
+        scoreRowPlayerOne(game, 0);
         assertTrue(game.checkIfFinishedAndUpdateWinner());
         GameStatus status = game.makeStatus();
+        BoardCoordinates expected = new BoardCoordinates(2,0); //last square played by player 1
 
+        assertEquals(expected, status.lastPlayedSquare);
     }
 }

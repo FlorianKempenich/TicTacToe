@@ -1,6 +1,7 @@
 package com.shockn745.domain;
 
 import com.shockn745.application.driving.dto.GameStatus;
+import com.shockn745.application.driving.dto.Player;
 import com.shockn745.testutil.GameStatusTestScenarios;
 import com.shockn745.utils.NullObjects;
 
@@ -57,5 +58,17 @@ public class GameFactoryImplTest {
         Game fromStatus = gameFactory.makeGame(status);
 
         assertEquals(newGame, fromStatus);
+    }
+
+    @Test
+    public void createNewGame_playMove_makeStatus_createNewGameWithStatus_gamesAreIdentical()
+            throws Exception {
+        Game moveOn00 = gameFactory.makeNewGame();
+        moveOn00.play(new MoveModel(0, 0, Player.player1()));
+        GameStatus status = moveOn00.makeStatus();
+
+        Game fromStatus = gameFactory.makeGame(status);
+
+        assertEquals(moveOn00, fromStatus);
     }
 }

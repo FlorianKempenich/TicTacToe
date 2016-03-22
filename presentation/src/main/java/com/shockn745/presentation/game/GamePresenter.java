@@ -3,10 +3,10 @@ package com.shockn745.presentation.game;
 import android.support.annotation.NonNull;
 
 import com.shockn745.application.driven.NetworkListenerRepository;
+import com.shockn745.application.driving.dto.GameError;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.dto.Player;
-import com.shockn745.application.driving.dto.GameError;
 import com.shockn745.application.driving.presentation.AddMoveUseCase;
 import com.shockn745.application.driving.presentation.InitNewGameUseCase;
 import com.shockn745.application.driving.presentation.RegisterNetworkGameListenerUseCase;
@@ -35,13 +35,6 @@ public class GamePresenter implements GameContract.Presenter {
             onAddMoveError(error);
         }
     };
-    private final InitNewGameUseCase.Callback initCallback = new InitNewGameUseCase.Callback() {
-        @Override
-        public void newGameReady(GameStatus newGame) {
-            onGameStatusReceived(newGame);
-            registerNetworkListener();
-        }
-    };
     private final NetworkListenerRepository.GameNetworkListener gameNetworkListener =
             new NetworkListenerRepository.GameNetworkListener() {
                 @Override
@@ -49,10 +42,18 @@ public class GamePresenter implements GameContract.Presenter {
                     onGameStatusReceived(status);
                 }
             };
+    private final InitNewGameUseCase.Callback initCallback = new InitNewGameUseCase.Callback() {
+        @Override
+        public void newGameReady(GameStatus newGame) {
+            onGameStatusReceived(newGame);
+            registerNetworkListener();
+        }
+    };
 
-    public GamePresenter(GameContract.View view, InitNewGameUseCase initNewGameUseCase,
-                         RegisterNetworkGameListenerUseCase registerNetworkGameListenerUseCase,
-                         AddMoveUseCase addMoveUseCase) {
+    public GamePresenter(
+            GameContract.View view, InitNewGameUseCase initNewGameUseCase,
+            RegisterNetworkGameListenerUseCase registerNetworkGameListenerUseCase,
+            AddMoveUseCase addMoveUseCase) {
         this.view = view;
         this.initNewGameUseCase = initNewGameUseCase;
         this.addMoveUseCase = addMoveUseCase;
@@ -64,10 +65,6 @@ public class GamePresenter implements GameContract.Presenter {
         initNewGameUseCase.execute(initCallback);
     }
 
-    private void registerNetworkListener() {
-        registerNetworkGameListenerUseCase.registerListener(gameNetworkListener, currentGameStatus.gameId);
-    }
-
     @Override
     public void resetGame() {
         initNewGameUseCase.execute(initCallback);
@@ -77,7 +74,11 @@ public class GamePresenter implements GameContract.Presenter {
     public void onSquareClicked(int x, int y) {
         if (shouldPlayMove(x, y)) {
             Player currentPlayer = getCurrentPlayer();
-            addMoveUseCase.execute(new Move(x, y, currentPlayer), currentGameStatus.gameId, addMoveCallback);
+            addMoveUseCase.execute(
+                    new Move(x, y, currentPlayer),
+                    currentGameStatus.gameId,
+                    addMoveCallback
+            );
         }
     }
 
@@ -114,9 +115,22 @@ public class GamePresenter implements GameContract.Presenter {
         }
     }
 
+    @Override
+    public int getGameId() {
+        return currentGameStatus.gameId;
+    }
+
+    private void registerNetworkListener() {
+        registerNetworkGameListenerUseCase.registerListener(
+                gameNetworkListener,
+                currentGameStatus.gameId
+        );
+    }
+
     private void onGameStatusReceived(GameStatus gameStatus) {
         currentGameStatus = gameStatus;
         updateView();
+        view.displayDebugSnackbar(gameStatus.lastPlayedSquare.toString());
     }
 
     private void updateView() {
@@ -172,10 +186,5 @@ public class GamePresenter implements GameContract.Presenter {
     private void onAddMoveError(GameError error) {
         //todo do something ?
         view.displayDebugSnackbar(error.reason);
-    }
-
-    @Override
-    public int getGameId() {
-        return currentGameStatus.gameId;
     }
 }

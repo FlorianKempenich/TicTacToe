@@ -1,5 +1,6 @@
 package com.shockn745.testutil;
 
+import com.shockn745.application.driving.dto.BoardCoordinates;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Player;
 import com.shockn745.domain.GameFactory;
@@ -21,7 +22,7 @@ public class GameStatusTestScenarios {
         Player lastPlayer = Player.noPlayer();
         Player winner = Player.noPlayer();
 
-        return new GameStatus(gameId, emptyBoard, lastPlayer, winner);
+        return new GameStatus(gameId, emptyBoard, lastPlayer, winner, BoardCoordinates.noCoordinates());
     }
 
     public GameStatus makeGameStatusWithMoveOn00(int gameId) throws Exception {
@@ -30,7 +31,7 @@ public class GameStatusTestScenarios {
         Player lastPlayer = Player.player1();
         Player winner = Player.noPlayer();
 
-        return new GameStatus(gameId, moveOn00, lastPlayer, winner);
+        return new GameStatus(gameId, moveOn00, lastPlayer, winner, BoardCoordinates.noCoordinates());
     }
 
     public GameStatus makeGameStatusPlayer1WonFirstRow(int gameId) {
@@ -44,6 +45,6 @@ public class GameStatusTestScenarios {
         Player lastPlayer = Player.player1();
         Player winner = Player.player1();
 
-        return new GameStatus(gameId, expectedBoard, lastPlayer, winner);
+        return new GameStatus(gameId, expectedBoard, lastPlayer, winner, BoardCoordinates.noCoordinates());
     }
 }
