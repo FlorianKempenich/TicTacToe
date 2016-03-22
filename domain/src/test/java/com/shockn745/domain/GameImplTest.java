@@ -157,8 +157,16 @@ public class GameImplTest {
             game.play(new MoveModel(0, 0, Player.player2()));
             fail();
         } catch (IllegalMoveException e) {
-            GameStatus status = game.makeStatus(-1);
+            GameStatus status = game.makeStatus();
             assertEquals(Player.player1(), status.lastPlayer);
         }
+    }
+
+    @Test
+    public void gamefinished_column_getWinStatus() throws Exception {
+        scoreColumnPlayerOne(game, 0);
+        assertTrue(game.checkIfFinishedAndUpdateWinner());
+        GameStatus status = game.makeStatus();
+
     }
 }

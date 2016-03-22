@@ -48,7 +48,8 @@ public class AddMoveUseCaseTest {
         MockitoAnnotations.initMocks(this);
         gameFactory = new GameFactoryImpl();
         addMoveUseCase = new AddMoveUseCaseImpl(gameStatusRepository, gameFactory);
-        game = gameFactory.makeNewGame();
+        GameStatus emptyGameStatus = NullObjects.makeEmptyGameStatus(GAME_ID);
+        game = gameFactory.makeGame(emptyGameStatus);
     }
 
     @Test

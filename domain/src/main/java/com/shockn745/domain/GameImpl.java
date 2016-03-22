@@ -106,17 +106,12 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public GameStatus makeStatus(int id) {
+    public GameStatus makeStatus() {
         return new GameStatus(
-                id,
+                gameId,
                 board.getBoardStatus(),
                 previousPlayer,
                 winner
         );
-    }
-
-    @Override
-    public GameStatus makeStatus() {
-        return makeStatus(gameId);
     }
 }

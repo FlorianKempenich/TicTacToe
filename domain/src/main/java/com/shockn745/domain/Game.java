@@ -16,7 +16,5 @@ public interface Game {
 
     Player getWinner() throws GameNotFinishedException;
 
-    GameStatus makeStatus(int id);
-
     GameStatus makeStatus();
 }

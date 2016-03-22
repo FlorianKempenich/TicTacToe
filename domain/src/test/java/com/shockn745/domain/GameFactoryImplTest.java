@@ -25,7 +25,7 @@ public class GameFactoryImplTest {
     @Test
     public void createNewGame_returnEmptyGame() throws Exception {
         Game game = gameFactory.makeNewGame();
-        GameStatus status = game.makeStatus(GameStatus.NO_ID);
+        GameStatus status = game.makeStatus();
         GameStatus expected = NullObjects.makeEmptyGameStatus(GameStatus.NO_ID);
         assertEquals(expected, status);
     }

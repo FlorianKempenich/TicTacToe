@@ -8,9 +8,11 @@ import com.shockn745.domain.Game;
 import com.shockn745.domain.GameFactory;
 import com.shockn745.domain.GameFactoryImpl;
 import com.shockn745.domain.GameImpl;
+import com.shockn745.utils.NullObjects;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.internal.matchers.Null;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -41,13 +43,9 @@ public class GameStatusRepositoryImplTest {
     }
 
     private static GameStatus makeNewGameStatusWithNoId() {
-        return makeNewGameStatus(GameStatus.NO_ID);
-    }
-
-    private static GameStatus makeNewGameStatus(int id) {
         GameFactory factory = new GameFactoryImpl();
         Game game = factory.makeNewGame();
-        return game.makeStatus(id);
+        return game.makeStatus();
     }
 
     @Test
@@ -85,9 +83,9 @@ public class GameStatusRepositoryImplTest {
 
     @Test
     public void gameStatusWithId_notPresentInRepository_doNotSave() throws Exception {
-        GameStatus gameStatusWithId = makeNewGameStatus(12);
+        GameStatus emptyGameStatus = NullObjects.makeEmptyGameStatus(12);
         try {
-            repository.saveGame(gameStatusWithId);
+            repository.saveGame(emptyGameStatus);
             fail();
         } catch (IllegalSaveException e) {
             assertEquals("Game not found! To save a new game use the NO_ID id", e.getMessage());

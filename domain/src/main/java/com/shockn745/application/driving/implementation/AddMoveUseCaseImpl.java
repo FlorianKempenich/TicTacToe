@@ -49,6 +49,6 @@ public class AddMoveUseCaseImpl implements AddMoveUseCase {
         game.play(moveModel);
         game.checkIfFinishedAndUpdateWinner();
         gameStatusRepository.saveGame(game.makeStatus());
-        callback.onSuccess(game.makeStatus(gameId));
+        callback.onSuccess(game.makeStatus());
     }
 }
