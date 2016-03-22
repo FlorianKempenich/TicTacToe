@@ -1,13 +1,14 @@
 package com.shockn745.presentation.game;
 
 import com.shockn745.application.driven.NetworkListenerRepository;
-import com.shockn745.application.driving.presentation.AddMoveUseCase;
 import com.shockn745.application.driving.dto.GameStatus;
-import com.shockn745.application.driving.presentation.InitNewGameUseCase;
 import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.dto.Player;
+import com.shockn745.testutil.GameStatusTestScenarios;
+import com.shockn745.application.driving.presentation.AddMoveUseCase;
+import com.shockn745.application.driving.presentation.InitNewGameUseCase;
 import com.shockn745.application.driving.presentation.RegisterNetworkGameListenerUseCase;
-import com.shockn745.presentation.testutils.GameStatusUtil;
+import com.shockn745.domain.GameFactoryImpl;
 import com.shockn745.utils.NullObjects;
 
 import org.junit.Before;
@@ -22,7 +23,6 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -52,11 +52,17 @@ public class GamePresenterTest_newBoard {
     ArgumentCaptor<String> textCaptor;
     @Captor
     ArgumentCaptor<NetworkListenerRepository.GameNetworkListener> networkListenerCaptor;
+    GameStatusTestScenarios testScenarios;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        presenter = new GamePresenter(view, initNewGameUseCase, registerNetworkGameListenerUseCase, addMoveUseCase);
+        presenter = new GamePresenter(view,
+                initNewGameUseCase,
+                registerNetworkGameListenerUseCase,
+                addMoveUseCase
+        );
+        testScenarios = new GameStatusTestScenarios(new GameFactoryImpl());
     }
 
     @Test
@@ -87,7 +93,7 @@ public class GamePresenterTest_newBoard {
                 anyInt()
         );
 
-        GameStatus statusAfterFirstMove = GameStatusUtil.makeAfterFirstMoveOn00(GAME_ID);
+        GameStatus statusAfterFirstMove = testScenarios.makeGameStatusWithMoveOn00(GAME_ID);
         networkListenerCaptor.getValue().onNewMoveFromNetwork(statusAfterFirstMove);
 
         verify(view, times(2)).setSquareText(textCaptor.capture(), eq(0), eq(0));
@@ -108,17 +114,20 @@ public class GamePresenterTest_newBoard {
     public void clickOnButton_AddNewMove_UpdateView() throws Exception {
         // Verify use case called
         presenter.onSquareClicked(0, 0);
-        verify(addMoveUseCase).execute(eq(new Move(0, 0, Player.player1())), anyInt(), addMoveArgumentCaptor.capture());
+        verify(addMoveUseCase).execute(
+                eq(new Move(0, 0, Player.player1())),
+                anyInt(),
+                addMoveArgumentCaptor.capture()
+        );
 
         // Simulate positive response
-        GameStatus status = GameStatusUtil.makeAfterFirstMoveOn00(GAME_ID);
+        GameStatus status = testScenarios.makeGameStatusWithMoveOn00(GAME_ID);
         addMoveArgumentCaptor.getValue().onSuccess(status);
 
         // Verify text updated on view
         verify(view).setSquareText(textCaptor.capture(), eq(0), eq(0));
         assertEquals("x", textCaptor.getValue().toLowerCase());
     }
-
 
 
 }

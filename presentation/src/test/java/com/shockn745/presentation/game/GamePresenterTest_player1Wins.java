@@ -1,13 +1,12 @@
 package com.shockn745.presentation.game;
 
-import com.shockn745.application.driving.presentation.AddMoveUseCase;
 import com.shockn745.application.driving.dto.GameStatus;
-import com.shockn745.application.driving.presentation.InitNewGameUseCase;
 import com.shockn745.application.driving.dto.Move;
-import com.shockn745.application.driving.dto.Player;
+import com.shockn745.application.driving.presentation.AddMoveUseCase;
+import com.shockn745.application.driving.presentation.InitNewGameUseCase;
 import com.shockn745.application.driving.presentation.RegisterNetworkGameListenerUseCase;
-import com.shockn745.presentation.testutils.GameStatusUtil;
-import com.shockn745.utils.NullObjects;
+import com.shockn745.domain.GameFactoryImpl;
+import com.shockn745.testutil.GameStatusTestScenarios;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -43,13 +42,16 @@ public class GamePresenterTest_player1Wins {
     AddMoveUseCase addMoveUseCase;
     @Captor
     ArgumentCaptor<AddMoveUseCase.Callback> addMoveArgumentCaptor;
+    GameStatusTestScenarios testScenarios;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         presenter = new GamePresenter(view, initNewGameUseCase,
-                registerNetworkGameListenerUseCase, addMoveUseCase);
-        statusAfterFirstMoveOn00 = GameStatusUtil.makeAfterFirstMoveOn00(GAME_ID);
+                registerNetworkGameListenerUseCase, addMoveUseCase
+        );
+        testScenarios = new GameStatusTestScenarios(new GameFactoryImpl());
+        statusAfterFirstMoveOn00 = testScenarios.makeGameStatusWithMoveOn00(GAME_ID);
     }
 
 
@@ -59,26 +61,10 @@ public class GamePresenterTest_player1Wins {
         // Capture callback
         verify(addMoveUseCase).execute(any(Move.class), anyInt(), addMoveArgumentCaptor.capture());
         // Simulate response
-        addMoveArgumentCaptor.getValue().onSuccess(makeStatusPlayer1Won(GAME_ID));
+        addMoveArgumentCaptor.getValue()
+                .onSuccess(testScenarios.makeGameStatusPlayer1WonFirstRow(GAME_ID));
 
         verify(view).displayWinner("Player 1");
-    }
-
-    private static GameStatus makeStatusPlayer1Won(int gameId) {
-        Player[][] board = NullObjects.makeEmptyBoard();
-        // Play winning moves from player one
-        board[0][0] = Player.player1();
-        board[1][0] = Player.player1();
-        board[2][0] = Player.player1();
-
-        // Make game valid
-        board[1][1] = Player.player2();
-        board[2][2] = Player.player2();
-
-        Player lastPlayer = Player.player1();
-        Player winner = Player.player1();
-
-        return new GameStatus(gameId, board, lastPlayer, winner);
     }
 
     @Test
@@ -86,7 +72,8 @@ public class GamePresenterTest_player1Wins {
         // Init presenter with winning state
         presenter.onSquareClicked(2, 0); //winning move
         verify(addMoveUseCase).execute(any(Move.class), anyInt(), addMoveArgumentCaptor.capture());
-        addMoveArgumentCaptor.getValue().onSuccess(makeStatusPlayer1Won(GAME_ID));
+        addMoveArgumentCaptor.getValue()
+                .onSuccess(testScenarios.makeGameStatusPlayer1WonFirstRow(GAME_ID));
 
 
         presenter.onSquareClicked(1, 2);

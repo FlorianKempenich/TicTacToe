@@ -1,12 +1,11 @@
 package com.shockn745.domain;
 
 import com.shockn745.application.driving.dto.GameStatus;
-import com.shockn745.application.driving.dto.Player;
+import com.shockn745.testutil.GameStatusTestScenarios;
 import com.shockn745.utils.NullObjects;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.internal.matchers.Null;
 
 import static org.junit.Assert.*;
 
@@ -16,10 +15,12 @@ import static org.junit.Assert.*;
 public class GameFactoryImplTest {
 
     GameFactory gameFactory;
+    GameStatusTestScenarios testScenarios;
 
     @Before
     public void setUp() throws Exception {
         gameFactory = new GameFactoryImpl();
+        testScenarios = new GameStatusTestScenarios(gameFactory);
     }
 
     @Test
@@ -42,10 +43,7 @@ public class GameFactoryImplTest {
     @Test
     public void createGameFromStatus_nonEmptyBoard_resultingStatusIsSameAsOriginal() throws Exception {
         int id = 2;
-        Player[][] moveOn00Board = NullObjects.makeEmptyBoard();
-        moveOn00Board[0][0] = Player.player1();
-        GameStatus status = new GameStatus(id, moveOn00Board, Player.player1(), Player.noPlayer());
-
+        GameStatus status = testScenarios.makeGameStatusWithMoveOn00(id);
         Game game = gameFactory.makeGame(status);
         assertEquals(status, game.makeStatus());
     }

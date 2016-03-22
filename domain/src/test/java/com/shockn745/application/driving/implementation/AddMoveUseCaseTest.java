@@ -10,6 +10,7 @@ import com.shockn745.domain.Game;
 import com.shockn745.domain.GameFactory;
 import com.shockn745.domain.GameFactoryImpl;
 import com.shockn745.domain.MoveModel;
+import com.shockn745.testutil.GameStatusTestScenarios;
 import com.shockn745.utils.NullObjects;
 
 import org.junit.Before;
@@ -41,12 +42,13 @@ public class AddMoveUseCaseTest {
     ArgumentCaptor<GameStatus> gameStatusArgumentCaptor;
     @Captor
     ArgumentCaptor<GameError> gameErrorArgumentCaptor;
-    GameFactory gameFactory;
+    GameStatusTestScenarios testScenarios;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        gameFactory = new GameFactoryImpl();
+        GameFactory gameFactory = new GameFactoryImpl();
+        testScenarios = new GameStatusTestScenarios(gameFactory);
         addMoveUseCase = new AddMoveUseCaseImpl(gameStatusRepository, gameFactory);
         GameStatus emptyGameStatus = NullObjects.makeEmptyGameStatus(GAME_ID);
         game = gameFactory.makeGame(emptyGameStatus);
@@ -74,13 +76,7 @@ public class AddMoveUseCaseTest {
 
         GameStatus resultStatus = gameStatusArgumentCaptor.getValue();
 
-        // Make gameStatus with move on first square
-        Player[][] expectedBoard = NullObjects.makeEmptyBoard();
-        expectedBoard[0][0] = Player.player1();
-        GameStatus expectedStatus =
-                new GameStatus(GAME_ID, expectedBoard, Player.player1(), Player.noPlayer());
-
-        assertEquals(expectedStatus, resultStatus);
+        assertEquals(testScenarios.makeGameStatusWithMoveOn00(GAME_ID), resultStatus);
     }
 
     @Test
@@ -127,18 +123,7 @@ public class AddMoveUseCaseTest {
         updateGameInRepository();
         // Last play : 2-0 Player 1 : Left for use-case
 
-        // Make expected game status
-        Player[][] expectedBoard = NullObjects.makeEmptyBoard();
-        expectedBoard[0][0] = Player.player1();
-        expectedBoard[1][1] = Player.player2();
-        expectedBoard[1][0] = Player.player1();
-        expectedBoard[2][2] = Player.player2();
-        expectedBoard[2][0] = Player.player1();
-
-        Player lastPlayer = Player.player1();
-        Player winner = Player.player1();
-
-        GameStatus expectedStatus = new GameStatus(GAME_ID, expectedBoard, lastPlayer, winner);
+        GameStatus expectedStatus = testScenarios.makeGameStatusPlayer1WonFirstRow(GAME_ID);
 
         addMoveUseCase.execute(new Move(2, 0, Player.player1()), GAME_ID, callback);
         verify(callback).onSuccess(gameStatusArgumentCaptor.capture());
