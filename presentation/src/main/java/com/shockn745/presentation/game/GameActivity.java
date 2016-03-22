@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.shockn745.application.driven.GameStatusRepository;
 import com.shockn745.application.driven.NetworkListenerRepository;
+import com.shockn745.application.driving.dto.BoardCoordinates;
 import com.shockn745.application.driving.dto.GameError;
 import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.dto.Player;
@@ -53,7 +54,6 @@ public class GameActivity extends AppCompatActivity
 
     private GameContract.Presenter presenter;
     private GameAnimations gameAnimations;
-    private TicTacView.ClickCoordinates clickedCoordinates = new TicTacView.ClickCoordinates(0, 0);
     private FakeMoveFromNetworkGenerator fakeMoveFromNetworkGenerator;
 
     @Override
@@ -106,8 +106,7 @@ public class GameActivity extends AppCompatActivity
     }
 
     @Override
-    public void onSquareClicked(int x, int y, TicTacView.ClickCoordinates coordinates) {
-        clickedCoordinates = coordinates;
+    public void onSquareClicked(int x, int y) {
         presenter.onSquareClicked(x, y);
     }
 
@@ -117,14 +116,26 @@ public class GameActivity extends AppCompatActivity
     }
 
     @Override
-    public void setCurrentPlayer(Player player) {
-        if (player.equals(Player.player1())) {
-            gameAnimations.transitionToFirstPlayerBackground(clickedCoordinates);
-        } else {
-            gameAnimations.transitionToSecondPlayerBackground(clickedCoordinates);
+    public void setCurrentPlayer(Player player, BoardCoordinates lastSquarePlayed) {
+        if (isLastSquarePlayedAvailable(lastSquarePlayed)) {
+            animateToPlayerBackground(player, lastSquarePlayed);
         }
         String playerName = presenter.getPlayerName(player);
         currentPlayer.setText(playerName);
+    }
+
+    private void animateToPlayerBackground(Player player, BoardCoordinates lastSquarePlayed) {
+        TicTacView.ClickCoordinates clickCoordinates =
+                ticTacView.getSquareCenter(lastSquarePlayed);
+        if (player.equals(Player.player1())) {
+            gameAnimations.transitionToFirstPlayerBackground(clickCoordinates);
+        } else {
+            gameAnimations.transitionToSecondPlayerBackground(clickCoordinates);
+        }
+    }
+
+    private boolean isLastSquarePlayedAvailable(BoardCoordinates lastSquarePlayer) {
+        return !lastSquarePlayer.equals(BoardCoordinates.noCoordinates());
     }
 
     @Override
@@ -166,7 +177,7 @@ public class GameActivity extends AppCompatActivity
     @OnClick(R.id.game_fake_network_move_button)
     public void makeFakeNetworkMove() {
         fakeMoveFromNetworkGenerator.makeFakeMoveFromNetwork(
-                new Move(0, 0, Player.player1()),
+                new Move(1, 2, Player.player1()),
                 presenter.getGameId(),
                 new AddMoveFromNetworkUseCase.Callback() {
                     @Override

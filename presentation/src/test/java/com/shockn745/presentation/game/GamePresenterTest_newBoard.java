@@ -1,6 +1,7 @@
 package com.shockn745.presentation.game;
 
 import com.shockn745.application.driven.NetworkListenerRepository;
+import com.shockn745.application.driving.dto.BoardCoordinates;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.dto.Player;
@@ -107,7 +108,7 @@ public class GamePresenterTest_newBoard {
         presenter.onCreate();
         verify(initNewGameUseCase).execute(initArgumentCaptor.capture());
         initArgumentCaptor.getValue().newGameReady(NullObjects.makeEmptyGameStatus(GAME_ID));
-        verify(view).setCurrentPlayer(eq(Player.player1()));
+        verify(view).setCurrentPlayer(eq(Player.player1()), eq(BoardCoordinates.noCoordinates()));
     }
 
     @Test
@@ -127,6 +128,7 @@ public class GamePresenterTest_newBoard {
         // Verify text updated on view
         verify(view).setSquareText(textCaptor.capture(), eq(0), eq(0));
         assertEquals("x", textCaptor.getValue().toLowerCase());
+        verify(view).setCurrentPlayer(eq(Player.player2()), eq(new BoardCoordinates(0, 0)));
     }
 
 

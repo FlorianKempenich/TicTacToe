@@ -175,7 +175,7 @@ public class GamePresenter implements GameContract.Presenter {
     }
 
     private void updatePlayerName() {
-        view.setCurrentPlayer(getCurrentPlayer());
+        view.setCurrentPlayer(getCurrentPlayer(), currentGameStatus.lastPlayedSquare);
     }
 
     private String getCurrentPlayerName() {

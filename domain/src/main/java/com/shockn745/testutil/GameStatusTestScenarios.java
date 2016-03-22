@@ -31,7 +31,7 @@ public class GameStatusTestScenarios {
         Player lastPlayer = Player.player1();
         Player winner = Player.noPlayer();
 
-        return new GameStatus(gameId, moveOn00, lastPlayer, winner, BoardCoordinates.noCoordinates());
+        return new GameStatus(gameId, moveOn00, lastPlayer, winner, new BoardCoordinates(0, 0));
     }
 
     public GameStatus makeGameStatusPlayer1WonFirstRow(int gameId) {
@@ -45,6 +45,6 @@ public class GameStatusTestScenarios {
         Player lastPlayer = Player.player1();
         Player winner = Player.player1();
 
-        return new GameStatus(gameId, expectedBoard, lastPlayer, winner, BoardCoordinates.noCoordinates());
+        return new GameStatus(gameId, expectedBoard, lastPlayer, winner, new BoardCoordinates(2, 0));
     }
 }

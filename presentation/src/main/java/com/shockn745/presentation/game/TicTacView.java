@@ -1,7 +1,6 @@
 package com.shockn745.presentation.game;
 
 import android.content.Context;
-import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.shockn745.application.driving.dto.BoardCoordinates;
 import com.shockn745.domain.R;
 
 /**
@@ -89,18 +89,21 @@ public class TicTacView extends LinearLayout implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        parseCoordinatesAndRedirect(id);
+        redirectClick(id);
     }
 
-    private void parseCoordinatesAndRedirect(int id) {
+    private void redirectClick(int id) {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (id == buttons[i][j].getId()) {
-                    ClickCoordinates coordinates = getButtonCenter(buttons[i][j]);
-                    onSquareClick(i, j, coordinates);
+                    onSquareClick(i, j);
                 }
             }
         }
+    }
+
+    public ClickCoordinates getSquareCenter(BoardCoordinates coordinates) {
+        return getButtonCenter(buttons[coordinates.x][coordinates.y]);
     }
 
     private ClickCoordinates getButtonCenter(Button button) {
@@ -112,9 +115,9 @@ public class TicTacView extends LinearLayout implements View.OnClickListener {
         return new ClickCoordinates(x, y);
     }
 
-    private void onSquareClick(int x, int y, ClickCoordinates coordinates) {
+    private void onSquareClick(int x, int y) {
         if (listener != null) {
-            listener.onSquareClicked(x, y, coordinates);
+            listener.onSquareClicked(x, y);
         }
     }
 
@@ -127,7 +130,7 @@ public class TicTacView extends LinearLayout implements View.OnClickListener {
     }
 
     public interface OnSquareClickedListener {
-        void onSquareClicked(int x, int y, ClickCoordinates coordinates);
+        void onSquareClicked(int x, int y);
     }
 
     public static class ClickCoordinates {
