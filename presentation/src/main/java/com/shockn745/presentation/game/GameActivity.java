@@ -11,7 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
-import com.shockn745.application.driven.GameRepository;
 import com.shockn745.application.driven.GameStatusRepository;
 import com.shockn745.application.driven.NetworkListenerRepository;
 import com.shockn745.application.driving.dto.GameError;
@@ -24,7 +23,6 @@ import com.shockn745.application.driving.network.AddMoveFromNetworkUseCase;
 import com.shockn745.application.driving.presentation.AddMoveUseCase;
 import com.shockn745.application.driving.presentation.InitNewGameUseCase;
 import com.shockn745.application.driving.presentation.RegisterNetworkGameListenerUseCase;
-import com.shockn745.data.InMemoryGameRepository;
 import com.shockn745.data.InMemoryGameStatusRepository;
 import com.shockn745.domain.GameFactory;
 import com.shockn745.domain.GameFactoryImpl;
@@ -81,7 +79,6 @@ public class GameActivity extends AppCompatActivity
      * Replace with dependency injection
      */
     private void initPresenter() {
-        GameRepository gameRepository = new InMemoryGameRepository();
         GameStatusRepository gameStatusRepository = new InMemoryGameStatusRepository();
         NetworkListenerRepository networkListenerRepository = new NetworkListenerRepositoryImpl();
         GameFactory gameFactory = new GameFactoryImpl();
@@ -91,7 +88,11 @@ public class GameActivity extends AppCompatActivity
         RegisterNetworkGameListenerUseCase registerNetworkGameListenerUseCase =
                 new RegisterNetworkGameListenerUseCaseImpl(networkListenerRepository);
         fakeMoveFromNetworkGenerator =
-                new FakeMoveFromNetworkGenerator(gameStatusRepository, gameFactory, networkListenerRepository);
+                new FakeMoveFromNetworkGenerator(
+                        gameStatusRepository,
+                        gameFactory,
+                        networkListenerRepository
+                );
         presenter = new GamePresenter(this, initNewGameUseCase,
                 registerNetworkGameListenerUseCase, addMoveUseCase
         );

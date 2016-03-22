@@ -1,6 +1,5 @@
 package com.shockn745.application.driving.implementation;
 
-import com.shockn745.application.driven.GameRepository;
 import com.shockn745.application.driven.GameStatusRepository;
 import com.shockn745.application.driven.NetworkListenerRepository;
 import com.shockn745.application.driving.dto.GameError;
@@ -19,17 +18,14 @@ import java.util.Set;
  */
 public class AddMoveFromNetworkUseCaseImpl implements AddMoveFromNetworkUseCase {
 
-    private final GameRepository gameRepository;
     private final GameStatusRepository gameStatusRepository;
     private final NetworkListenerRepository networkListenerRepository;
     private final GameFactory gameFactory;
 
     public AddMoveFromNetworkUseCaseImpl(
-            GameRepository gameRepository,
             GameStatusRepository gameStatusRepository,
             NetworkListenerRepository networkListenerRepository,
             GameFactory gameFactory) {
-        this.gameRepository = gameRepository;
         this.gameStatusRepository = gameStatusRepository;
         this.networkListenerRepository = networkListenerRepository;
         this.gameFactory = gameFactory;

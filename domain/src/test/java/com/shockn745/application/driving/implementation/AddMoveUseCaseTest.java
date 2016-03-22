@@ -1,11 +1,10 @@
 package com.shockn745.application.driving.implementation;
 
-import com.shockn745.application.driven.GameRepository;
 import com.shockn745.application.driven.GameStatusRepository;
+import com.shockn745.application.driving.dto.GameError;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.dto.Player;
-import com.shockn745.application.driving.dto.GameError;
 import com.shockn745.application.driving.presentation.AddMoveUseCase;
 import com.shockn745.domain.Game;
 import com.shockn745.domain.GameFactory;
@@ -35,8 +34,6 @@ public class AddMoveUseCaseTest {
     AddMoveUseCase addMoveUseCase;
     Game game;
     @Mock
-    GameRepository gameRepository;
-    @Mock
     GameStatusRepository gameStatusRepository;
     @Mock
     AddMoveUseCase.Callback callback;
@@ -54,17 +51,17 @@ public class AddMoveUseCaseTest {
         game = gameFactory.makeNewGame();
     }
 
-    private void updateGameInRepository() {
-        when(gameStatusRepository.contains(GAME_ID)).thenReturn(true);
-        when(gameStatusRepository.getGame(GAME_ID)).thenReturn(game.makeStatus());
-    }
-
     @Test
     public void addMoveToEmptyGame_Success_updateGameStateInRepository() throws Exception {
         updateGameInRepository();
         Move move = new Move(0, 0, Player.player1());
         addMoveUseCase.execute(move, GAME_ID, callback);
         verify(gameStatusRepository).saveGame(any(GameStatus.class));
+    }
+
+    private void updateGameInRepository() {
+        when(gameStatusRepository.contains(GAME_ID)).thenReturn(true);
+        when(gameStatusRepository.getGame(GAME_ID)).thenReturn(game.makeStatus());
     }
 
     @Test
@@ -79,15 +76,16 @@ public class AddMoveUseCaseTest {
         // Make gameStatus with move on first square
         Player[][] expectedBoard = NullObjects.makeEmptyBoard();
         expectedBoard[0][0] = Player.player1();
-        GameStatus expectedStatus = new GameStatus(GAME_ID, expectedBoard, Player.player1(), Player.noPlayer());
+        GameStatus expectedStatus =
+                new GameStatus(GAME_ID, expectedBoard, Player.player1(), Player.noPlayer());
 
         assertEquals(expectedStatus, resultStatus);
     }
 
     @Test
     public void add2MovesToTheSameSquare_Error_checkErrorMessage() throws Exception {
-        Move move1 = new Move(0,0, Player.player1());
-        Move move2 = new Move(0,0, Player.player2());
+        Move move1 = new Move(0, 0, Player.player1());
+        Move move2 = new Move(0, 0, Player.player2());
 
         // Add first move to emptyGame
         game.play(new MoveModel(move1));
@@ -103,8 +101,8 @@ public class AddMoveUseCaseTest {
 
     @Test
     public void add2MovesSamePlayer_Error_checkErrorMessage() throws Exception {
-        Move move1 = new Move(0,0, Player.player1());
-        Move move2 = new Move(1,1, Player.player1());
+        Move move1 = new Move(0, 0, Player.player1());
+        Move move2 = new Move(1, 1, Player.player1());
 
         // Add first move to emptyGame
         game.play(new MoveModel(move1));
@@ -121,10 +119,10 @@ public class AddMoveUseCaseTest {
     @Test
     public void addLastMove_GameFinished_correctWinner() throws Exception {
         // Setup game -- Play all the moves except last one -- Player 1 wins on first line
-        game.play(new MoveModel(0,0, Player.player1()));
-        game.play(new MoveModel(1,1, Player.player2()));
-        game.play(new MoveModel(1,0, Player.player1()));
-        game.play(new MoveModel(2,2, Player.player2()));
+        game.play(new MoveModel(0, 0, Player.player1()));
+        game.play(new MoveModel(1, 1, Player.player2()));
+        game.play(new MoveModel(1, 0, Player.player1()));
+        game.play(new MoveModel(2, 2, Player.player2()));
         updateGameInRepository();
         // Last play : 2-0 Player 1 : Left for use-case
 
@@ -152,10 +150,10 @@ public class AddMoveUseCaseTest {
     @Test
     public void addMove_GameNotFoundInRepository_Error() throws Exception {
         int invalidId = -1;
-        when(gameRepository.contains(eq(invalidId))).thenReturn(false);
-        when(gameRepository.getGame(eq(invalidId))).thenReturn(null);
+        when(gameStatusRepository.contains(eq(invalidId))).thenReturn(false);
+        when(gameStatusRepository.getGame(eq(invalidId))).thenReturn(null);
 
-        addMoveUseCase.execute(new Move(0,0, Player.player1()), invalidId, callback);
+        addMoveUseCase.execute(new Move(0, 0, Player.player1()), invalidId, callback);
         verify(callback).onError(gameErrorArgumentCaptor.capture());
 
         assertEquals("Game not found : ID=" + invalidId, gameErrorArgumentCaptor.getValue().reason);

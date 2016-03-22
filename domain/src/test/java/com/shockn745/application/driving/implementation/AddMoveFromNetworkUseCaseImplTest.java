@@ -1,6 +1,5 @@
 package com.shockn745.application.driving.implementation;
 
-import com.shockn745.application.driven.GameRepository;
 import com.shockn745.application.driven.GameStatusRepository;
 import com.shockn745.application.driven.NetworkListenerRepository;
 import com.shockn745.application.driving.dto.GameError;
@@ -20,7 +19,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.internal.matchers.Null;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -44,8 +42,6 @@ public class AddMoveFromNetworkUseCaseImplTest {
     @Mock
     NetworkListenerRepository listenersRepository;
     @Mock
-    GameRepository gameRepository;
-    @Mock
     GameStatusRepository gameStatusRepository;
     @Mock
     NetworkListenerRepository.GameNetworkListener listener;
@@ -61,7 +57,6 @@ public class AddMoveFromNetworkUseCaseImplTest {
         MockitoAnnotations.initMocks(this);
         GameFactory gameFactory = new GameFactoryImpl();
         addMoveFromNetworkUseCase = new AddMoveFromNetworkUseCaseImpl(
-                gameRepository,
                 gameStatusRepository,
                 listenersRepository,
                 gameFactory

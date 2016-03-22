@@ -25,7 +25,6 @@ public class FakeMoveFromNetworkGenerator {
             GameFactory gameFactory,
             NetworkListenerRepository networkListenerRepository) {
         this.addMoveFromNetworkUseCase = new AddMoveFromNetworkUseCaseImpl(
-                null,
                 gameStatusRepository,
                 networkListenerRepository,
                 gameFactory
