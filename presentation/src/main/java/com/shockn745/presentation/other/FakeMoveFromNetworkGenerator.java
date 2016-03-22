@@ -1,10 +1,12 @@
 package com.shockn745.presentation.other;
 
 import com.shockn745.application.driven.GameRepository;
+import com.shockn745.application.driven.GameStatusRepository;
 import com.shockn745.application.driven.NetworkListenerRepository;
 import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.implementation.AddMoveFromNetworkUseCaseImpl;
 import com.shockn745.application.driving.network.AddMoveFromNetworkUseCase;
+import com.shockn745.domain.GameFactory;
 
 /**
  * @author Kempenich Florian
@@ -20,8 +22,9 @@ public class FakeMoveFromNetworkGenerator {
     private final AddMoveFromNetworkUseCase addMoveFromNetworkUseCase;
 
     public FakeMoveFromNetworkGenerator(GameRepository gameRepository,
+            GameFactory gameFactory,
                                         NetworkListenerRepository networkListenerRepository) {
-        this.addMoveFromNetworkUseCase = new AddMoveFromNetworkUseCaseImpl(gameRepository, networkListenerRepository);
+        this.addMoveFromNetworkUseCase = new AddMoveFromNetworkUseCaseImpl(gameRepository, networkListenerRepository, gameFactory);
     }
 
     public void makeFakeMoveFromNetwork(Move move, int gameId,

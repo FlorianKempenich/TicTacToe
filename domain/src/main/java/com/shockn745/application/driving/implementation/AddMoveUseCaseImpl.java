@@ -1,6 +1,7 @@
 package com.shockn745.application.driving.implementation;
 
 import com.shockn745.application.driven.GameRepository;
+import com.shockn745.application.driven.GameStatusRepository;
 import com.shockn745.application.driving.dto.*;
 import com.shockn745.application.driving.presentation.AddMoveUseCase;
 import com.shockn745.domain.Game;
@@ -13,20 +14,19 @@ import com.shockn745.domain.exceptions.IllegalMoveException;
  */
 public class AddMoveUseCaseImpl implements AddMoveUseCase {
 
-    private final GameRepository gameRepository;
+    private final GameStatusRepository gameStatusRepository;
     private final GameFactory gameFactory;
 
     public AddMoveUseCaseImpl(
-            GameRepository gameRepository,
-            GameFactory gameFactory) {
-        this.gameRepository = gameRepository;
+            GameStatusRepository gameStatusRepository, GameFactory gameFactory) {
+        this.gameStatusRepository = gameStatusRepository;
         this.gameFactory = gameFactory;
     }
 
     @Override
     public void execute(Move move, int gameId, Callback callback) {
         MoveModel moveModel = new MoveModel(move);
-        if (gameRepository.contains(gameId)) {
+        if (gameStatusRepository.contains(gameId)) {
             executeWithValidGameId(gameId, callback, moveModel);
         } else {
             callback.onError(new com.shockn745.application.driving.dto.GameError("Game not found : ID=" + gameId));
@@ -42,7 +42,8 @@ public class AddMoveUseCaseImpl implements AddMoveUseCase {
     }
 
     private void playMove(int gameId, Callback callback, MoveModel moveModel) throws IllegalMoveException {
-        Game game = gameRepository.getGame(gameId);
+        GameStatus gameStatus = gameStatusRepository.getGame(gameId);
+        Game game = gameFactory.makeGame(gameStatus);
         game.play(moveModel);
         game.checkIfFinishedAndUpdateWinner();
         callback.onSuccess(game.makeStatus(gameId));

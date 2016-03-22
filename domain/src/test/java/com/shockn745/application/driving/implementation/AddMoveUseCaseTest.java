@@ -1,17 +1,15 @@
 package com.shockn745.application.driving.implementation;
 
 import com.shockn745.application.driven.GameRepository;
+import com.shockn745.application.driven.GameStatusRepository;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.dto.Player;
 import com.shockn745.application.driving.dto.GameError;
 import com.shockn745.application.driving.presentation.AddMoveUseCase;
-import com.shockn745.domain.Board;
-import com.shockn745.domain.BoardImpl;
 import com.shockn745.domain.Game;
 import com.shockn745.domain.GameFactory;
 import com.shockn745.domain.GameFactoryImpl;
-import com.shockn745.domain.GameImpl;
 import com.shockn745.domain.MoveModel;
 import com.shockn745.utils.NullObjects;
 
@@ -34,38 +32,39 @@ public class AddMoveUseCaseTest {
 
     private static final int GAME_ID = 1;
     AddMoveUseCase addMoveUseCase;
-    Game emptyGame;
+    Game game;
     @Mock
     GameRepository gameRepository;
+    @Mock
+    GameStatusRepository gameStatusRepository;
     @Mock
     AddMoveUseCase.Callback callback;
     @Captor
     ArgumentCaptor<GameStatus> gameStatusArgumentCaptor;
     @Captor
     ArgumentCaptor<GameError> gameErrorArgumentCaptor;
-    @Mock
-    GameFactory gameFactory;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        addMoveUseCase = new AddMoveUseCaseImpl(gameRepository, gameFactory);
+        GameFactory gameFactory = new GameFactoryImpl();
+        addMoveUseCase = new AddMoveUseCaseImpl(gameRepository, gameStatusRepository, gameFactory);
         initEmptyGame();
-        addEmptyGameToRepository();
     }
 
     private void initEmptyGame() {
         GameFactory factory = new GameFactoryImpl();
-        emptyGame = factory.makeNewGame();
+        game = factory.makeNewGame();
     }
 
-    private void addEmptyGameToRepository() {
-        when(gameRepository.contains(GAME_ID)).thenReturn(true);
-        when(gameRepository.getGame(GAME_ID)).thenReturn(emptyGame);
+    private void updateGameInRepository() {
+        when(gameStatusRepository.contains(GAME_ID)).thenReturn(true);
+        when(gameStatusRepository.getGame(GAME_ID)).thenReturn(game.makeStatus());
     }
 
     @Test
     public void addMoveToEmptyGame_Success_verifyMoveAddedRightPosition() throws Exception {
+        updateGameInRepository();
         Move move = new Move(0, 0, Player.player1());
 
         addMoveUseCase.execute(move, GAME_ID, callback);
@@ -87,7 +86,8 @@ public class AddMoveUseCaseTest {
         Move move2 = new Move(0,0, Player.player2());
 
         // Add first move to emptyGame
-        emptyGame.play(new MoveModel(move1));
+        game.play(new MoveModel(move1));
+        updateGameInRepository();
 
         addMoveUseCase.execute(move2, GAME_ID, callback);
         verify(callback).onError(gameErrorArgumentCaptor.capture());
@@ -103,7 +103,8 @@ public class AddMoveUseCaseTest {
         Move move2 = new Move(1,1, Player.player1());
 
         // Add first move to emptyGame
-        emptyGame.play(new MoveModel(move1));
+        game.play(new MoveModel(move1));
+        updateGameInRepository();
 
         addMoveUseCase.execute(move2, GAME_ID, callback);
         verify(callback).onError(gameErrorArgumentCaptor.capture());
@@ -116,10 +117,11 @@ public class AddMoveUseCaseTest {
     @Test
     public void addLastMove_GameFinished_correctWinner() throws Exception {
         // Setup game -- Play all the moves except last one -- Player 1 wins on first line
-        emptyGame.play(new MoveModel(0,0, Player.player1()));
-        emptyGame.play(new MoveModel(1,1, Player.player2()));
-        emptyGame.play(new MoveModel(1,0, Player.player1()));
-        emptyGame.play(new MoveModel(2,2, Player.player2()));
+        game.play(new MoveModel(0,0, Player.player1()));
+        game.play(new MoveModel(1,1, Player.player2()));
+        game.play(new MoveModel(1,0, Player.player1()));
+        game.play(new MoveModel(2,2, Player.player2()));
+        updateGameInRepository();
         // Last play : 2-0 Player 1 : Left for use-case
 
         // Make expected game status

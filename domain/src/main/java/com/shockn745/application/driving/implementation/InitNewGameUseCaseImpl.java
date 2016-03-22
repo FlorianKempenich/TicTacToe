@@ -16,14 +16,11 @@ import com.shockn745.domain.GameImpl;
  */
 public class InitNewGameUseCaseImpl implements InitNewGameUseCase {
 
-    private final GameRepository gameRepository;
     private final GameStatusRepository gameStatusRepository;
     private final GameFactory factory;
 
     public InitNewGameUseCaseImpl(
-            GameRepository gameRepository,
             GameStatusRepository gameStatusRepository, GameFactory factory) {
-        this.gameRepository = gameRepository;
         this.gameStatusRepository = gameStatusRepository;
         this.factory = factory;
     }
@@ -31,9 +28,10 @@ public class InitNewGameUseCaseImpl implements InitNewGameUseCase {
     @Override
     public void execute(Callback callback) {
         Game game = factory.makeNewGame();
-        int id = gameRepository.saveGame(game);
+        GameStatus status = game.makeStatus();
 
-        GameStatus status = game.makeStatus(id);
+        int id = gameStatusRepository.saveGame(status);
+        status = status.updateWithId(id);
 
         callback.newGameReady(status);
     }
