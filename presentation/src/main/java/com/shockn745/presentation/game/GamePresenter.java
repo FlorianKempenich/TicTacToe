@@ -12,6 +12,8 @@ import com.shockn745.application.driving.presentation.InitNewGameUseCase;
 import com.shockn745.application.driving.presentation.RegisterNetworkGameListenerUseCase;
 import com.shockn745.utils.NullObjects;
 
+import javax.inject.Inject;
+
 /**
  * @author Kempenich Florian
  */
@@ -50,6 +52,7 @@ public class GamePresenter implements GameContract.Presenter {
         }
     };
 
+    @Inject
     public GamePresenter( InitNewGameUseCase initNewGameUseCase,
             RegisterNetworkGameListenerUseCase registerNetworkGameListenerUseCase,
             AddMoveUseCase addMoveUseCase) {

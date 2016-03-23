@@ -50,15 +50,26 @@ public class GameActivity extends AppCompatActivity
     @Bind(R.id.game_second_player_background)
     View secondPlayerBackground;
 
-    private GameContract.Presenter presenter;
+    @Inject
+    GameContract.Presenter presenter;
     GameAnimations gameAnimations;
     private FakeMoveFromNetworkGenerator fakeMoveFromNetworkGenerator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ApplicationComponent applicationComponent = AndroidApplication.getApplicationComponent(this);
+        GameComponent gameComponent = getGameComponent(applicationComponent);
+        AnimationComponent animationComponent = getAnimationComponent(applicationComponent);
+        gameAnimations = animationComponent.gameAnimations();
+        gameComponent.inject(this);
 
-        initDependencies();
-        initFakeNetworkGenerator();
+        ((GamePresenter) presenter).setView(this);
+        fakeMoveFromNetworkGenerator =
+                new FakeMoveFromNetworkGenerator(
+                        applicationComponent.gameStatusRepository(),
+                        applicationComponent.gameFactory(),
+                        applicationComponent.networkListenerRepository()
+                );
 
 
         gameAnimations.initTransitions();
@@ -76,43 +87,20 @@ public class GameActivity extends AppCompatActivity
         resetViewVisibility();
     }
 
-
-    private void initDependencies() {
-        ApplicationComponent applicationComponent =
-                AndroidApplication.getApplicationComponent(this);
-        GameComponent gameComponent = DaggerGameComponent.builder()
+    private GameComponent getGameComponent(ApplicationComponent applicationComponent) {
+        return DaggerGameComponent.builder()
                 .applicationComponent(applicationComponent)
                 .gameModule(new GameModule())
                 .build();
-        AnimationComponent animationComponent = DaggerAnimationComponent.builder()
+    }
+
+    private AnimationComponent getAnimationComponent(ApplicationComponent applicationComponent) {
+        return DaggerAnimationComponent.builder()
                 .applicationComponent(applicationComponent)
                 .animationModule(new AnimationModule(this))
                 .build();
-        gameAnimations = animationComponent.gameAnimations();
-
-
-        presenter = new GamePresenter(
-                gameComponent.initNewGameUseCase(),
-                gameComponent.registerNetworkGameListenerUseCase(),
-                gameComponent.addMoveUseCase()
-        );
-        ((GamePresenter) presenter).setView(this);
-
-
-        fakeMoveFromNetworkGenerator =
-                new FakeMoveFromNetworkGenerator(
-                        applicationComponent.gameStatusRepository(),
-                        applicationComponent.gameFactory(),
-                        applicationComponent.networkListenerRepository()
-                );
     }
 
-    /**
-     * Replace with dependency injection
-     */
-    private void initFakeNetworkGenerator() {
-
-    }
 
     private void resetViewVisibility() {
         winner.setVisibility(View.GONE);
