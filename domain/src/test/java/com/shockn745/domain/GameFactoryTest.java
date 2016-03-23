@@ -43,7 +43,7 @@ public class GameFactoryTest {
     public void createGameFromStatus_emptyBoard_resultingStatusIsSameAsOriginal() throws Exception {
         int id = 2;
         GameStatus status = NullObjects.makeEmptyGameStatus(id);
-        Game game = gameFactory.makeGame(status);
+        Game game = gameMapper.transform(status);
 
         assertEquals(status, gameMapper.transform(game));
     }
@@ -52,7 +52,7 @@ public class GameFactoryTest {
     public void createGameFromStatus_nonEmptyBoard_resultingStatusIsSameAsOriginal() throws Exception {
         int id = 2;
         GameStatus status = testScenarios.makeGameStatusWithMoveOn00(id);
-        Game game = gameFactory.makeGame(status);
+        Game game = gameMapper.transform(status);
         assertEquals(status, gameMapper.transform(game));
     }
 
@@ -62,7 +62,7 @@ public class GameFactoryTest {
         Game newGame = gameFactory.newGame();
         GameStatus status = gameMapper.transform(newGame);
 
-        Game fromStatus = gameFactory.makeGame(status);
+        Game fromStatus = gameMapper.transform(status);
 
         assertEquals(newGame, fromStatus);
     }
@@ -74,7 +74,7 @@ public class GameFactoryTest {
         moveOn00.play(new MoveModel(BoardCoordinatesModel.fromCoordinates(0, 0), Player.player1()));
         GameStatus status = gameMapper.transform(moveOn00);
 
-        Game fromStatus = gameFactory.makeGame(status);
+        Game fromStatus = gameMapper.transform(status);
 
         assertEquals(moveOn00, fromStatus);
     }

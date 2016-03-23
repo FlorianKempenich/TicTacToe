@@ -8,6 +8,4 @@ import com.shockn745.domain.Game;
  */
 public interface GameFactory {
     Game newGame();
-
-    Game makeGame(GameStatus status);
 }

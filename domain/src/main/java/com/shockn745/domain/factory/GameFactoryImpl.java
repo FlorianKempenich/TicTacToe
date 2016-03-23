@@ -29,10 +29,4 @@ public class GameFactoryImpl implements GameFactory {
         );
     }
 
-    @Override
-    public Game makeGame(GameStatus status) {
-        Board board = new Board(status.board);
-        return new Game(board, status, coordinatesMapper.transform(status.lastPlayedSquare));
-    }
-
 }

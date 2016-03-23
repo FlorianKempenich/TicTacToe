@@ -63,7 +63,7 @@ public class AddMoveUseCaseTest {
         testScenarios = new GameStatusTestScenarios(gameFactory);
         addMoveUseCase = new AddMoveUseCaseImpl(gameStatusRepository, gameMapper);
         GameStatus emptyGameStatus = NullObjects.makeEmptyGameStatus(GAME_ID);
-        game = gameFactory.makeGame(emptyGameStatus);
+        game = gameMapper.transform(emptyGameStatus);
     }
 
     @Test
