@@ -11,7 +11,7 @@ import com.shockn745.utils.NullObjects;
 
 import java.util.Arrays;
 
-public class BoardImpl implements Board {
+public class BoardImpl {
 
     private static final Player NO_PLAYER = Player.noPlayer();
     private Player[][] board;
@@ -28,7 +28,6 @@ public class BoardImpl implements Board {
         return board;
     }
 
-    @Override
     public void addMove(MoveModel move) throws IllegalMoveException {
         checkIfSquareAlreadyPlayed(move);
         addMoveToBoard(move);
@@ -51,7 +50,6 @@ public class BoardImpl implements Board {
         return !squareOwner.equals(NO_PLAYER);
     }
 
-    @Override
     public Player getPlayerAtCoordinates(int x, int y) {
         return board[x][y];
     }
@@ -67,22 +65,18 @@ public class BoardImpl implements Board {
                         "Y\n";
     }
 
-    @Override
     public BoardIterator getLineIterator(int lineIndex) {
         return new LineIterator(this, lineIndex);
     }
 
-    @Override
     public BoardIterator getColumnIterator(int columnIterator) {
         return new ColumnIterator(this, columnIterator);
     }
 
-    @Override
     public BoardIterator getFirstDiagonalIterator() {
         return new FirstDiagonalIterator(this);
     }
 
-    @Override
     public BoardIterator getSecondDiagonalIterator() {
         return new SecondDiagonalIterator(this);
     }

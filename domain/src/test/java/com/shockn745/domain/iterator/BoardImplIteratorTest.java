@@ -1,9 +1,8 @@
 package com.shockn745.domain.iterator;
 
-import com.shockn745.domain.Board;
+import com.shockn745.application.driving.dto.Player;
 import com.shockn745.domain.BoardImpl;
 import com.shockn745.domain.MoveModel;
-import com.shockn745.application.driving.dto.Player;
 import com.shockn745.domain.exceptions.IllegalMoveException;
 import com.shockn745.utils.NullObjects;
 
@@ -15,7 +14,7 @@ import static org.junit.Assert.assertTrue;
 
 public class BoardImplIteratorTest {
 
-    private Board board;
+    private BoardImpl board;
 
     @Before
     public void setUp() throws Exception {
@@ -23,7 +22,7 @@ public class BoardImplIteratorTest {
         initBoard(board);
     }
 
-    private static void initBoard(Board board) throws IllegalMoveException {
+    private static void initBoard(BoardImpl board) throws IllegalMoveException {
         board.addMove(new MoveModel(0, 0, Player.player1()));
         board.addMove(new MoveModel(1, 0, Player.player2()));
         board.addMove(new MoveModel(2, 0, Player.player2()));

@@ -1,15 +1,15 @@
 package com.shockn745.domain.iterator;
 
-import com.shockn745.domain.Board;
 import com.shockn745.application.driving.dto.Player;
+import com.shockn745.domain.BoardImpl;
 
 public class SecondDiagonalIterator implements BoardIterator {
 
-    private final Board board;
+    private final BoardImpl board;
 
     private int cursor = 0;
 
-    public SecondDiagonalIterator(Board board) {
+    public SecondDiagonalIterator(BoardImpl board) {
         this.board = board;
     }
 
