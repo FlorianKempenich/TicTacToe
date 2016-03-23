@@ -14,14 +14,14 @@ import com.shockn745.domain.iterator.BoardIterator;
 public class GameImpl implements Game {
 
     private static final Player NO_PLAYER = Player.noPlayer();
-    private final Board board;
+    private final BoardImpl board;
     private final int gameId;
     private Player previousPlayer = NO_PLAYER;
     private BoardCoordinatesModel lastSquarePlayed;
 
     private Player winner = NO_PLAYER;
 
-    public GameImpl(Board board, GameStatus status, BoardCoordinatesModel lastSquarePlayed) {
+    public GameImpl(BoardImpl board, GameStatus status, BoardCoordinatesModel lastSquarePlayed) {
         this.board = board;
         this.gameId = status.gameId;
         this.previousPlayer = status.lastPlayer;
@@ -34,7 +34,7 @@ public class GameImpl implements Game {
         checkIfSamePlayerTwice(move);
         board.addMove(move);
         previousPlayer = move.player;
-        lastSquarePlayed = new BoardCoordinatesModel(move.x, move.y);
+        lastSquarePlayed = BoardCoordinatesModel.fromCoordinates(move.x, move.y); //todo use coordinates in move
     }
 
     private void checkIfSamePlayerTwice(MoveModel currentMove) throws IllegalMoveException {
@@ -99,7 +99,7 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public Board getBoard() {
+    public BoardImpl getBoard() {
         return board;
     }
 

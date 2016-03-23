@@ -12,31 +12,25 @@ import com.shockn745.domain.GameFactory;
 public class GameDataMapper {
 
     private final GameFactory gameFactory;
+    private final CoordinatesMapper coordinatesMapper;
+    private final BoardMapper boardMapper;
 
     public GameDataMapper(GameFactory gameFactory) {
         this.gameFactory = gameFactory;
+        coordinatesMapper = new CoordinatesMapper();// todo put in constructor
+        boardMapper = new BoardMapper();
     }
 
     public GameStatus transform(Game game) {
-
-        BoardCoordinatesModel lastSquarePlayed = game.getLastSquarePlayed();
-
         return new GameStatus(
                 game.getGameId(),
-                game.getBoard().getBoardStatus(),
+                boardMapper.transform(game.getBoard()),
                 game.getPreviousPlayer(),
                 game.getWinner(),
-                map(lastSquarePlayed)
+                coordinatesMapper.transform(game.getLastSquarePlayed())
         );
     }
 
-    private BoardCoordinates map(BoardCoordinatesModel coordinatesModel) {
-        if (coordinatesModel.equals(BoardCoordinatesModel.noCoordinates())) {
-            return BoardCoordinates.noCoordinates();
-        } else {
-            return new BoardCoordinates(coordinatesModel.x, coordinatesModel.y);
-        }
-    }
 
     public Game transform(GameStatus gameStatus) {
         return gameFactory.makeGame(gameStatus);

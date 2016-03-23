@@ -1,6 +1,5 @@
 package com.shockn745.domain;
 
-import com.shockn745.application.driving.dto.BoardCoordinates;
 import com.shockn745.domain.exceptions.IllegalCoordinatesException;
 
 /**
@@ -11,27 +10,26 @@ public class BoardCoordinatesModel {
     public final int x;
     public final int y;
 
-    public BoardCoordinatesModel(BoardCoordinates coordinates) {
-        this(coordinates.x, coordinates.y);
-        checkForIllegalCoordinates();
+    private BoardCoordinatesModel(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
     public static BoardCoordinatesModel noCoordinates() {
         return new BoardCoordinatesModel(-1, -1);
     }
 
-    // todo revert to private after migrating Move to coordinate system
-    public BoardCoordinatesModel(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public static BoardCoordinatesModel fromCoordinates(int x, int y) {
+        checkForIllegalCoordinates(x, y);
+        return new BoardCoordinatesModel(x, y);
     }
 
-    private void checkForIllegalCoordinates() {
+    private static void checkForIllegalCoordinates(int x, int y) {
         checkForIllegalValue(x);
         checkForIllegalValue(y);
     }
 
-    private void checkForIllegalValue(int coord) {
+    private static void checkForIllegalValue(int coord) {
         if (coord < 0 || coord >= 3) {
             throw new IllegalCoordinatesException("Out of bounds coordinates");
         }

@@ -14,9 +14,7 @@ public class BoardCoordinatesModelTest {
 
     @Test
     public void createCoordinates_correctValues() throws Exception {
-        BoardCoordinates coordinates = new BoardCoordinates(1, 2);
-
-        BoardCoordinatesModel coordinatesModel = new BoardCoordinatesModel(coordinates);
+        BoardCoordinatesModel coordinatesModel = BoardCoordinatesModel.fromCoordinates(1, 2);
 
         assertEquals(1, coordinatesModel.x);
         assertEquals(2, coordinatesModel.y);
@@ -24,9 +22,8 @@ public class BoardCoordinatesModelTest {
 
     @Test
     public void illegalCoordinates_throwException() throws Exception {
-        BoardCoordinates coordinates = new BoardCoordinates(-1, 2);
         try {
-            new BoardCoordinatesModel(coordinates);
+            BoardCoordinatesModel.fromCoordinates(-1, 2);
             fail();
         } catch (IllegalCoordinatesException e) {
             assertEquals("Out of bounds coordinates", e.getMessage());

@@ -13,7 +13,7 @@ public interface Game {
 
     boolean checkIfFinishedAndUpdateWinner();
 
-    Board getBoard();
+    BoardImpl getBoard();
 
     int getGameId();
 

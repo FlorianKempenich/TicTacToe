@@ -21,6 +21,4 @@ public interface Board {
 
     BoardIterator getSecondDiagonalIterator();
 
-    Player[][] getBoardStatus();
-
 }

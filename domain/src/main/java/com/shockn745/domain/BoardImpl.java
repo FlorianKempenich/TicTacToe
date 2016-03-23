@@ -24,8 +24,7 @@ public class BoardImpl implements Board {
         board = NullObjects.makeEmptyBoard();
     }
 
-    @Override
-    public Player[][] getBoardStatus() {
+    public Player[][] getBoard() {
         return board;
     }
 
