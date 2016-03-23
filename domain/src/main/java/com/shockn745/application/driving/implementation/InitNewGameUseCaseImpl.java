@@ -6,6 +6,7 @@ import com.shockn745.application.driving.presentation.InitNewGameUseCase;
 import com.shockn745.domain.Game;
 import com.shockn745.domain.factory.GameFactory;
 import com.shockn745.domain.datamapper.GameMapper;
+import com.shockn745.domain.factory.MapperFactory;
 
 /**
  * @author Kempenich Florian
@@ -18,10 +19,10 @@ public class InitNewGameUseCaseImpl implements InitNewGameUseCase {
 
     public InitNewGameUseCaseImpl(
             GameStatusRepository gameStatusRepository,
-            GameFactory factory, GameMapper gameMapper) {
+            GameFactory factory, MapperFactory mapperFactory) {
         this.gameStatusRepository = gameStatusRepository;
         this.factory = factory;
-        this.gameMapper = gameMapper;
+        this.gameMapper = mapperFactory.gameMapper();
     }
 
     @Override

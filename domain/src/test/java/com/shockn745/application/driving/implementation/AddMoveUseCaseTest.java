@@ -61,7 +61,7 @@ public class AddMoveUseCaseTest {
         gameMapper = mapperFactory.gameMapper();
         moveMapper = new MoveMapper(new CoordinatesMapper());
         testScenarios = new GameStatusTestScenarios(gameFactory);
-        addMoveUseCase = new AddMoveUseCaseImpl(gameStatusRepository, gameMapper);
+        addMoveUseCase = new AddMoveUseCaseImpl(gameStatusRepository, mapperFactory);
         GameStatus emptyGameStatus = NullObjects.makeEmptyGameStatus(GAME_ID);
         game = gameMapper.transform(emptyGameStatus);
     }

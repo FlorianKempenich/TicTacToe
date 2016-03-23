@@ -3,7 +3,7 @@ package com.shockn745.presentation.internal.di.components;
 import com.shockn745.application.driven.GameStatusRepository;
 import com.shockn745.application.driven.NetworkListenerRepository;
 import com.shockn745.domain.factory.GameFactory;
-import com.shockn745.domain.datamapper.GameMapper;
+import com.shockn745.domain.factory.MapperFactory;
 import com.shockn745.presentation.internal.di.modules.ApplicationModule;
 
 import javax.inject.Singleton;
@@ -22,5 +22,5 @@ public interface ApplicationComponent {
 
     GameFactory gameFactory();
 
-    GameMapper gameDataMapper();
+    MapperFactory mapperFactory();
 }

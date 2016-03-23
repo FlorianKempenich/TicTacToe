@@ -10,6 +10,7 @@ import com.shockn745.application.driving.presentation.InitNewGameUseCase;
 import com.shockn745.application.driving.presentation.RegisterNetworkGameListenerUseCase;
 import com.shockn745.domain.factory.GameFactory;
 import com.shockn745.domain.datamapper.GameMapper;
+import com.shockn745.domain.factory.MapperFactory;
 import com.shockn745.presentation.internal.di.PerActivity;
 
 import dagger.Module;
@@ -26,16 +27,16 @@ public class UseCasesModule {
     InitNewGameUseCase provideInitNewGameUseCase(
             GameStatusRepository gameStatusRepository,
             GameFactory gameFactory,
-            GameMapper gameMapper) {
-        return new InitNewGameUseCaseImpl(gameStatusRepository, gameFactory, gameMapper);
+            MapperFactory mapperFactory) {
+        return new InitNewGameUseCaseImpl(gameStatusRepository, gameFactory, mapperFactory);
     }
 
     @Provides
     @PerActivity
     AddMoveUseCase provideAddMoveUseCase(
             GameStatusRepository gameStatusRepository,
-            GameMapper gameMapper) {
-        return new AddMoveUseCaseImpl(gameStatusRepository, gameMapper);
+            MapperFactory mapperFactory) {
+        return new AddMoveUseCaseImpl(gameStatusRepository, mapperFactory);
     }
 
     @Provides

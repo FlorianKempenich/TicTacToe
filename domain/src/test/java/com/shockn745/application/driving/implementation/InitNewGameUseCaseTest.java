@@ -54,9 +54,8 @@ public class InitNewGameUseCaseTest {
         MockitoAnnotations.initMocks(this);
         GameFactory gameFactory = new GameFactoryImpl();
         MapperFactory mapperFactory = new MapperFactoryImpl();
-        GameMapper gameMapper = mapperFactory.gameMapper();
         initNewGameUseCase =
-                new InitNewGameUseCaseImpl(gameStatusRepository, gameFactory, gameMapper);
+                new InitNewGameUseCaseImpl(gameStatusRepository, gameFactory, mapperFactory);
     }
 
     @Test
