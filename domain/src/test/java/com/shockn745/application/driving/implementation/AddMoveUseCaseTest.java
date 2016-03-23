@@ -10,11 +10,13 @@ import com.shockn745.application.driving.presentation.AddMoveUseCase;
 import com.shockn745.domain.BoardCoordinatesModel;
 import com.shockn745.domain.Game;
 import com.shockn745.domain.factory.GameFactory;
+import com.shockn745.domain.factory.GameFactoryImpl;
 import com.shockn745.domain.factory.MapperFactory;
 import com.shockn745.domain.MoveModel;
 import com.shockn745.domain.datamapper.CoordinatesMapper;
 import com.shockn745.domain.datamapper.GameMapper;
 import com.shockn745.domain.datamapper.MoveMapper;
+import com.shockn745.domain.factory.MapperFactoryImpl;
 import com.shockn745.testutil.GameStatusTestScenarios;
 import com.shockn745.utils.NullObjects;
 
@@ -54,8 +56,8 @@ public class AddMoveUseCaseTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        GameFactory gameFactory = new GameFactory();
-        MapperFactory mapperFactory = new MapperFactory();
+        GameFactory gameFactory = new GameFactoryImpl();
+        MapperFactory mapperFactory = new MapperFactoryImpl();
         gameMapper = mapperFactory.gameMapper();
         moveMapper = new MoveMapper(new CoordinatesMapper());
         testScenarios = new GameStatusTestScenarios(gameFactory);

@@ -3,6 +3,8 @@ package com.shockn745.domain;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Player;
 import com.shockn745.domain.datamapper.GameMapper;
+import com.shockn745.domain.factory.GameFactoryImpl;
+import com.shockn745.domain.factory.MapperFactoryImpl;
 import com.shockn745.testutil.GameStatusTestScenarios;
 import com.shockn745.utils.NullObjects;
 
@@ -22,9 +24,9 @@ public class GameFactoryTest {
 
     @Before
     public void setUp() throws Exception {
-        gameFactory = new com.shockn745.domain.factory.GameFactory();
+        gameFactory = new GameFactoryImpl();
         com.shockn745.domain.factory.MapperFactory
-                mapperFactory = new com.shockn745.domain.factory.MapperFactory();
+                mapperFactory = new MapperFactoryImpl();
         gameMapper = mapperFactory.gameMapper();
         testScenarios = new GameStatusTestScenarios(gameFactory);
     }

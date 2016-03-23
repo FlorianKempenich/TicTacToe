@@ -5,6 +5,8 @@ import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Player;
 import com.shockn745.domain.datamapper.GameMapper;
 import com.shockn745.domain.exceptions.IllegalMoveException;
+import com.shockn745.domain.factory.GameFactoryImpl;
+import com.shockn745.domain.factory.MapperFactoryImpl;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,9 +24,9 @@ public class GameTest {
     @Before
     public void setUp() throws Exception {
         com.shockn745.domain.factory.GameFactory
-                factory = new com.shockn745.domain.factory.GameFactory();
+                factory = new GameFactoryImpl();
         com.shockn745.domain.factory.MapperFactory
-                mapperFactory = new com.shockn745.domain.factory.MapperFactory();
+                mapperFactory = new MapperFactoryImpl();
         gameMapper = mapperFactory.gameMapper();
         game = factory.makeNewGame();
 

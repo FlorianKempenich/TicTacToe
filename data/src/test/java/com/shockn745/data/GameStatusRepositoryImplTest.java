@@ -4,8 +4,10 @@ import com.shockn745.application.driven.GameStatusRepository;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.domain.Game;
 import com.shockn745.domain.factory.GameFactory;
+import com.shockn745.domain.factory.GameFactoryImpl;
 import com.shockn745.domain.factory.MapperFactory;
 import com.shockn745.domain.datamapper.GameMapper;
+import com.shockn745.domain.factory.MapperFactoryImpl;
 import com.shockn745.utils.NullObjects;
 
 import org.junit.Before;
@@ -40,8 +42,8 @@ public class GameStatusRepositoryImplTest {
     }
 
     private static GameStatus makeNewGameStatusWithNoId() {
-        GameFactory factory = new GameFactory();
-        MapperFactory mapperFactory = new MapperFactory();
+        GameFactory factory = new GameFactoryImpl();
+        MapperFactory mapperFactory = new MapperFactoryImpl();
         GameMapper gameMapper = mapperFactory.gameMapper();
         Game game = factory.makeNewGame();
         return gameMapper.transform(game);

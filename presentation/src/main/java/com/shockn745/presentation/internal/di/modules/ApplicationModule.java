@@ -6,8 +6,10 @@ import com.shockn745.application.driven.GameStatusRepository;
 import com.shockn745.application.driven.NetworkListenerRepository;
 import com.shockn745.data.InMemoryGameStatusRepository;
 import com.shockn745.domain.factory.GameFactory;
+import com.shockn745.domain.factory.GameFactoryImpl;
 import com.shockn745.domain.factory.MapperFactory;
 import com.shockn745.domain.datamapper.GameMapper;
+import com.shockn745.domain.factory.MapperFactoryImpl;
 import com.shockn745.network.NetworkListenerRepositoryImpl;
 import com.shockn745.presentation.AndroidApplication;
 
@@ -49,13 +51,13 @@ public class ApplicationModule {
     @Provides
     @Singleton
     GameFactory provideGameFactory() {
-        return new GameFactory();
+        return new GameFactoryImpl();
     }
 
     @Provides
     @Singleton
     MapperFactory provideMapperFactory() {
-        return new MapperFactory();
+        return new MapperFactoryImpl();
     }
 
     @Provides

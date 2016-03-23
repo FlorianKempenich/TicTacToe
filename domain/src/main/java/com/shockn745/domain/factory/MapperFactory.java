@@ -7,18 +7,10 @@ import com.shockn745.domain.datamapper.GameMapper;
 /**
  * @author Kempenich Florian
  */
-public class MapperFactory {
+public interface MapperFactory {
+    CoordinatesMapper coordinatesMapper();
 
-    public CoordinatesMapper coordinatesMapper() {
-        return new CoordinatesMapper();
-    }
+    BoardMapper boardMapper();
 
-    public BoardMapper boardMapper() {
-        return new BoardMapper();
-    }
-
-    public GameMapper gameMapper() {
-        return new GameMapper(coordinatesMapper(), boardMapper());
-    }
-
+    GameMapper gameMapper();
 }
