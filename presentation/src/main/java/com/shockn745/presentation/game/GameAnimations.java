@@ -130,8 +130,7 @@ public class GameAnimations {
         float minHorizontal = Math.min(distanceToLeftSide, distanceToRightSide);
         float minVertical = Math.min(distanceToBottom, distanceToTop);
 
-        float startRadius = Math.min(minHorizontal, minVertical);
-        return startRadius;
+        return Math.min(minHorizontal, minVertical);
     }
 
     private float computeEndRadius() {

@@ -1,5 +1,8 @@
 package com.shockn745.application.driving.dto;
 
+import com.shockn745.domain.Board;
+import com.shockn745.domain.Square;
+
 import java.util.Arrays;
 
 /**
@@ -10,12 +13,12 @@ public class GameStatus {
     public static final int NO_ID = -1;
 
     public final int gameId;
-    public final Player[][] board;
+    public final Square[][] board;
     public final Player lastPlayer;
     public final Player winner;
     public final BoardCoordinates lastPlayedSquare;
 
-    public GameStatus(int gameId, Player[][] board, Player lastPlayer, Player winner, BoardCoordinates lastPlayedSquare) {
+    public GameStatus(int gameId, Square[][] board, Player lastPlayer, Player winner, BoardCoordinates lastPlayedSquare) {
         this.gameId = gameId;
         this.board = board;
         this.lastPlayer = lastPlayer;
@@ -31,15 +34,6 @@ public class GameStatus {
      */
     public GameStatus updateWithId(int id) {
         return new GameStatus(id, this.board, this.lastPlayer, this.winner, this.lastPlayedSquare);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = gameId;
-        result = 31 * result + Arrays.deepHashCode(board);
-        result = 31 * result + (lastPlayer != null ? lastPlayer.hashCode() : 0);
-        result = 31 * result + (winner != null ? winner.hashCode() : 0);
-        return result;
     }
 
     @Override
@@ -63,7 +57,21 @@ public class GameStatus {
                 : status.lastPlayer != null) {
             return false;
         }
-        return winner != null ? winner.equals(status.winner) : status.winner == null;
+        if (winner != null ? !winner.equals(status.winner) : status.winner != null) {
+            return false;
+        }
+        return lastPlayedSquare != null ? lastPlayedSquare.equals(status.lastPlayedSquare)
+                : status.lastPlayedSquare == null;
 
+    }
+
+    @Override
+    public int hashCode() {
+        int result = gameId;
+        result = 31 * result + Arrays.deepHashCode(board);
+        result = 31 * result + (lastPlayer != null ? lastPlayer.hashCode() : 0);
+        result = 31 * result + (winner != null ? winner.hashCode() : 0);
+        result = 31 * result + (lastPlayedSquare != null ? lastPlayedSquare.hashCode() : 0);
+        return result;
     }
 }

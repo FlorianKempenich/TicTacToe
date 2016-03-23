@@ -45,7 +45,7 @@ public class Game {
     /**
      * @return True if the game is finished, False otherwise
      */
-    public boolean checkIfFinishedAndUpdateWinner() {
+    public boolean checkIfFinishedAndUpdateWinStatus() {
         /*
         Not sure that it's a good idea to mix responsibilities like this but the only other
         solution I could think of would be to do the iteration process all over again when looking

@@ -6,7 +6,6 @@ import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.presentation.AddMoveUseCase;
 import com.shockn745.domain.Game;
 import com.shockn745.domain.MoveModel;
-import com.shockn745.domain.datamapper.CoordinatesMapper;
 import com.shockn745.domain.datamapper.GameMapper;
 import com.shockn745.domain.datamapper.MoveMapper;
 import com.shockn745.domain.exceptions.IllegalMoveException;
@@ -53,7 +52,7 @@ public class AddMoveUseCaseImpl implements AddMoveUseCase {
         GameStatus gameStatus = gameStatusRepository.getGame(gameId);
         Game game = gameMapper.transform(gameStatus);
         game.play(moveModel);
-        game.checkIfFinishedAndUpdateWinner();
+        game.checkIfFinishedAndUpdateWinStatus();
 
         GameStatus status = gameMapper.transform(game);
         gameStatusRepository.saveGame(status);

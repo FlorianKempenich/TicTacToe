@@ -7,8 +7,6 @@ import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.network.AddMoveFromNetworkUseCase;
 import com.shockn745.domain.Game;
-import com.shockn745.domain.MoveModel;
-import com.shockn745.domain.datamapper.CoordinatesMapper;
 import com.shockn745.domain.datamapper.GameMapper;
 import com.shockn745.domain.datamapper.MoveMapper;
 import com.shockn745.domain.exceptions.IllegalMoveException;
@@ -69,7 +67,7 @@ public class AddMoveFromNetworkUseCaseImpl implements AddMoveFromNetworkUseCase 
     private GameStatus playMoveAndGetStatus(Move move, Game game)
             throws IllegalMoveException {
         game.play(moveMapper.transform(move));
-        game.checkIfFinishedAndUpdateWinner();
+        game.checkIfFinishedAndUpdateWinStatus();
         return gameMapper.transform(game);
     }
 

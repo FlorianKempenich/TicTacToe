@@ -23,7 +23,7 @@ public class GameMapper {
     public GameStatus transform(Game game) {
         return new GameStatus(
                 game.getGameId(),
-                boardMapper.transform(game.getBoard()),
+                boardMapper.transformNew(game.getBoard()),
                 game.getPreviousPlayer(),
                 game.getWinner(),
                 coordinatesMapper.transform(game.getLastSquarePlayed())
