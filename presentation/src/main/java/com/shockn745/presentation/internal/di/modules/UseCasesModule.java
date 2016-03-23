@@ -8,7 +8,7 @@ import com.shockn745.application.driving.implementation.RegisterNetworkGameListe
 import com.shockn745.application.driving.presentation.AddMoveUseCase;
 import com.shockn745.application.driving.presentation.InitNewGameUseCase;
 import com.shockn745.application.driving.presentation.RegisterNetworkGameListenerUseCase;
-import com.shockn745.domain.GameFactory;
+import com.shockn745.domain.factory.GameFactory;
 import com.shockn745.domain.datamapper.GameMapper;
 import com.shockn745.presentation.internal.di.PerActivity;
 

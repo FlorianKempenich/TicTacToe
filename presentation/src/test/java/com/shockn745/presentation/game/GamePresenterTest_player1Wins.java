@@ -5,7 +5,7 @@ import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.presentation.AddMoveUseCase;
 import com.shockn745.application.driving.presentation.InitNewGameUseCase;
 import com.shockn745.application.driving.presentation.RegisterNetworkGameListenerUseCase;
-import com.shockn745.domain.GameFactory;
+import com.shockn745.domain.factory.GameFactory;
 import com.shockn745.testutil.GameStatusTestScenarios;
 
 import org.junit.Before;

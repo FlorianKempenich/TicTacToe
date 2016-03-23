@@ -4,7 +4,7 @@ import com.shockn745.application.driving.dto.BoardCoordinates;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.dto.Player;
-import com.shockn745.domain.GameFactory;
+import com.shockn745.domain.factory.GameFactory;
 import com.shockn745.testutil.GameStatusTestScenarios;
 import com.shockn745.application.driving.presentation.AddMoveUseCase;
 import com.shockn745.application.driving.presentation.InitNewGameUseCase;

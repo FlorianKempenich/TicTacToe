@@ -4,7 +4,7 @@ import com.shockn745.application.driven.GameStatusRepository;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.presentation.InitNewGameUseCase;
 import com.shockn745.domain.Game;
-import com.shockn745.domain.GameFactory;
+import com.shockn745.domain.factory.GameFactory;
 import com.shockn745.domain.datamapper.GameMapper;
 
 /**

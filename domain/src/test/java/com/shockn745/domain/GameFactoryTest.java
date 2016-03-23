@@ -2,8 +2,6 @@ package com.shockn745.domain;
 
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Player;
-import com.shockn745.domain.datamapper.BoardMapper;
-import com.shockn745.domain.datamapper.CoordinatesMapper;
 import com.shockn745.domain.datamapper.GameMapper;
 import com.shockn745.testutil.GameStatusTestScenarios;
 import com.shockn745.utils.NullObjects;
@@ -18,14 +16,15 @@ import static org.junit.Assert.*;
  */
 public class GameFactoryTest {
 
-    GameFactory gameFactory;
+    com.shockn745.domain.factory.GameFactory gameFactory;
     GameMapper gameMapper;
     GameStatusTestScenarios testScenarios;
 
     @Before
     public void setUp() throws Exception {
-        gameFactory = new GameFactory();
-        MapperFactory mapperFactory = new MapperFactory();
+        gameFactory = new com.shockn745.domain.factory.GameFactory();
+        com.shockn745.domain.factory.MapperFactory
+                mapperFactory = new com.shockn745.domain.factory.MapperFactory();
         gameMapper = mapperFactory.gameMapper();
         testScenarios = new GameStatusTestScenarios(gameFactory);
     }

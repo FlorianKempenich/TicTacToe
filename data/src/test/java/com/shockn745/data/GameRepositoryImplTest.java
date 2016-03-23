@@ -2,7 +2,7 @@ package com.shockn745.data;
 
 import com.shockn745.application.driven.GameRepository;
 import com.shockn745.domain.Game;
-import com.shockn745.domain.GameFactory;
+import com.shockn745.domain.factory.GameFactory;
 
 import org.junit.Before;
 import org.junit.Test;

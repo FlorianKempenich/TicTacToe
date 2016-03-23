@@ -1,6 +1,8 @@
-package com.shockn745.domain;
+package com.shockn745.domain.factory;
 
 import com.shockn745.application.driving.dto.GameStatus;
+import com.shockn745.domain.Board;
+import com.shockn745.domain.Game;
 import com.shockn745.domain.datamapper.CoordinatesMapper;
 import com.shockn745.utils.NullObjects;
 

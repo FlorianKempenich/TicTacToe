@@ -3,7 +3,6 @@ package com.shockn745.domain.datamapper;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.domain.Board;
 import com.shockn745.domain.Game;
-import com.shockn745.domain.GameFactory;
 
 /**
  * @author Kempenich Florian

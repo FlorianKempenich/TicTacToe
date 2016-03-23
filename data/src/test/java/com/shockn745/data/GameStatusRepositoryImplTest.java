@@ -3,10 +3,8 @@ package com.shockn745.data;
 import com.shockn745.application.driven.GameStatusRepository;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.domain.Game;
-import com.shockn745.domain.GameFactory;
-import com.shockn745.domain.MapperFactory;
-import com.shockn745.domain.datamapper.BoardMapper;
-import com.shockn745.domain.datamapper.CoordinatesMapper;
+import com.shockn745.domain.factory.GameFactory;
+import com.shockn745.domain.factory.MapperFactory;
 import com.shockn745.domain.datamapper.GameMapper;
 import com.shockn745.utils.NullObjects;
 

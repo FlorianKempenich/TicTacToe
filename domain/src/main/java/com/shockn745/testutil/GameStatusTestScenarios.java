@@ -3,7 +3,7 @@ package com.shockn745.testutil;
 import com.shockn745.application.driving.dto.BoardCoordinates;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Player;
-import com.shockn745.domain.GameFactory;
+import com.shockn745.domain.factory.GameFactory;
 import com.shockn745.utils.NullObjects;
 
 /**
