@@ -1,6 +1,7 @@
 package com.shockn745.domain.iterator;
 
 import com.shockn745.application.driving.dto.Player;
+import com.shockn745.domain.BoardCoordinatesModel;
 import com.shockn745.domain.BoardImpl;
 import com.shockn745.domain.MoveModel;
 import com.shockn745.domain.exceptions.IllegalMoveException;
@@ -23,15 +24,15 @@ public class BoardImplIteratorTest {
     }
 
     private static void initBoard(BoardImpl board) throws IllegalMoveException {
-        board.addMove(new MoveModel(0, 0, Player.player1()));
-        board.addMove(new MoveModel(1, 0, Player.player2()));
-        board.addMove(new MoveModel(2, 0, Player.player2()));
-        board.addMove(new MoveModel(0, 1, Player.player1()));
-        board.addMove(new MoveModel(1, 1, Player.player1()));
-        board.addMove(new MoveModel(2, 1, Player.player1()));
-        board.addMove(new MoveModel(0, 2, Player.player2()));
-        board.addMove(new MoveModel(1, 2, Player.player1()));
-        board.addMove(new MoveModel(2, 2, Player.player2()));
+        board.addMove(new MoveModel(BoardCoordinatesModel.fromCoordinates(0, 0), Player.player1()));
+        board.addMove(new MoveModel(BoardCoordinatesModel.fromCoordinates(1, 0), Player.player2()));
+        board.addMove(new MoveModel(BoardCoordinatesModel.fromCoordinates(2, 0), Player.player2()));
+        board.addMove(new MoveModel(BoardCoordinatesModel.fromCoordinates(0, 1), Player.player1()));
+        board.addMove(new MoveModel(BoardCoordinatesModel.fromCoordinates(1, 1), Player.player1()));
+        board.addMove(new MoveModel(BoardCoordinatesModel.fromCoordinates(2, 1), Player.player1()));
+        board.addMove(new MoveModel(BoardCoordinatesModel.fromCoordinates(0, 2), Player.player2()));
+        board.addMove(new MoveModel(BoardCoordinatesModel.fromCoordinates(1, 2), Player.player1()));
+        board.addMove(new MoveModel(BoardCoordinatesModel.fromCoordinates(2, 2), Player.player2()));
 //        System.out.println(board);
     }
 

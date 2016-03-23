@@ -1,64 +1,55 @@
 package com.shockn745.domain;
 
-import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.dto.Player;
 import com.shockn745.domain.exceptions.InvalidMoveException;
 
 public class MoveModel {
 
-    public final int x;
-    public final int y;
+    public final BoardCoordinatesModel coordinates;
 
     public final Player player;
 
-    public MoveModel(Move move) {
-        this(move.x, move.y, move.player);
-    }
-
-    public MoveModel(int x, int y, Player player) {
-        this.y = y;
-        this.x = x;
+    public MoveModel(BoardCoordinatesModel coordinates, Player player) {
+        this.coordinates = coordinates;
         this.player = player;
         checkIfMoveValid();
     }
 
     private void checkIfMoveValid() {
-        if (isOutOfBounds()) {
-            throw new InvalidMoveException("Out of bounds coordinates");
-        } else if (player == null) {
+        if (player == null) {
             throw new InvalidMoveException("Null player, INITIALIZE PLAYER");
         } else if (player.equals(Player.noPlayer())) {
             throw new InvalidMoveException("Invalid player. Play only with PLAYER 1 OR PLAYER 2");
         }
     }
 
-    private boolean isOutOfBounds() {
-        return x < 0
-                || x > 2
-                || y < 0
-                || y > 2;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = x;
-        result = 31 * result + y;
-        result = 31 * result + player.hashCode();
-        return result;
+    public boolean sameCoordinates(MoveModel other) {
+        return this.coordinates.equals(other.coordinates);
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
-        MoveModel move = (MoveModel) o;
+        MoveModel moveModel = (MoveModel) o;
 
-        return x == move.x && y == move.y && player.equals(move.player);
+        if (coordinates != null ? !coordinates.equals(moveModel.coordinates)
+                : moveModel.coordinates != null) {
+            return false;
+        }
+        return player != null ? player.equals(moveModel.player) : moveModel.player == null;
 
     }
 
-    public boolean sameCoordinates(MoveModel other) {
-        return x == other.x && y == other.y;
+    @Override
+    public int hashCode() {
+        int result = coordinates != null ? coordinates.hashCode() : 0;
+        result = 31 * result + (player != null ? player.hashCode() : 0);
+        return result;
     }
 }

@@ -1,15 +1,19 @@
 package com.shockn745.application.driving.implementation;
 
 import com.shockn745.application.driven.GameStatusRepository;
+import com.shockn745.application.driving.dto.BoardCoordinates;
 import com.shockn745.application.driving.dto.GameError;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.dto.Player;
 import com.shockn745.application.driving.presentation.AddMoveUseCase;
+import com.shockn745.domain.BoardCoordinatesModel;
 import com.shockn745.domain.Game;
 import com.shockn745.domain.GameFactory;
 import com.shockn745.domain.MoveModel;
+import com.shockn745.domain.datamapper.CoordinatesMapper;
 import com.shockn745.domain.datamapper.GameMapper;
+import com.shockn745.domain.datamapper.MoveMapper;
 import com.shockn745.testutil.GameStatusTestScenarios;
 import com.shockn745.utils.NullObjects;
 
@@ -44,12 +48,14 @@ public class AddMoveUseCaseTest {
     ArgumentCaptor<GameError> gameErrorArgumentCaptor;
     GameStatusTestScenarios testScenarios;
     GameMapper gameMapper;
+    MoveMapper moveMapper;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         GameFactory gameFactory = new GameFactory();
         gameMapper = new GameMapper(gameFactory);
+        moveMapper = new MoveMapper(new CoordinatesMapper());
         testScenarios = new GameStatusTestScenarios(gameFactory);
         addMoveUseCase = new AddMoveUseCaseImpl(gameStatusRepository, gameMapper);
         GameStatus emptyGameStatus = NullObjects.makeEmptyGameStatus(GAME_ID);
@@ -59,7 +65,7 @@ public class AddMoveUseCaseTest {
     @Test
     public void addMoveToEmptyGame_Success_updateGameStateInRepository() throws Exception {
         updateGameInRepository();
-        Move move = new Move(0, 0, Player.player1());
+        Move move = new Move(new BoardCoordinates(0,0), Player.player1());
         addMoveUseCase.execute(move, GAME_ID, callback);
         verify(gameStatusRepository).saveGame(any(GameStatus.class));
     }
@@ -72,7 +78,7 @@ public class AddMoveUseCaseTest {
     @Test
     public void addMoveToEmptyGame_Success_verifyMoveAddedRightPosition() throws Exception {
         updateGameInRepository();
-        Move move = new Move(0, 0, Player.player1());
+        Move move = new Move(new BoardCoordinates(0,0), Player.player1());
         addMoveUseCase.execute(move, GAME_ID, callback);
         verify(callback).onSuccess(gameStatusArgumentCaptor.capture());
 
@@ -83,11 +89,11 @@ public class AddMoveUseCaseTest {
 
     @Test
     public void add2MovesToTheSameSquare_Error_checkErrorMessage() throws Exception {
-        Move move1 = new Move(0, 0, Player.player1());
-        Move move2 = new Move(0, 0, Player.player2());
+        Move move1 = new Move(new BoardCoordinates(0,0), Player.player1());
+        Move move2 = new Move(new BoardCoordinates(0,0), Player.player2());
 
         // Add first move to emptyGame
-        game.play(new MoveModel(move1));
+        game.play(moveMapper.transform(move1));
         updateGameInRepository();
 
         addMoveUseCase.execute(move2, GAME_ID, callback);
@@ -100,11 +106,11 @@ public class AddMoveUseCaseTest {
 
     @Test
     public void add2MovesSamePlayer_Error_checkErrorMessage() throws Exception {
-        Move move1 = new Move(0, 0, Player.player1());
-        Move move2 = new Move(1, 1, Player.player1());
+        Move move1 = new Move(new BoardCoordinates(0,0), Player.player1());
+        Move move2 = new Move(new BoardCoordinates(1,1), Player.player1());
 
         // Add first move to emptyGame
-        game.play(new MoveModel(move1));
+        game.play(moveMapper.transform(move1));
         updateGameInRepository();
 
         addMoveUseCase.execute(move2, GAME_ID, callback);
@@ -118,16 +124,16 @@ public class AddMoveUseCaseTest {
     @Test
     public void addLastMove_GameFinished_correctWinner() throws Exception {
         // Setup game -- Play all the moves except last one -- Player 1 wins on first line
-        game.play(new MoveModel(0, 0, Player.player1()));
-        game.play(new MoveModel(1, 1, Player.player2()));
-        game.play(new MoveModel(1, 0, Player.player1()));
-        game.play(new MoveModel(2, 2, Player.player2()));
+        game.play(new MoveModel(BoardCoordinatesModel.fromCoordinates(0, 0), Player.player1()));
+        game.play(new MoveModel(BoardCoordinatesModel.fromCoordinates(1, 1), Player.player2()));
+        game.play(new MoveModel(BoardCoordinatesModel.fromCoordinates(1, 0), Player.player1()));
+        game.play(new MoveModel(BoardCoordinatesModel.fromCoordinates(2, 2), Player.player2()));
         updateGameInRepository();
         // Last play : 2-0 Player 1 : Left for use-case
 
         GameStatus expectedStatus = testScenarios.makeGameStatusPlayer1WonFirstRow(GAME_ID);
 
-        addMoveUseCase.execute(new Move(2, 0, Player.player1()), GAME_ID, callback);
+        addMoveUseCase.execute(new Move(new BoardCoordinates(2,0), Player.player1()), GAME_ID, callback);
         verify(callback).onSuccess(gameStatusArgumentCaptor.capture());
 
         GameStatus result = gameStatusArgumentCaptor.getValue();
@@ -141,7 +147,7 @@ public class AddMoveUseCaseTest {
         when(gameStatusRepository.contains(eq(invalidId))).thenReturn(false);
         when(gameStatusRepository.getGame(eq(invalidId))).thenReturn(null);
 
-        addMoveUseCase.execute(new Move(0, 0, Player.player1()), invalidId, callback);
+        addMoveUseCase.execute(new Move(new BoardCoordinates(0,0), Player.player1()), invalidId, callback);
         verify(callback).onError(gameErrorArgumentCaptor.capture());
 
         assertEquals(

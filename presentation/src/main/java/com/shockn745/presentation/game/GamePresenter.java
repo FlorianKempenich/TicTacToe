@@ -3,6 +3,7 @@ package com.shockn745.presentation.game;
 import android.support.annotation.NonNull;
 
 import com.shockn745.application.driven.NetworkListenerRepository;
+import com.shockn745.application.driving.dto.BoardCoordinates;
 import com.shockn745.application.driving.dto.GameError;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Move;
@@ -77,7 +78,7 @@ public class GamePresenter implements GameContract.Presenter {
         if (shouldPlayMove(x, y)) {
             Player currentPlayer = getCurrentPlayer();
             addMoveUseCase.execute(
-                    new Move(x, y, currentPlayer),
+                    new Move(new BoardCoordinates(x,y), currentPlayer),
                     currentGameStatus.gameId,
                     addMoveCallback
             );

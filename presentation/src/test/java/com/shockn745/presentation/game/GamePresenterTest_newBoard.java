@@ -116,7 +116,7 @@ public class GamePresenterTest_newBoard {
         // Verify use case called
         presenter.onSquareClicked(0, 0);
         verify(addMoveUseCase).execute(
-                eq(new Move(0, 0, Player.player1())),
+                eq(new Move(new BoardCoordinates(0,0), Player.player1())),
                 anyInt(),
                 addMoveArgumentCaptor.capture()
         );

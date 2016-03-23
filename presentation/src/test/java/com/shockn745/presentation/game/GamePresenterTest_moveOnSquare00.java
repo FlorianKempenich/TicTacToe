@@ -1,5 +1,6 @@
 package com.shockn745.presentation.game;
 
+import com.shockn745.application.driving.dto.BoardCoordinates;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.dto.Player;
@@ -54,7 +55,7 @@ public class GamePresenterTest_moveOnSquare00 {
         // Play first move
         presenter.onSquareClicked(0, 0);
         verify(addMoveUseCase).execute(
-                eq(new Move(0, 0, Player.player1())),
+                eq(new Move(new BoardCoordinates(0,0), Player.player1())),
                 anyInt(),
                 addMoveArgumentCaptor.capture()
         );
@@ -67,7 +68,7 @@ public class GamePresenterTest_moveOnSquare00 {
     public void clickOnButton_AddSecondMoveWithSecondPlayer() throws Exception {
         presenter.onSquareClicked(1, 0);
         verify(addMoveUseCase).execute(
-                eq(new Move(1, 0, Player.player2())),
+                eq(new Move(new BoardCoordinates(1,0), Player.player2())),
                 anyInt(),
                 any(AddMoveUseCase.Callback.class)
         );

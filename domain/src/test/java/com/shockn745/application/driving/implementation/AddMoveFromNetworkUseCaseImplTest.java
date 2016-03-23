@@ -2,6 +2,7 @@ package com.shockn745.application.driving.implementation;
 
 import com.shockn745.application.driven.GameStatusRepository;
 import com.shockn745.application.driven.NetworkListenerRepository;
+import com.shockn745.application.driving.dto.BoardCoordinates;
 import com.shockn745.application.driving.dto.GameError;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Move;
@@ -89,7 +90,7 @@ public class AddMoveFromNetworkUseCaseImplTest {
 
     @Test
     public void addMoveToEmptyGame_Success_updateGameStateInRepository() throws Exception {
-        Move move = new Move(0, 0, Player.player1());
+        Move move = new Move(new BoardCoordinates(0,0), Player.player1());
         addMoveFromNetworkUseCase.execute(move, EMPTY_GAME_ID, errorCallback);
         verify(gameStatusRepository).saveGame(any(GameStatus.class));
     }
@@ -97,7 +98,7 @@ public class AddMoveFromNetworkUseCaseImplTest {
     @Test
     public void addMove_listenerCalled() throws Exception {
         addMoveFromNetworkUseCase.execute(
-                new Move(0, 0, Player.player1()),
+                new Move(new BoardCoordinates(0,0), Player.player1()),
                 EMPTY_GAME_ID,
                 errorCallback
         );
@@ -108,7 +109,7 @@ public class AddMoveFromNetworkUseCaseImplTest {
     @Test
     public void addMove_MoveAdded() throws Exception {
         addMoveFromNetworkUseCase.execute(
-                new Move(0, 0, Player.player1()),
+                new Move(new BoardCoordinates(0,0), Player.player1()),
                 EMPTY_GAME_ID,
                 errorCallback
         );
@@ -122,7 +123,7 @@ public class AddMoveFromNetworkUseCaseImplTest {
     @Test
     public void illegalMove_doNotCallListeners() throws Exception {
         addMoveFromNetworkUseCase.execute(
-                new Move(0, 0, Player.player1()),
+                new Move(new BoardCoordinates(0,0), Player.player1()),
                 MOVE_ON_00_GAME_ID,
                 errorCallback
         );
@@ -132,7 +133,7 @@ public class AddMoveFromNetworkUseCaseImplTest {
     @Test
     public void illegalMove_notifyErrorCallback() throws Exception {
         addMoveFromNetworkUseCase.execute(
-                new Move(0, 1, Player.player1()),
+                new Move(new BoardCoordinates(0,1), Player.player1()),
                 MOVE_ON_00_GAME_ID,
                 errorCallback
         );

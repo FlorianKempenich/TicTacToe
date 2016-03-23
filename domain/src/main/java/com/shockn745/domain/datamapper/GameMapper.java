@@ -16,7 +16,7 @@ public class GameMapper {
     public GameMapper(GameFactory gameFactory) {
         this.gameFactory = gameFactory;
         coordinatesMapper = new CoordinatesMapper();// todo put in constructor
-        boardMapper = new BoardMapper();
+        boardMapper = new BoardMapper();// todo put in constructor
     }
 
     public GameStatus transform(Game game) {

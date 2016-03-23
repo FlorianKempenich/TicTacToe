@@ -34,8 +34,8 @@ public class BoardImpl {
     }
 
     private void addMoveToBoard(MoveModel currentMove) {
-        int x = currentMove.x;
-        int y = currentMove.y;
+        int x = currentMove.coordinates.x;
+        int y = currentMove.coordinates.y;
         board[x][y] = currentMove.player;
     }
 
@@ -46,7 +46,9 @@ public class BoardImpl {
     }
 
     private boolean coordinatesAlreadyPlayed(MoveModel currentMove) {
-        Player squareOwner = getPlayerAtCoordinates(currentMove.x, currentMove.y);
+        int x = currentMove.coordinates.x;
+        int y = currentMove.coordinates.y;
+        Player squareOwner = getPlayerAtCoordinates(x, y);
         return !squareOwner.equals(NO_PLAYER);
     }
 

@@ -33,7 +33,7 @@ public class Game {
         checkIfSamePlayerTwice(move);
         board.addMove(move);
         previousPlayer = move.player;
-        lastSquarePlayed = BoardCoordinatesModel.fromCoordinates(move.x, move.y); //todo use coordinates in move
+        lastSquarePlayed = move.coordinates;
     }
 
     private void checkIfSamePlayerTwice(MoveModel currentMove) throws IllegalMoveException {

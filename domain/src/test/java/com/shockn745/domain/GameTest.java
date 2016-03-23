@@ -29,15 +29,15 @@ public class GameTest {
 
     @Test(expected = IllegalMoveException.class)
     public void playTwoMovesSameSpot_ThrowIllegalMoveException() throws Exception {
-        game.play(new MoveModel(0, 0, Player.player1()));
-        game.play(new MoveModel(0, 0, Player.player2()));
+        game.play(new MoveModel(BoardCoordinatesModel.fromCoordinates(0, 0), Player.player1()));
+        game.play(new MoveModel(BoardCoordinatesModel.fromCoordinates(0, 0), Player.player2()));
     }
 
     @Test
     public void samePlayerPlays2Rounds_throwException() throws Exception {
-        game.play(new MoveModel(0, 0, Player.player1()));
+        game.play(new MoveModel(BoardCoordinatesModel.fromCoordinates(0, 0), Player.player1()));
         try {
-            game.play(new MoveModel(0, 1, Player.player1()));
+            game.play(new MoveModel(BoardCoordinatesModel.fromCoordinates(0, 1), Player.player1()));
             fail();
         } catch (IllegalMoveException e) {
             assertEquals("This player just played", e.getMessage());
@@ -53,11 +53,26 @@ public class GameTest {
 
     private static void scoreRowPlayerOne(Game game, int lineIndex) throws Exception {
         int otherLine = lineIndex == 0 ? 1 : 0;
-        game.play(new MoveModel(0, lineIndex, Player.player1()));
-        game.play(new MoveModel(2, otherLine, Player.player2()));
-        game.play(new MoveModel(1, lineIndex, Player.player1()));
-        game.play(new MoveModel(1, otherLine, Player.player2()));
-        game.play(new MoveModel(2, lineIndex, Player.player1()));
+        game.play(new MoveModel(
+                BoardCoordinatesModel.fromCoordinates(0, lineIndex),
+                Player.player1()
+        ));
+        game.play(new MoveModel(
+                BoardCoordinatesModel.fromCoordinates(2, otherLine),
+                Player.player2()
+        ));
+        game.play(new MoveModel(
+                BoardCoordinatesModel.fromCoordinates(1, lineIndex),
+                Player.player1()
+        ));
+        game.play(new MoveModel(
+                BoardCoordinatesModel.fromCoordinates(1, otherLine),
+                Player.player2()
+        ));
+        game.play(new MoveModel(
+                BoardCoordinatesModel.fromCoordinates(2, lineIndex),
+                Player.player1()
+        ));
     }
 
     @Test
@@ -68,9 +83,9 @@ public class GameTest {
 
     @Test
     public void threeInALine_differentPlayers_gameIsNOTFinished() throws Exception {
-        game.play(new MoveModel(0, 0, Player.player1()));
-        game.play(new MoveModel(1, 0, Player.player2()));
-        game.play(new MoveModel(2, 0, Player.player1()));
+        game.play(new MoveModel(BoardCoordinatesModel.fromCoordinates(0, 0), Player.player1()));
+        game.play(new MoveModel(BoardCoordinatesModel.fromCoordinates(1, 0), Player.player2()));
+        game.play(new MoveModel(BoardCoordinatesModel.fromCoordinates(2, 0), Player.player1()));
 
         assertFalse("Game should NOT be finished", game.checkIfFinishedAndUpdateWinner());
     }
@@ -83,11 +98,26 @@ public class GameTest {
 
     private static void scoreColumnPlayerOne(Game game, int columnIndex) throws Exception {
         int otherColumn = columnIndex == 0 ? 1 : 0;
-        game.play(new MoveModel(columnIndex, 0, Player.player1()));
-        game.play(new MoveModel(otherColumn, 2, Player.player2()));
-        game.play(new MoveModel(columnIndex, 1, Player.player1()));
-        game.play(new MoveModel(otherColumn, 0, Player.player2()));
-        game.play(new MoveModel(columnIndex, 2, Player.player1()));
+        game.play(new MoveModel(
+                BoardCoordinatesModel.fromCoordinates(columnIndex, 0),
+                Player.player1()
+        ));
+        game.play(new MoveModel(
+                BoardCoordinatesModel.fromCoordinates(otherColumn, 2),
+                Player.player2()
+        ));
+        game.play(new MoveModel(
+                BoardCoordinatesModel.fromCoordinates(columnIndex, 1),
+                Player.player1()
+        ));
+        game.play(new MoveModel(
+                BoardCoordinatesModel.fromCoordinates(otherColumn, 0),
+                Player.player2()
+        ));
+        game.play(new MoveModel(
+                BoardCoordinatesModel.fromCoordinates(columnIndex, 2),
+                Player.player1()
+        ));
     }
 
     @Test
@@ -97,11 +127,11 @@ public class GameTest {
     }
 
     private static void scoreFirstDiagonalPlayerOne(Game game) throws Exception {
-        game.play(new MoveModel(0, 0, Player.player1()));
-        game.play(new MoveModel(2, 0, Player.player2()));
-        game.play(new MoveModel(1, 1, Player.player1()));
-        game.play(new MoveModel(1, 0, Player.player2()));
-        game.play(new MoveModel(2, 2, Player.player1()));
+        game.play(new MoveModel(BoardCoordinatesModel.fromCoordinates(0, 0), Player.player1()));
+        game.play(new MoveModel(BoardCoordinatesModel.fromCoordinates(2, 0), Player.player2()));
+        game.play(new MoveModel(BoardCoordinatesModel.fromCoordinates(1, 1), Player.player1()));
+        game.play(new MoveModel(BoardCoordinatesModel.fromCoordinates(1, 0), Player.player2()));
+        game.play(new MoveModel(BoardCoordinatesModel.fromCoordinates(2, 2), Player.player1()));
     }
 
     @Test
@@ -111,11 +141,11 @@ public class GameTest {
     }
 
     private static void scoreSecondDiagonalPlayerOne(Game game) throws Exception {
-        game.play(new MoveModel(0, 2, Player.player1()));
-        game.play(new MoveModel(2, 1, Player.player2()));
-        game.play(new MoveModel(1, 1, Player.player1()));
-        game.play(new MoveModel(1, 0, Player.player2()));
-        game.play(new MoveModel(2, 0, Player.player1()));
+        game.play(new MoveModel(BoardCoordinatesModel.fromCoordinates(0, 2), Player.player1()));
+        game.play(new MoveModel(BoardCoordinatesModel.fromCoordinates(2, 1), Player.player2()));
+        game.play(new MoveModel(BoardCoordinatesModel.fromCoordinates(1, 1), Player.player1()));
+        game.play(new MoveModel(BoardCoordinatesModel.fromCoordinates(1, 0), Player.player2()));
+        game.play(new MoveModel(BoardCoordinatesModel.fromCoordinates(2, 0), Player.player1()));
     }
 
     @Test
@@ -148,16 +178,16 @@ public class GameTest {
 
     @Test
     public void gameIsNotFinished_winnerIsNoPlayer() throws Exception {
-        game.play(new MoveModel(1, 2, Player.player1()));
+        game.play(new MoveModel(BoardCoordinatesModel.fromCoordinates(1, 2), Player.player1()));
         assertEquals(Player.noPlayer(), game.getWinner());
     }
 
     @Test
     public void illegalMoveOnOccupiedSquare_doNotSavePreviousPlayer() throws Exception {
-        game.play(new MoveModel(0, 0, Player.player1()));
+        game.play(new MoveModel(BoardCoordinatesModel.fromCoordinates(0, 0), Player.player1()));
 
         try {
-            game.play(new MoveModel(0, 0, Player.player2()));
+            game.play(new MoveModel(BoardCoordinatesModel.fromCoordinates(0, 0), Player.player2()));
             fail();
         } catch (IllegalMoveException e) {
             GameStatus status = gameMapper.transform(game);

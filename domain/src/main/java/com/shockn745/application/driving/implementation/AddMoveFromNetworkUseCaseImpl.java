@@ -8,7 +8,9 @@ import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.network.AddMoveFromNetworkUseCase;
 import com.shockn745.domain.Game;
 import com.shockn745.domain.MoveModel;
+import com.shockn745.domain.datamapper.CoordinatesMapper;
 import com.shockn745.domain.datamapper.GameMapper;
+import com.shockn745.domain.datamapper.MoveMapper;
 import com.shockn745.domain.exceptions.IllegalMoveException;
 
 import java.util.Set;
@@ -21,6 +23,7 @@ public class AddMoveFromNetworkUseCaseImpl implements AddMoveFromNetworkUseCase 
     private final GameStatusRepository gameStatusRepository;
     private final NetworkListenerRepository networkListenerRepository;
     private final GameMapper gameMapper;
+    private final MoveMapper moveMapper;
 
     public AddMoveFromNetworkUseCaseImpl(
             GameStatusRepository gameStatusRepository,
@@ -29,6 +32,7 @@ public class AddMoveFromNetworkUseCaseImpl implements AddMoveFromNetworkUseCase 
         this.gameStatusRepository = gameStatusRepository;
         this.networkListenerRepository = networkListenerRepository;
         this.gameMapper = gameMapper;
+        this.moveMapper = new MoveMapper(new CoordinatesMapper()); //todo constructor
     }
 
     @Override
@@ -63,7 +67,7 @@ public class AddMoveFromNetworkUseCaseImpl implements AddMoveFromNetworkUseCase 
 
     private GameStatus playMoveAndGetStatus(Move move, Game game)
             throws IllegalMoveException {
-        game.play(new MoveModel(move));
+        game.play(moveMapper.transform(move));
         game.checkIfFinishedAndUpdateWinner();
         return gameMapper.transform(game);
     }

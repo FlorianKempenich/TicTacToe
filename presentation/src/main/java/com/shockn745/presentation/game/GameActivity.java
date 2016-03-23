@@ -181,7 +181,7 @@ public class GameActivity extends AppCompatActivity
     @OnClick(R.id.game_fake_network_move_button)
     public void makeFakeNetworkMove() {
         fakeMoveFromNetworkGenerator.makeFakeMoveFromNetwork(
-                new Move(1, 2, Player.player1()),
+                new Move(new BoardCoordinates(1,2), Player.player1()),
                 presenter.getGameId(),
                 new AddMoveFromNetworkUseCase.Callback() {
                     @Override

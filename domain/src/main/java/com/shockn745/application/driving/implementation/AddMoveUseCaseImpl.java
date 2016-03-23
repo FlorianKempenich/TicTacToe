@@ -6,7 +6,9 @@ import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.presentation.AddMoveUseCase;
 import com.shockn745.domain.Game;
 import com.shockn745.domain.MoveModel;
+import com.shockn745.domain.datamapper.CoordinatesMapper;
 import com.shockn745.domain.datamapper.GameMapper;
+import com.shockn745.domain.datamapper.MoveMapper;
 import com.shockn745.domain.exceptions.IllegalMoveException;
 
 /**
@@ -16,17 +18,19 @@ public class AddMoveUseCaseImpl implements AddMoveUseCase {
 
     private final GameStatusRepository gameStatusRepository;
     private final GameMapper gameMapper;
+    private final MoveMapper moveMapper;
 
     public AddMoveUseCaseImpl(
             GameStatusRepository gameStatusRepository,
             GameMapper gameMapper) {
         this.gameStatusRepository = gameStatusRepository;
         this.gameMapper = gameMapper;
+        this.moveMapper = new MoveMapper(new CoordinatesMapper()); //todo constructor
     }
 
     @Override
     public void execute(Move move, int gameId, Callback callback) {
-        MoveModel moveModel = new MoveModel(move);
+        MoveModel moveModel = moveMapper.transform(move);
         if (gameStatusRepository.contains(gameId)) {
             executeWithValidGameId(gameId, callback, moveModel);
         } else {

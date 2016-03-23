@@ -67,7 +67,7 @@ public class GameFactoryTest {
     public void createNewGame_playMove_makeStatus_createNewGameWithStatus_gamesAreIdentical()
             throws Exception {
         Game moveOn00 = gameFactory.makeNewGame();
-        moveOn00.play(new MoveModel(0, 0, Player.player1()));
+        moveOn00.play(new MoveModel(BoardCoordinatesModel.fromCoordinates(0, 0), Player.player1()));
         GameStatus status = gameMapper.transform(moveOn00);
 
         Game fromStatus = gameFactory.makeGame(status);
