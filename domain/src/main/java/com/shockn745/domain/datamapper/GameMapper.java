@@ -2,6 +2,7 @@ package com.shockn745.domain.datamapper;
 
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.domain.Board;
+import com.shockn745.domain.BoardCoordinatesModel;
 import com.shockn745.domain.Game;
 
 /**
@@ -32,7 +33,15 @@ public class GameMapper {
 
     public Game transform(GameStatus gameStatus) {
         Board board = boardMapper.transform(gameStatus.board);
-        return new Game(board, gameStatus, coordinatesMapper.transform(gameStatus.lastPlayedSquare));
+        BoardCoordinatesModel lastPlayedSquare =
+                coordinatesMapper.transform(gameStatus.lastPlayedSquare);
+        return new Game(
+                board,
+                gameStatus.gameId,
+                gameStatus.lastPlayer,
+                gameStatus.winner,
+                lastPlayedSquare
+        );
     }
 
 }

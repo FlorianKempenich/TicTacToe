@@ -21,11 +21,11 @@ public class Game {
 
     private Player winner = NO_PLAYER;
 
-    public Game(Board board, GameStatus status, BoardCoordinatesModel lastSquarePlayed) {
+    public Game(Board board, int gameId, Player previousPlayer, Player winner, BoardCoordinatesModel lastSquarePlayed) {
         this.board = board;
-        this.gameId = status.gameId;
-        this.previousPlayer = status.lastPlayer;
-        this.winner = status.winner;
+        this.gameId = gameId;
+        this.previousPlayer = previousPlayer;
+        this.winner = winner;
         this.lastSquarePlayed = lastSquarePlayed;
     }
 

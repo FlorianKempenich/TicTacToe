@@ -1,7 +1,9 @@
 package com.shockn745.domain.factory;
 
 import com.shockn745.application.driving.dto.GameStatus;
+import com.shockn745.application.driving.dto.Player;
 import com.shockn745.domain.Board;
+import com.shockn745.domain.BoardCoordinatesModel;
 import com.shockn745.domain.Game;
 import com.shockn745.domain.datamapper.CoordinatesMapper;
 import com.shockn745.utils.NullObjects;
@@ -11,21 +13,16 @@ import com.shockn745.utils.NullObjects;
  */
 public class GameFactoryImpl implements GameFactory {
 
-    private CoordinatesMapper coordinatesMapper;
-
-    public GameFactoryImpl() {
-        coordinatesMapper = new CoordinatesMapper(); //todo put constructor
-    }
-
     @Override
     public Game newGame() {
-        GameStatus newGameStatus = NullObjects.makeEmptyGameStatus(GameStatus.NO_ID);
-
-        Board board = new Board(newGameStatus.board);
+        Player[][] emptyBoard = NullObjects.makeEmptyBoard();
+        Board board = new Board(emptyBoard);
         return new Game(
                 board,
-                newGameStatus,
-                coordinatesMapper.transform(newGameStatus.lastPlayedSquare)
+                GameStatus.NO_ID,
+                Player.noPlayer(),
+                Player.noPlayer(),
+                BoardCoordinatesModel.noCoordinates()
         );
     }
 
