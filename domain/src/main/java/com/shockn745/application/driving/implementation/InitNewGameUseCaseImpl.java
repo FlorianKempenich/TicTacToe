@@ -26,7 +26,7 @@ public class InitNewGameUseCaseImpl implements InitNewGameUseCase {
 
     @Override
     public void execute(Callback callback) {
-        Game game = factory.makeNewGame();
+        Game game = factory.newGame();
         GameStatus status = gameMapper.transform(game);
 
         int id = gameStatusRepository.saveGame(status);

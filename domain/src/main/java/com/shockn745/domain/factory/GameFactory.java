@@ -7,7 +7,7 @@ import com.shockn745.domain.Game;
  * @author Kempenich Florian
  */
 public interface GameFactory {
-    Game makeNewGame();
+    Game newGame();
 
     Game makeGame(GameStatus status);
 }

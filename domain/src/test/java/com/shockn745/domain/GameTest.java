@@ -28,7 +28,7 @@ public class GameTest {
         com.shockn745.domain.factory.MapperFactory
                 mapperFactory = new MapperFactoryImpl();
         gameMapper = mapperFactory.gameMapper();
-        game = factory.makeNewGame();
+        game = factory.newGame();
 
     }
 

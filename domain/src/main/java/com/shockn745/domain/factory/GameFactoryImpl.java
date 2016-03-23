@@ -18,7 +18,7 @@ public class GameFactoryImpl implements GameFactory {
     }
 
     @Override
-    public Game makeNewGame() {
+    public Game newGame() {
         GameStatus newGameStatus = NullObjects.makeEmptyGameStatus(GameStatus.NO_ID);
 
         Board board = new Board(newGameStatus.board);

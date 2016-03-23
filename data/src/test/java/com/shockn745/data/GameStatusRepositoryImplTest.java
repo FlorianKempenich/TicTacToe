@@ -45,7 +45,7 @@ public class GameStatusRepositoryImplTest {
         GameFactory factory = new GameFactoryImpl();
         MapperFactory mapperFactory = new MapperFactoryImpl();
         GameMapper gameMapper = mapperFactory.gameMapper();
-        Game game = factory.makeNewGame();
+        Game game = factory.newGame();
         return gameMapper.transform(game);
     }
 

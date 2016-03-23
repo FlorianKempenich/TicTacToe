@@ -37,7 +37,7 @@ public class GameRepositoryImplTest {
 
     private static Game makeNewGame() {
         GameFactory factory = new GameFactoryImpl();
-        return factory.makeNewGame();
+        return factory.newGame();
     }
 
     @Test

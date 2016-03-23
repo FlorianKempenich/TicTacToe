@@ -33,7 +33,7 @@ public class GameFactoryTest {
 
     @Test
     public void createNewGame_returnEmptyGame() throws Exception {
-        Game game = gameFactory.makeNewGame();
+        Game game = gameFactory.newGame();
         GameStatus status = gameMapper.transform(game);
         GameStatus expected = NullObjects.makeEmptyGameStatus(GameStatus.NO_ID);
         assertEquals(expected, status);
@@ -59,7 +59,7 @@ public class GameFactoryTest {
     @Test
     public void createNewGame_makeStatus_createNewGameWithStatus_gamesAreIdentical()
             throws Exception {
-        Game newGame = gameFactory.makeNewGame();
+        Game newGame = gameFactory.newGame();
         GameStatus status = gameMapper.transform(newGame);
 
         Game fromStatus = gameFactory.makeGame(status);
@@ -70,7 +70,7 @@ public class GameFactoryTest {
     @Test
     public void createNewGame_playMove_makeStatus_createNewGameWithStatus_gamesAreIdentical()
             throws Exception {
-        Game moveOn00 = gameFactory.makeNewGame();
+        Game moveOn00 = gameFactory.newGame();
         moveOn00.play(new MoveModel(BoardCoordinatesModel.fromCoordinates(0, 0), Player.player1()));
         GameStatus status = gameMapper.transform(moveOn00);
 
