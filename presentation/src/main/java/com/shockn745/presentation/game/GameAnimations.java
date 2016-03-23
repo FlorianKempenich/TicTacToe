@@ -102,20 +102,43 @@ public class GameAnimations {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public Animator makeCircularReveal(View myView, TicTacView.ClickCoordinates coordinates) {
+    public Animator makeCircularReveal(View view, TicTacView.ClickCoordinates coordinates) {
         // get the center for the clipping circle (center of the button)
         int cx = (int) coordinates.x;
         int cy = (int) coordinates.y;
 
-        // Make radius depending on screen size
+        // Make end radius depending on screen size
+        float startRadius = computeStartRadius(coordinates);
+        float endRadius = computeEndRadius();
+        // Make start radius depending on square size
+
+        Animator reveal = ViewAnimationUtils.createCircularReveal(view, cx, cy, startRadius, endRadius);
+        reveal.setDuration(700);
+        return reveal;
+    }
+
+    private float computeStartRadius(TicTacView.ClickCoordinates coordinates) {
+        View clickedView = coordinates.clickedView;
+        int[] locationOnScreen = new int[2];
+        clickedView.getLocationOnScreen(locationOnScreen);
+
+        float distanceToLeftSide = coordinates.x - locationOnScreen[0];
+        float distanceToRightSide = locationOnScreen[0] + clickedView.getWidth() - coordinates.x;
+        float distanceToTop = coordinates.y - locationOnScreen[1];
+        float distanceToBottom = locationOnScreen[1] + clickedView.getHeight() - coordinates.y;
+
+        float minHorizontal = Math.min(distanceToLeftSide, distanceToRightSide);
+        float minVertical = Math.min(distanceToBottom, distanceToTop);
+
+        float startRadius = Math.min(minHorizontal, minVertical);
+        return startRadius;
+    }
+
+    private float computeEndRadius() {
         Display display = activity.getWindowManager().getDefaultDisplay();
         Point screenSize = new Point();
         display.getSize(screenSize);
-        float finalRadius = (float) Math.hypot(screenSize.x, screenSize.y);
-
-        Animator reveal = ViewAnimationUtils.createCircularReveal(myView, cx, cy, 0, finalRadius);
-        reveal.setDuration(700);
-        return reveal;
+        return (float) Math.hypot(screenSize.x, screenSize.y);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

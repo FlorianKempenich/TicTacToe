@@ -110,9 +110,9 @@ public class TicTacView extends LinearLayout implements View.OnClickListener {
 
         int[] locationOnScreen = new int[2];
         button.getLocationOnScreen(locationOnScreen);
-        float x = locationOnScreen[0] + button.getWidth()  / 2;
-        float y = locationOnScreen[1] + button.getHeight() / 2;
-        return new ClickCoordinates(x, y);
+        float x = locationOnScreen[0] + ((float) button.getWidth())  / 2.0f;
+        float y = locationOnScreen[1] + ((float) button.getHeight()) / 4.0f; // Haven't quite figured out WHY?? but it works and is only cosmetic
+        return new ClickCoordinates(x, y, button);
     }
 
     private void onSquareClick(int x, int y) {
@@ -136,10 +136,12 @@ public class TicTacView extends LinearLayout implements View.OnClickListener {
     public static class ClickCoordinates {
         public final float x;
         public final float y;
+        public final View clickedView;
 
-        public ClickCoordinates(float x, float y) {
+        public ClickCoordinates(float x, float y, View clickedView) {
             this.x = x;
             this.y = y;
+            this.clickedView = clickedView;
         }
     }
 }
