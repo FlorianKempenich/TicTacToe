@@ -160,6 +160,10 @@ public class TicTacView extends LinearLayout implements View.OnClickListener {
         tintAnimator.animateTint(toAnimate);
     }
 
+    public View getSquareView(BoardCoordinates coordinates) {
+        return buttons[coordinates.x][coordinates.y];
+    }
+
     public interface OnSquareClickedListener {
         void onSquareClicked(int x, int y);
     }

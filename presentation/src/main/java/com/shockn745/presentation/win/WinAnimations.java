@@ -1,4 +1,4 @@
-package com.shockn745.presentation.game;
+package com.shockn745.presentation.win;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -19,21 +19,23 @@ import android.view.ViewAnimationUtils;
 import android.view.Window;
 
 import com.shockn745.domain.R;
+import com.shockn745.presentation.game.GameActivity;
+import com.shockn745.presentation.game.TicTacView;
 
 import javax.inject.Inject;
 
 /**
  * @author Kempenich Florian
  */
-public class GameAnimations {
+public class WinAnimations {
 
     private View firstPlayerBackground;
     private View secondPlayerBackground;
 
-    private final Activity activity;
+    private final WinActivity activity;
 
     @Inject
-    public GameAnimations(GameActivity activity) {
+    public WinAnimations(WinActivity activity) {
         this.activity = activity;
     }
 
@@ -49,7 +51,7 @@ public class GameAnimations {
         activity.getWindow().setEnterTransition(makeEnterTransition());
         activity.getWindow().setExitTransition(makeExitTransition());
         activity.getWindow().setReturnTransition(null);
-
+        activity.getWindow().setTransitionBackgroundFadeDuration(1000);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -72,9 +74,7 @@ public class GameAnimations {
     private void excludeTargets(Transition transition) {
         transition.excludeTarget(android.R.id.statusBarBackground, true);
         transition.excludeTarget(android.R.id.navigationBarBackground, true);
-        transition.excludeTarget(R.id.game_toolbar, true);
-        transition.excludeTarget(R.id.game_first_player_background, true);
-        transition.excludeTarget(R.id.game_second_player_background, true);
+        transition.excludeTarget(R.id.win_toolbar, true);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

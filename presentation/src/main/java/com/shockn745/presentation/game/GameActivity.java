@@ -24,6 +24,7 @@ import com.shockn745.presentation.internal.di.components.GameActivityComponent;
 import com.shockn745.presentation.internal.di.modules.GameActivityModule;
 import com.shockn745.presentation.internal.di.modules.UseCasesModule;
 import com.shockn745.presentation.other.FakeMoveFromNetworkGenerator;
+import com.shockn745.presentation.win.WinActivity;
 
 import java.util.Set;
 
@@ -149,11 +150,21 @@ public class GameActivity extends AppCompatActivity
             String winnerName,
             Set<BoardCoordinates> winningSquares,
             BoardCoordinates lastSquarePlayed) {
-        ticTacView.animateWinningSquares(winningSquares);
-        String winnerText = String.format(getString(R.string.winner), winnerName);
-        winner.setText(winnerText);
-        winner.setVisibility(View.VISIBLE);
-        currentPlayer.setVisibility(View.GONE);
+
+
+        View winningSquareView = ticTacView.getSquareView(lastSquarePlayed);
+        winningSquareView.setTransitionName("winsquare");
+        Intent startWinActivity = WinActivity.makeStartingIntent(this, 1);
+        startActivity(
+                startWinActivity,
+                ActivityOptions.makeSceneTransitionAnimation(this, winningSquareView, "winsquare").toBundle()
+        );
+
+//        ticTacView.animateWinningSquares(winningSquares);
+//        String winnerText = String.format(getString(R.string.winner), winnerName);
+//        winner.setText(winnerText);
+//        winner.setVisibility(View.VISIBLE);
+//        currentPlayer.setVisibility(View.GONE);
     }
 
     @Override

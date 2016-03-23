@@ -6,4 +6,3 @@
         android:textColor="@color/black"
         app:backgroundTint="@color/white"
         android:layout_height="wrap_content"/>
-<!-- todo add ripple-->
