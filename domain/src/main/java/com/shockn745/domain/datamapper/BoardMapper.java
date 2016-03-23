@@ -1,17 +1,17 @@
 package com.shockn745.domain.datamapper;
 
 import com.shockn745.application.driving.dto.Player;
-import com.shockn745.domain.BoardImpl;
+import com.shockn745.domain.Board;
 
 /**
  * @author Kempenich Florian
  */
 public class BoardMapper {
-    public BoardImpl transform(Player[][] board) {
-        return new BoardImpl(board);
+    public Board transform(Player[][] board) {
+        return new Board(board);
     }
 
-    public Player[][] transform(BoardImpl board) {
+    public Player[][] transform(Board board) {
         return board.getBoard();
     }
 }

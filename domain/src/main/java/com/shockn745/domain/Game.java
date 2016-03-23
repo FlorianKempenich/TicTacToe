@@ -14,14 +14,14 @@ import com.shockn745.domain.iterator.BoardIterator;
 public class Game {
 
     private static final Player NO_PLAYER = Player.noPlayer();
-    private final BoardImpl board;
+    private final Board board;
     private final int gameId;
     private Player previousPlayer = NO_PLAYER;
     private BoardCoordinatesModel lastSquarePlayed;
 
     private Player winner = NO_PLAYER;
 
-    public Game(BoardImpl board, GameStatus status, BoardCoordinatesModel lastSquarePlayed) {
+    public Game(Board board, GameStatus status, BoardCoordinatesModel lastSquarePlayed) {
         this.board = board;
         this.gameId = status.gameId;
         this.previousPlayer = status.lastPlayer;
@@ -96,7 +96,7 @@ public class Game {
         return true;
     }
 
-    public BoardImpl getBoard() {
+    public Board getBoard() {
         return board;
     }
 

@@ -2,7 +2,7 @@ package com.shockn745.domain.iterator;
 
 import com.shockn745.application.driving.dto.Player;
 import com.shockn745.domain.BoardCoordinatesModel;
-import com.shockn745.domain.BoardImpl;
+import com.shockn745.domain.Board;
 import com.shockn745.domain.MoveModel;
 import com.shockn745.domain.exceptions.IllegalMoveException;
 import com.shockn745.utils.NullObjects;
@@ -13,17 +13,17 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class BoardImplIteratorTest {
+public class BoardIteratorTest {
 
-    private BoardImpl board;
+    private Board board;
 
     @Before
     public void setUp() throws Exception {
-        board = new BoardImpl(NullObjects.makeEmptyBoard());
+        board = new Board(NullObjects.makeEmptyBoard());
         initBoard(board);
     }
 
-    private static void initBoard(BoardImpl board) throws IllegalMoveException {
+    private static void initBoard(Board board) throws IllegalMoveException {
         board.addMove(new MoveModel(BoardCoordinatesModel.fromCoordinates(0, 0), Player.player1()));
         board.addMove(new MoveModel(BoardCoordinatesModel.fromCoordinates(1, 0), Player.player2()));
         board.addMove(new MoveModel(BoardCoordinatesModel.fromCoordinates(2, 0), Player.player2()));

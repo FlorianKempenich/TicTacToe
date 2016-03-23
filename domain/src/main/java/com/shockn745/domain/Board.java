@@ -11,12 +11,12 @@ import com.shockn745.utils.NullObjects;
 
 import java.util.Arrays;
 
-public class BoardImpl {
+public class Board {
 
     private static final Player NO_PLAYER = Player.noPlayer();
     private Player[][] board;
 
-    public BoardImpl(Player[][] board) {
+    public Board(Player[][] board) {
         this.board = board;
     }
 
@@ -92,7 +92,7 @@ public class BoardImpl {
             return false;
         }
 
-        BoardImpl board1 = (BoardImpl) o;
+        Board board1 = (Board) o;
 
         return Arrays.deepEquals(board, board1.board);
 

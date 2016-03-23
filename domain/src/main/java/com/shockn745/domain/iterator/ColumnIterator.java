@@ -1,16 +1,16 @@
 package com.shockn745.domain.iterator;
 
 import com.shockn745.application.driving.dto.Player;
-import com.shockn745.domain.BoardImpl;
+import com.shockn745.domain.Board;
 
 public class ColumnIterator implements BoardIterator {
 
     private final int columnIndex;
-    private final BoardImpl board;
+    private final Board board;
 
     private int cursor = 0;
 
-    public ColumnIterator(BoardImpl board, int columnIndex) {
+    public ColumnIterator(Board board, int columnIndex) {
         this.columnIndex = columnIndex;
         this.board = board;
     }

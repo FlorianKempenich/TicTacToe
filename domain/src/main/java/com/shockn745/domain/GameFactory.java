@@ -18,7 +18,7 @@ public class GameFactory {
     public Game makeNewGame() {
         GameStatus newGameStatus = NullObjects.makeEmptyGameStatus(GameStatus.NO_ID);
 
-        BoardImpl board = new BoardImpl(newGameStatus.board);
+        Board board = new Board(newGameStatus.board);
         return new Game(
                 board,
                 newGameStatus,
@@ -27,7 +27,7 @@ public class GameFactory {
     }
 
     public Game makeGame(GameStatus status) {
-        BoardImpl board = new BoardImpl(status.board);
+        Board board = new Board(status.board);
         return new Game(board, status, coordinatesMapper.transform(status.lastPlayedSquare));
     }
 

@@ -1,16 +1,16 @@
 package com.shockn745.domain.iterator;
 
 import com.shockn745.application.driving.dto.Player;
-import com.shockn745.domain.BoardImpl;
+import com.shockn745.domain.Board;
 
 public class LineIterator implements BoardIterator {
 
     private final int lineIndex;
-    private final BoardImpl board;
+    private final Board board;
 
     private int cursor = 0;
 
-    public LineIterator(BoardImpl board, int lineIndex) {
+    public LineIterator(Board board, int lineIndex) {
         this.lineIndex = lineIndex;
         this.board = board;
     }
