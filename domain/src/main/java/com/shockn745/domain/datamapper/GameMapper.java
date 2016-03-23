@@ -13,10 +13,13 @@ public class GameMapper {
     private final CoordinatesMapper coordinatesMapper;
     private final BoardMapper boardMapper;
 
-    public GameMapper(GameFactory gameFactory) {
+    public GameMapper(
+            GameFactory gameFactory,
+            CoordinatesMapper coordinatesMapper,
+            BoardMapper boardMapper) {
         this.gameFactory = gameFactory;
-        coordinatesMapper = new CoordinatesMapper();// todo put in constructor
-        boardMapper = new BoardMapper();// todo put in constructor
+        this.coordinatesMapper = coordinatesMapper;
+        this.boardMapper = boardMapper;
     }
 
     public GameStatus transform(Game game) {

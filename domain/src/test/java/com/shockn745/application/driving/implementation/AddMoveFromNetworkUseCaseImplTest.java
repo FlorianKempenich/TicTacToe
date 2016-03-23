@@ -9,6 +9,8 @@ import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.dto.Player;
 import com.shockn745.application.driving.network.AddMoveFromNetworkUseCase;
 import com.shockn745.domain.GameFactory;
+import com.shockn745.domain.datamapper.BoardMapper;
+import com.shockn745.domain.datamapper.CoordinatesMapper;
 import com.shockn745.domain.datamapper.GameMapper;
 import com.shockn745.testutil.GameStatusTestScenarios;
 
@@ -58,7 +60,9 @@ public class AddMoveFromNetworkUseCaseImplTest {
         MockitoAnnotations.initMocks(this);
         GameFactory gameFactory = new GameFactory();
         testScenarios = new GameStatusTestScenarios(gameFactory);
-        GameMapper gameMapper = new GameMapper(gameFactory);
+        CoordinatesMapper coordinatesMapper = new CoordinatesMapper();
+        BoardMapper boardMapper = new BoardMapper();
+        GameMapper gameMapper = new GameMapper(gameFactory, coordinatesMapper, boardMapper);
         addMoveFromNetworkUseCase = new AddMoveFromNetworkUseCaseImpl(
                 gameStatusRepository,
                 listenersRepository,

@@ -3,6 +3,8 @@ package com.shockn745.domain;
 import com.shockn745.application.driving.dto.BoardCoordinates;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Player;
+import com.shockn745.domain.datamapper.BoardMapper;
+import com.shockn745.domain.datamapper.CoordinatesMapper;
 import com.shockn745.domain.datamapper.GameMapper;
 import com.shockn745.domain.exceptions.IllegalMoveException;
 
@@ -22,7 +24,9 @@ public class GameTest {
     @Before
     public void setUp() throws Exception {
         GameFactory factory = new GameFactory();
-        gameMapper = new GameMapper(factory);
+        CoordinatesMapper coordinatesMapper = new CoordinatesMapper();
+        BoardMapper boardMapper = new BoardMapper();
+        gameMapper = new GameMapper(factory, coordinatesMapper, boardMapper);
         game = factory.makeNewGame();
 
     }
