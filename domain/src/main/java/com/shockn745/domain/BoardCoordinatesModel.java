@@ -36,6 +36,15 @@ public class BoardCoordinatesModel {
     }
 
     @Override
+    public String toString() {
+        if (this.equals(BoardCoordinatesModel.noCoordinates())) {
+            return "No coordinates";
+        } else {
+            return "(" + x + ", " + y + ")";
+        }
+    }
+
+    @Override
     public int hashCode() {
         int result = x;
         result = 31 * result + y;

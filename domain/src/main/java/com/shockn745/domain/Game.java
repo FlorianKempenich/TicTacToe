@@ -76,7 +76,7 @@ public class Game {
 
     private Player getSequenceWinner(BoardIterator iterator) {
         Player sequenceWinner = NO_PLAYER;
-        Player sequenceOwner = iterator.first();
+        Player sequenceOwner = iterator.first().owner;
         boolean scored = isSequenceOwnedBySamePlayer(iterator, sequenceOwner);
         if (scored) {
             sequenceWinner = sequenceOwner;
@@ -89,7 +89,8 @@ public class Game {
             return false;
         }
         while (iterator.hasNext()) {
-            if (!iterator.next().equals(sequenceOwner)) {
+            Player nextPlayer = iterator.next().owner;
+            if (!nextPlayer.equals(sequenceOwner)) {
                 return false;
             }
         }

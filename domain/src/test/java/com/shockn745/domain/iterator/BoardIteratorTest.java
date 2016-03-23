@@ -1,9 +1,10 @@
 package com.shockn745.domain.iterator;
 
 import com.shockn745.application.driving.dto.Player;
-import com.shockn745.domain.BoardCoordinatesModel;
 import com.shockn745.domain.Board;
+import com.shockn745.domain.BoardCoordinatesModel;
 import com.shockn745.domain.MoveModel;
+import com.shockn745.domain.Square;
 import com.shockn745.domain.exceptions.IllegalMoveException;
 import com.shockn745.utils.NullObjects;
 
@@ -33,7 +34,6 @@ public class BoardIteratorTest {
         board.addMove(new MoveModel(BoardCoordinatesModel.fromCoordinates(0, 2), Player.player2()));
         board.addMove(new MoveModel(BoardCoordinatesModel.fromCoordinates(1, 2), Player.player1()));
         board.addMove(new MoveModel(BoardCoordinatesModel.fromCoordinates(2, 2), Player.player2()));
-//        System.out.println(board);
     }
 
     @Test
@@ -42,13 +42,28 @@ public class BoardIteratorTest {
         BoardIterator lineIterator = new LineIterator(board, lineIndex);
 
         assertTrue(lineIterator.hasNext());
-        assertEquals(Player.player1(), lineIterator.next());
+        assertEquals(makeSquare(0, 0, 1), lineIterator.next());
 
         assertTrue(lineIterator.hasNext());
-        assertEquals(Player.player2(), lineIterator.next());
+        assertEquals(makeSquare(1, 0, 2), lineIterator.next());
 
         assertTrue(lineIterator.hasNext());
-        assertEquals(Player.player2(), lineIterator.next());
+        assertEquals(makeSquare(2, 0, 2), lineIterator.next());
+    }
+
+    private static Square makeSquare(int x, int y, int playerNumber) {
+        Player player;
+        switch (playerNumber) {
+            case 1:
+                player = Player.player1();
+                break;
+            case 2:
+                player = Player.player2();
+                break;
+            default:
+                player = null;
+        }
+        return new Square(BoardCoordinatesModel.fromCoordinates(x, y), player);
     }
 
     @Test
@@ -57,13 +72,13 @@ public class BoardIteratorTest {
         BoardIterator columnIterator = new ColumnIterator(board, lineIndex);
 
         assertTrue(columnIterator.hasNext());
-        assertEquals(Player.player2(), columnIterator.next());
+        assertEquals(makeSquare(1, 0, 2), columnIterator.next());
 
         assertTrue(columnIterator.hasNext());
-        assertEquals(Player.player1(), columnIterator.next());
+        assertEquals(makeSquare(1, 1, 1), columnIterator.next());
 
         assertTrue(columnIterator.hasNext());
-        assertEquals(Player.player1(), columnIterator.next());
+        assertEquals(makeSquare(1, 2, 1), columnIterator.next());
     }
 
     @Test
@@ -71,13 +86,13 @@ public class BoardIteratorTest {
         BoardIterator firstDiagonalIterator = new FirstDiagonalIterator(board);
 
         assertTrue(firstDiagonalIterator.hasNext());
-        assertEquals(Player.player1(), firstDiagonalIterator.next());
+        assertEquals(makeSquare(0, 0, 1), firstDiagonalIterator.next());
 
         assertTrue(firstDiagonalIterator.hasNext());
-        assertEquals(Player.player1(), firstDiagonalIterator.next());
+        assertEquals(makeSquare(1, 1, 1), firstDiagonalIterator.next());
 
         assertTrue(firstDiagonalIterator.hasNext());
-        assertEquals(Player.player2(), firstDiagonalIterator.next());
+        assertEquals(makeSquare(2, 2, 2), firstDiagonalIterator.next());
     }
 
     @Test
@@ -85,12 +100,12 @@ public class BoardIteratorTest {
         BoardIterator secondDiagonalIterator = new SecondDiagonalIterator(board);
 
         assertTrue(secondDiagonalIterator.hasNext());
-        assertEquals(Player.player2(), secondDiagonalIterator.next());
+        assertEquals(makeSquare(0, 2, 2), secondDiagonalIterator.next());
 
         assertTrue(secondDiagonalIterator.hasNext());
-        assertEquals(Player.player1(), secondDiagonalIterator.next());
+        assertEquals(makeSquare(1, 1, 1), secondDiagonalIterator.next());
 
         assertTrue(secondDiagonalIterator.hasNext());
-        assertEquals(Player.player2(), secondDiagonalIterator.next());
+        assertEquals(makeSquare(2, 0, 2), secondDiagonalIterator.next());
     }
 }

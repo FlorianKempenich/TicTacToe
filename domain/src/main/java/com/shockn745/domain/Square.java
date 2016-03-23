@@ -18,6 +18,11 @@ public class Square {
     }
 
     @Override
+    public String toString() {
+        return coordinates.toString() + ": " + owner.toString();
+    }
+
+    @Override
     public int hashCode() {
         int result = coordinates != null ? coordinates.hashCode() : 0;
         result = 31 * result + (owner != null ? owner.hashCode() : 0);

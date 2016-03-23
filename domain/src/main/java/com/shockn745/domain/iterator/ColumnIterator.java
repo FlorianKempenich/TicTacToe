@@ -1,7 +1,7 @@
 package com.shockn745.domain.iterator;
 
-import com.shockn745.application.driving.dto.Player;
 import com.shockn745.domain.Board;
+import com.shockn745.domain.Square;
 
 public class ColumnIterator implements BoardIterator {
 
@@ -21,14 +21,14 @@ public class ColumnIterator implements BoardIterator {
     }
 
     @Override
-    public Player next() {
-        Player player = board.getPlayerAtCoordinates(columnIndex, cursor);
+    public Square next() {
+        Square square = board.getSquareAtCoordinates(columnIndex, cursor);
         cursor++;
-        return player;
+        return square;
     }
 
     @Override
-    public Player first() {
-        return board.getPlayerAtCoordinates(columnIndex, 0);
+    public Square first() {
+        return board.getSquareAtCoordinates(columnIndex, 0);
     }
 }

@@ -1,12 +1,15 @@
 package com.shockn745.domain.iterator;
 
 import com.shockn745.application.driving.dto.Player;
+import com.shockn745.domain.Square;
 
 public interface BoardIterator {
     boolean hasNext();
 
-    Player next();
+    Square next();
 
-    Player first();
+    Square first();
+
+//    void reset(); todo
 
 }

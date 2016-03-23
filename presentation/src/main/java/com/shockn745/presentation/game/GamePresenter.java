@@ -94,7 +94,7 @@ public class GamePresenter implements GameContract.Presenter {
     }
 
     private boolean squareIsFree(int x, int y) {
-        return currentGameStatus.board[x][y].equals(Player.noPlayer());
+        return currentGameStatus.board[x][y].owner.equals(Player.noPlayer());
     }
 
     private Player getCurrentPlayer() {
@@ -158,7 +158,7 @@ public class GamePresenter implements GameContract.Presenter {
     }
 
     private void updateSpecificSquareView(int x, int y) {
-        Player playerInSquare = currentGameStatus.board[x][y];
+        Player playerInSquare = currentGameStatus.board[x][y].owner;
         view.setSquareText(getSymbolForPlayer(playerInSquare), x, y);
     }
 

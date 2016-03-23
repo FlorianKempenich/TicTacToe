@@ -43,12 +43,12 @@ public class Board {
     private boolean coordinatesAlreadyPlayed(MoveModel currentMove) {
         int x = currentMove.coordinates.x;
         int y = currentMove.coordinates.y;
-        Player squareOwner = getPlayerAtCoordinates(x, y);
+        Player squareOwner = getSquareAtCoordinates(x, y).owner;
         return !squareOwner.equals(NO_PLAYER);
     }
 
-    public Player getPlayerAtCoordinates(int x, int y) {
-        return board[x][y].owner;
+    public Square getSquareAtCoordinates(int x, int y) {
+        return board[x][y];
     }
 
     public BoardIterator getLineIterator(int lineIndex) {

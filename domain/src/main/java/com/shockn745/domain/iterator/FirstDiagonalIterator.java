@@ -2,6 +2,7 @@ package com.shockn745.domain.iterator;
 
 import com.shockn745.application.driving.dto.Player;
 import com.shockn745.domain.Board;
+import com.shockn745.domain.Square;
 
 public class FirstDiagonalIterator implements BoardIterator {
 
@@ -19,14 +20,14 @@ public class FirstDiagonalIterator implements BoardIterator {
     }
 
     @Override
-    public Player next() {
-        Player player = board.getPlayerAtCoordinates(cursor, cursor);
+    public Square next() {
+        Square square = board.getSquareAtCoordinates(cursor, cursor);
         cursor++;
-        return player;
+        return square;
     }
 
     @Override
-    public Player first() {
-        return board.getPlayerAtCoordinates(0, 0);
+    public Square first() {
+        return board.getSquareAtCoordinates(0, 0);
     }
 }
