@@ -1,7 +1,16 @@
 package com.shockn745.presentation.game;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.TransitionDrawable;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
+import android.support.v4.view.animation.LinearOutSlowInInterpolator;
+import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
+import android.util.StateSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +20,14 @@ import android.widget.LinearLayout;
 import com.shockn745.application.driving.dto.BoardCoordinates;
 import com.shockn745.domain.R;
 
+import java.util.Set;
+
 /**
  * @author Kempenich Florian
  */
 public class TicTacView extends LinearLayout implements View.OnClickListener {
 
-    Button[][] buttons = new Button[3][3];
+    AppCompatButton[][] buttons = new AppCompatButton[3][3];
     private OnSquareClickedListener listener;
 
     public TicTacView(Context context) {
@@ -43,16 +54,16 @@ public class TicTacView extends LinearLayout implements View.OnClickListener {
     private void initButtons() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                Button button = makeNewSquare();
+                AppCompatButton button = makeNewSquare();
                 button.setOnClickListener(this);
                 buttons[i][j] = button;
             }
         }
     }
 
-    private Button makeNewSquare() {
+    private AppCompatButton makeNewSquare() {
         LayoutInflater inflater = LayoutInflater.from(getContext());
-        Button button = (Button) inflater.inflate(
+        AppCompatButton button = (AppCompatButton) inflater.inflate(
                 R.layout.tic_tac_view_square,
                 new LinearLayout(getContext()), // used to generate the layout params
                 false
@@ -127,6 +138,26 @@ public class TicTacView extends LinearLayout implements View.OnClickListener {
 
     public void setSquareText(String text, int x, int y) {
         buttons[x][y].setText(text);
+    }
+
+    public void animateWinningSquares(Set<BoardCoordinates> winningSquares) {
+        for (BoardCoordinates coordinates: winningSquares) {
+            tryToAnimateWinningSquare(coordinates);
+        }
+    }
+
+    private void tryToAnimateWinningSquare(BoardCoordinates coordinates) {
+        try {
+            Button toAnimate = buttons[coordinates.x][coordinates.y];
+            animateWinningSquare(toAnimate);
+        } catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void animateWinningSquare(final Button toAnimate) {
+        TintAnimator tintAnimator = new TintAnimator(R.color.white, R.color.win, getContext());
+        tintAnimator.animateTint(toAnimate);
     }
 
     public interface OnSquareClickedListener {

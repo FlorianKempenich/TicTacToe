@@ -149,6 +149,7 @@ public class GameActivity extends AppCompatActivity
             String winnerName,
             Set<BoardCoordinates> winningSquares,
             BoardCoordinates lastSquarePlayed) {
+        ticTacView.animateWinningSquares(winningSquares);
         String winnerText = String.format(getString(R.string.winner), winnerName);
         winner.setText(winnerText);
         winner.setVisibility(View.VISIBLE);

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Button
+<android.support.v7.widget.AppCompatButton
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
-        android:textColor="#000000"
-        android:background="@drawable/tictac_square_background"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:textColor="@color/black"
+        app:backgroundTint="@color/white"
         android:layout_height="wrap_content"/>
+<!-- todo add ripple-->

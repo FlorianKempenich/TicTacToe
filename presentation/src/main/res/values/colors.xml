@@ -11,4 +11,5 @@
     <color name="white">#FFFFFF</color>
     <color name="light_green">#8BC34A</color>
     <color name="amber">#FFC107</color>
+    <color name="win">#FFEE58</color>
 </resources>
