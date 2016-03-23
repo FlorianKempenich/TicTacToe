@@ -47,10 +47,9 @@ public class GamePresenterTest_player1Wins {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        presenter = new GamePresenter(initNewGameUseCase,
+        presenter = new GamePresenter(view, initNewGameUseCase,
                 registerNetworkGameListenerUseCase, addMoveUseCase
         );
-        ((GamePresenter) presenter).setView(view);
         testScenarios = new GameStatusTestScenarios(new GameFactoryImpl());
         statusAfterFirstMoveOn00 = testScenarios.makeGameStatusWithMoveOn00(GAME_ID);
     }

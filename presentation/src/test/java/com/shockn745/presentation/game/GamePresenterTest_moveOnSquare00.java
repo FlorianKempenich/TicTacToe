@@ -47,10 +47,9 @@ public class GamePresenterTest_moveOnSquare00 {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        presenter = new GamePresenter(initNewGameUseCase,
+        presenter = new GamePresenter(view, initNewGameUseCase,
                 registerNetworkGameListenerUseCase, addMoveUseCase
         );
-        ((GamePresenter) presenter).setView(view);
 
         // Play first move
         presenter.onSquareClicked(0, 0);

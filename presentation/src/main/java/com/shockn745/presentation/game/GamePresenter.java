@@ -18,7 +18,7 @@ import javax.inject.Inject;
  * @author Kempenich Florian
  */
 public class GamePresenter implements GameContract.Presenter {
-    private GameContract.View view;
+    private final GameContract.View view;
 
     private final InitNewGameUseCase initNewGameUseCase;
     private final AddMoveUseCase addMoveUseCase;
@@ -53,17 +53,13 @@ public class GamePresenter implements GameContract.Presenter {
     };
 
     @Inject
-    public GamePresenter( InitNewGameUseCase initNewGameUseCase,
+    public GamePresenter(GameContract.View view,  InitNewGameUseCase initNewGameUseCase,
             RegisterNetworkGameListenerUseCase registerNetworkGameListenerUseCase,
             AddMoveUseCase addMoveUseCase) {
+        this.view = view;
         this.initNewGameUseCase = initNewGameUseCase;
         this.addMoveUseCase = addMoveUseCase;
         this.registerNetworkGameListenerUseCase = registerNetworkGameListenerUseCase;
-    }
-
-    // todo reset view to private and inject in constructor
-    public void setView(GameContract.View view) {
-        this.view = view;
     }
 
     @Override

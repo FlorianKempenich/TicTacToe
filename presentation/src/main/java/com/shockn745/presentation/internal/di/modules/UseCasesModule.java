@@ -10,8 +10,6 @@ import com.shockn745.application.driving.presentation.InitNewGameUseCase;
 import com.shockn745.application.driving.presentation.RegisterNetworkGameListenerUseCase;
 import com.shockn745.domain.GameFactory;
 import com.shockn745.domain.datamapper.GameDataMapper;
-import com.shockn745.presentation.game.GameContract;
-import com.shockn745.presentation.game.GamePresenter;
 import com.shockn745.presentation.internal.di.PerActivity;
 
 import dagger.Module;
@@ -21,7 +19,7 @@ import dagger.Provides;
  * @author Kempenich Florian
  */
 @Module
-public class GameModule {
+public class UseCasesModule {
 
     @Provides
     @PerActivity
@@ -47,9 +45,4 @@ public class GameModule {
         return new RegisterNetworkGameListenerUseCaseImpl(networkListenerRepository);
     }
 
-    @Provides
-    @PerActivity
-    GameContract.Presenter provideGamePresenter(GamePresenter presenter) {
-        return presenter;
-    }
 }

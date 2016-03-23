@@ -18,13 +18,11 @@ import com.shockn745.application.driving.dto.Player;
 import com.shockn745.application.driving.network.AddMoveFromNetworkUseCase;
 import com.shockn745.domain.R;
 import com.shockn745.presentation.AndroidApplication;
-import com.shockn745.presentation.internal.di.components.AnimationComponent;
 import com.shockn745.presentation.internal.di.components.ApplicationComponent;
-import com.shockn745.presentation.internal.di.components.DaggerAnimationComponent;
-import com.shockn745.presentation.internal.di.components.DaggerGameComponent;
-import com.shockn745.presentation.internal.di.components.GameComponent;
-import com.shockn745.presentation.internal.di.modules.AnimationModule;
-import com.shockn745.presentation.internal.di.modules.GameModule;
+import com.shockn745.presentation.internal.di.components.DaggerGameActivityComponent;
+import com.shockn745.presentation.internal.di.components.GameActivityComponent;
+import com.shockn745.presentation.internal.di.modules.GameActivityModule;
+import com.shockn745.presentation.internal.di.modules.UseCasesModule;
 import com.shockn745.presentation.other.FakeMoveFromNetworkGenerator;
 
 import javax.inject.Inject;
@@ -38,13 +36,10 @@ public class GameActivity extends AppCompatActivity
 
     @Bind(R.id.game_tictac_view)
     TicTacView ticTacView;
-
     @Bind(R.id.game_current_player_textview)
     TextView currentPlayer;
-
     @Bind(R.id.game_winner_textview)
     TextView winner;
-
     @Bind(R.id.game_first_player_background)
     View firstPlayerBackground;
     @Bind(R.id.game_second_player_background)
@@ -52,55 +47,60 @@ public class GameActivity extends AppCompatActivity
 
     @Inject
     GameContract.Presenter presenter;
+    @Inject
     GameAnimations gameAnimations;
     private FakeMoveFromNetworkGenerator fakeMoveFromNetworkGenerator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ApplicationComponent applicationComponent = AndroidApplication.getApplicationComponent(this);
-        GameComponent gameComponent = getGameComponent(applicationComponent);
-        AnimationComponent animationComponent = getAnimationComponent(applicationComponent);
-        gameAnimations = animationComponent.gameAnimations();
-        gameComponent.inject(this);
-
-        ((GamePresenter) presenter).setView(this);
-        fakeMoveFromNetworkGenerator =
-                new FakeMoveFromNetworkGenerator(
-                        applicationComponent.gameStatusRepository(),
-                        applicationComponent.gameFactory(),
-                        applicationComponent.networkListenerRepository()
-                );
-
-
+        injectActivity();
+        // Init members before view
         gameAnimations.initTransitions();
+
+        // Init view
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-        gameAnimations.setPlayerBackgrounds(firstPlayerBackground, secondPlayerBackground);
+        initView();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.game_toolbar);
-        setSupportActionBar(toolbar);
+        // Init members after view
         ticTacView.setListener(this);
-
+        gameAnimations.setPlayerBackgrounds(firstPlayerBackground, secondPlayerBackground);
         presenter.onCreate();
 
         resetViewVisibility();
     }
 
-    private GameComponent getGameComponent(ApplicationComponent applicationComponent) {
-        return DaggerGameComponent.builder()
-                .applicationComponent(applicationComponent)
-                .gameModule(new GameModule())
+    private void initView() {
+        setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.game_toolbar);
+        setSupportActionBar(toolbar);
+    }
+
+    private void injectActivity() {
+        GameActivityComponent gameActivityComponent = getGameActivityComponent();
+
+        gameActivityComponent.inject(this);
+        initFakeMoveFromNetworkGenerator();
+    }
+
+    private GameActivityComponent getGameActivityComponent() {
+        ApplicationComponent appComponent = AndroidApplication.getApplicationComponent(this);
+        return DaggerGameActivityComponent.builder()
+                .applicationComponent(appComponent)
+                .gameActivityModule(new GameActivityModule(this, this))
+                .useCasesModule(new UseCasesModule())
                 .build();
     }
 
-    private AnimationComponent getAnimationComponent(ApplicationComponent applicationComponent) {
-        return DaggerAnimationComponent.builder()
-                .applicationComponent(applicationComponent)
-                .animationModule(new AnimationModule(this))
-                .build();
+    private void initFakeMoveFromNetworkGenerator() {
+        ApplicationComponent appComponent = AndroidApplication.getApplicationComponent(this);
+        fakeMoveFromNetworkGenerator =
+                new FakeMoveFromNetworkGenerator(
+                        appComponent.gameStatusRepository(),
+                        appComponent.gameFactory(),
+                        appComponent.networkListenerRepository()
+                );
     }
-
 
     private void resetViewVisibility() {
         winner.setVisibility(View.GONE);

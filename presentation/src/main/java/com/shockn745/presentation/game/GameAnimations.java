@@ -32,7 +32,8 @@ public class GameAnimations {
 
     private final Activity activity;
 
-    public GameAnimations(Activity activity) {
+    @Inject
+    public GameAnimations(GameActivity activity) {
         this.activity = activity;
     }
 

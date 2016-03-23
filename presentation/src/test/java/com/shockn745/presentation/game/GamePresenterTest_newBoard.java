@@ -58,11 +58,10 @@ public class GamePresenterTest_newBoard {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        presenter = new GamePresenter(initNewGameUseCase,
+        presenter = new GamePresenter(view, initNewGameUseCase,
                 registerNetworkGameListenerUseCase,
                 addMoveUseCase
         );
-        ((GamePresenter) presenter).setView(view);
 
         testScenarios = new GameStatusTestScenarios(new GameFactoryImpl());
     }
