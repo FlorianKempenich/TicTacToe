@@ -97,7 +97,6 @@ public class GameActivity extends AppCompatActivity
         fakeMoveFromNetworkGenerator =
                 new FakeMoveFromNetworkGenerator(
                         appComponent.gameStatusRepository(),
-                        appComponent.gameFactory(),
                         appComponent.networkListenerRepository()
                 );
     }

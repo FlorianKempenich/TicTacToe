@@ -1,6 +1,7 @@
 package com.shockn745.domain.datamapper;
 
 import com.shockn745.application.driving.dto.GameStatus;
+import com.shockn745.domain.Board;
 import com.shockn745.domain.Game;
 import com.shockn745.domain.GameFactory;
 
@@ -9,15 +10,12 @@ import com.shockn745.domain.GameFactory;
  */
 public class GameMapper {
 
-    private final GameFactory gameFactory;
     private final CoordinatesMapper coordinatesMapper;
     private final BoardMapper boardMapper;
 
     public GameMapper(
-            GameFactory gameFactory,
             CoordinatesMapper coordinatesMapper,
             BoardMapper boardMapper) {
-        this.gameFactory = gameFactory;
         this.coordinatesMapper = coordinatesMapper;
         this.boardMapper = boardMapper;
     }
@@ -34,7 +32,8 @@ public class GameMapper {
 
 
     public Game transform(GameStatus gameStatus) {
-        return gameFactory.makeGame(gameStatus);
+        Board board = boardMapper.transform(gameStatus.board);
+        return new Game(board, gameStatus, coordinatesMapper.transform(gameStatus.lastPlayedSquare));
     }
 
 }

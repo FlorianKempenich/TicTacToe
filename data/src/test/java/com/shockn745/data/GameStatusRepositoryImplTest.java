@@ -4,6 +4,7 @@ import com.shockn745.application.driven.GameStatusRepository;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.domain.Game;
 import com.shockn745.domain.GameFactory;
+import com.shockn745.domain.MapperFactory;
 import com.shockn745.domain.datamapper.BoardMapper;
 import com.shockn745.domain.datamapper.CoordinatesMapper;
 import com.shockn745.domain.datamapper.GameMapper;
@@ -42,9 +43,8 @@ public class GameStatusRepositoryImplTest {
 
     private static GameStatus makeNewGameStatusWithNoId() {
         GameFactory factory = new GameFactory();
-        CoordinatesMapper coordinatesMapper = new CoordinatesMapper();
-        BoardMapper boardMapper = new BoardMapper();
-        GameMapper gameMapper = new GameMapper(factory, coordinatesMapper, boardMapper);
+        MapperFactory mapperFactory = new MapperFactory();
+        GameMapper gameMapper = mapperFactory.gameMapper();
         Game game = factory.makeNewGame();
         return gameMapper.transform(game);
     }

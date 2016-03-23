@@ -25,9 +25,8 @@ public class GameFactoryTest {
     @Before
     public void setUp() throws Exception {
         gameFactory = new GameFactory();
-        CoordinatesMapper coordinatesMapper = new CoordinatesMapper();
-        BoardMapper boardMapper = new BoardMapper();
-        gameMapper = new GameMapper(gameFactory, coordinatesMapper, boardMapper);
+        MapperFactory mapperFactory = new MapperFactory();
+        gameMapper = mapperFactory.gameMapper();
         testScenarios = new GameStatusTestScenarios(gameFactory);
     }
 

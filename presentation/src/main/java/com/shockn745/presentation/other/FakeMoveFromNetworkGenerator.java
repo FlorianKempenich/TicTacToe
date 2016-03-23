@@ -5,9 +5,7 @@ import com.shockn745.application.driven.NetworkListenerRepository;
 import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.implementation.AddMoveFromNetworkUseCaseImpl;
 import com.shockn745.application.driving.network.AddMoveFromNetworkUseCase;
-import com.shockn745.domain.GameFactory;
-import com.shockn745.domain.datamapper.BoardMapper;
-import com.shockn745.domain.datamapper.CoordinatesMapper;
+import com.shockn745.domain.MapperFactory;
 import com.shockn745.domain.datamapper.GameMapper;
 
 /**
@@ -25,11 +23,9 @@ public class FakeMoveFromNetworkGenerator {
 
     public FakeMoveFromNetworkGenerator(
             GameStatusRepository gameStatusRepository,
-            GameFactory gameFactory,
             NetworkListenerRepository networkListenerRepository) {
-        CoordinatesMapper coordinatesMapper = new CoordinatesMapper();
-        BoardMapper boardMapper = new BoardMapper();
-        GameMapper gameMapper = new GameMapper(gameFactory, coordinatesMapper, boardMapper);
+        MapperFactory mapperFactory = new MapperFactory();
+        GameMapper gameMapper = mapperFactory.gameMapper();
         this.addMoveFromNetworkUseCase = new AddMoveFromNetworkUseCaseImpl(
                 gameStatusRepository,
                 networkListenerRepository,

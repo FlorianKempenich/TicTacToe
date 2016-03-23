@@ -4,6 +4,7 @@ import com.shockn745.application.driven.GameStatusRepository;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.presentation.InitNewGameUseCase;
 import com.shockn745.domain.GameFactory;
+import com.shockn745.domain.MapperFactory;
 import com.shockn745.domain.datamapper.BoardMapper;
 import com.shockn745.domain.datamapper.CoordinatesMapper;
 import com.shockn745.domain.datamapper.GameMapper;
@@ -52,9 +53,8 @@ public class InitNewGameUseCaseTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         GameFactory gameFactory = new GameFactory();
-        CoordinatesMapper coordinatesMapper = new CoordinatesMapper();
-        BoardMapper boardMapper = new BoardMapper();
-        GameMapper gameMapper = new GameMapper(gameFactory, coordinatesMapper, boardMapper);
+        MapperFactory mapperFactory = new MapperFactory();
+        GameMapper gameMapper = mapperFactory.gameMapper();
         initNewGameUseCase =
                 new InitNewGameUseCaseImpl(gameStatusRepository, gameFactory, gameMapper);
     }

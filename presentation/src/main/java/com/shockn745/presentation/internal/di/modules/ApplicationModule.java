@@ -6,11 +6,13 @@ import com.shockn745.application.driven.GameStatusRepository;
 import com.shockn745.application.driven.NetworkListenerRepository;
 import com.shockn745.data.InMemoryGameStatusRepository;
 import com.shockn745.domain.GameFactory;
+import com.shockn745.domain.MapperFactory;
 import com.shockn745.domain.datamapper.BoardMapper;
 import com.shockn745.domain.datamapper.CoordinatesMapper;
 import com.shockn745.domain.datamapper.GameMapper;
 import com.shockn745.network.NetworkListenerRepositoryImpl;
 import com.shockn745.presentation.AndroidApplication;
+import com.shockn745.presentation.internal.di.PerActivity;
 
 import javax.inject.Singleton;
 
@@ -55,10 +57,14 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    GameMapper provideGameDateMapper(GameFactory gameFactory) {
-        CoordinatesMapper coordinatesMapper = new CoordinatesMapper();
-        BoardMapper boardMapper = new BoardMapper();
-        return new GameMapper(gameFactory, coordinatesMapper, boardMapper);
+    MapperFactory provideMapperFactory() {
+        return new MapperFactory();
+    }
+
+    @Provides
+    @Singleton
+    GameMapper provideGameDateMapper(MapperFactory mapperFactory) {
+        return mapperFactory.gameMapper();
     }
 
 }
