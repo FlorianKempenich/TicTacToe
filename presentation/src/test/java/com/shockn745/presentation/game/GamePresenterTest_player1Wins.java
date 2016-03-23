@@ -29,7 +29,7 @@ public class GamePresenterTest_player1Wins {
 
     private static final int GAME_ID = 1;
 
-    GamePresenter presenter;
+    GameContract.Presenter presenter;
     GameStatus statusAfterFirstMoveOn00;
 
     @Mock
@@ -47,9 +47,10 @@ public class GamePresenterTest_player1Wins {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        presenter = new GamePresenter(view, initNewGameUseCase,
+        presenter = new GamePresenter(initNewGameUseCase,
                 registerNetworkGameListenerUseCase, addMoveUseCase
         );
+        ((GamePresenter) presenter).setView(view);
         testScenarios = new GameStatusTestScenarios(new GameFactoryImpl());
         statusAfterFirstMoveOn00 = testScenarios.makeGameStatusWithMoveOn00(GAME_ID);
     }

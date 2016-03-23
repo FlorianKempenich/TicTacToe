@@ -3,7 +3,7 @@ package com.shockn745.domain;
 import com.shockn745.application.driving.dto.BoardCoordinates;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Player;
-import com.shockn745.domain.exceptions.GameNotFinishedException;
+import com.shockn745.domain.datamapper.GameDataMapper;
 import com.shockn745.domain.exceptions.IllegalMoveException;
 
 import org.junit.Before;
@@ -17,10 +17,12 @@ import static org.junit.Assert.fail;
 public class GameImplTest {
 
     private Game game;
+    private GameDataMapper gameDataMapper;
 
     @Before
     public void setUp() throws Exception {
         GameFactory factory = new GameFactoryImpl();
+        gameDataMapper = new GameDataMapper(factory);
         game = factory.makeNewGame();
 
     }
@@ -144,10 +146,10 @@ public class GameImplTest {
         assertEquals(Player.player1(), game.getWinner());
     }
 
-    @Test(expected = GameNotFinishedException.class)
-    public void gameIsNotFinished_tryToGetTheWinner_throwException() throws Exception {
+    @Test
+    public void gameIsNotFinished_winnerIsNoPlayer() throws Exception {
         game.play(new MoveModel(1, 2, Player.player1()));
-        game.getWinner();
+        assertEquals(Player.noPlayer(), game.getWinner());
     }
 
     @Test
@@ -158,7 +160,7 @@ public class GameImplTest {
             game.play(new MoveModel(0, 0, Player.player2()));
             fail();
         } catch (IllegalMoveException e) {
-            GameStatus status = game.makeStatus();
+            GameStatus status = gameDataMapper.transform(game);
             assertEquals(Player.player1(), status.lastPlayer);
         }
     }
@@ -167,8 +169,8 @@ public class GameImplTest {
     public void gamefinished_firstRow_getLastPlayedSquare() throws Exception {
         scoreRowPlayerOne(game, 0);
         assertTrue(game.checkIfFinishedAndUpdateWinner());
-        GameStatus status = game.makeStatus();
-        BoardCoordinates expected = new BoardCoordinates(2,0); //last square played by player 1
+        GameStatus status = gameDataMapper.transform(game);
+        BoardCoordinates expected = new BoardCoordinates(2, 0); //last square played by player 1
 
         assertEquals(expected, status.lastPlayedSquare);
     }

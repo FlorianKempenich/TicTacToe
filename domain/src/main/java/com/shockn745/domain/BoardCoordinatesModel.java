@@ -33,7 +33,7 @@ public class BoardCoordinatesModel {
 
     private void checkForIllegalValue(int coord) {
         if (coord < 0 || coord >= 3) {
-            throw new IllegalCoordinatesException();
+            throw new IllegalCoordinatesException("Out of bounds coordinates");
         }
     }
 

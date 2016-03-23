@@ -1,8 +1,9 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion '24.0.0 rc1'
 
     defaultConfig {
         applicationId "com.shockn745.tictactoe"
@@ -30,10 +31,16 @@ dependencies {
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support:support-annotations:23.2.1'
+    // Android
     compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.android.support:design:23.2.1'
-    compile project(path: ':domain')
     compile 'com.jakewharton:butterknife:7.0.1'
+    // Modules
+    compile project(path: ':domain')
     compile project(':data')
     compile project(':network')
+    // DI - Dagger 2
+    apt 'com.google.dagger:dagger-compiler:2.1'
+    compile 'com.google.dagger:dagger:2.1'
+    provided 'javax.annotation:jsr250-api:1.0'
 }

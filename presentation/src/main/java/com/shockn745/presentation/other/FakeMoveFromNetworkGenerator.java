@@ -6,6 +6,7 @@ import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.implementation.AddMoveFromNetworkUseCaseImpl;
 import com.shockn745.application.driving.network.AddMoveFromNetworkUseCase;
 import com.shockn745.domain.GameFactory;
+import com.shockn745.domain.datamapper.GameDataMapper;
 
 /**
  * Class to mock a network interaction. Illegal boundary cross but only for integration test
@@ -24,10 +25,11 @@ public class FakeMoveFromNetworkGenerator {
             GameStatusRepository gameStatusRepository,
             GameFactory gameFactory,
             NetworkListenerRepository networkListenerRepository) {
+        GameDataMapper gameDataMapper = new GameDataMapper(gameFactory);
         this.addMoveFromNetworkUseCase = new AddMoveFromNetworkUseCaseImpl(
                 gameStatusRepository,
                 networkListenerRepository,
-                gameFactory
+                gameDataMapper
         );
     }
 

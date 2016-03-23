@@ -8,6 +8,7 @@ import com.shockn745.domain.Game;
 import com.shockn745.domain.GameFactory;
 import com.shockn745.domain.GameFactoryImpl;
 import com.shockn745.domain.GameImpl;
+import com.shockn745.domain.datamapper.GameDataMapper;
 import com.shockn745.utils.NullObjects;
 
 import org.junit.Before;
@@ -44,8 +45,9 @@ public class GameStatusRepositoryImplTest {
 
     private static GameStatus makeNewGameStatusWithNoId() {
         GameFactory factory = new GameFactoryImpl();
+        GameDataMapper gameDataMapper = new GameDataMapper(factory);
         Game game = factory.makeNewGame();
-        return game.makeStatus();
+        return gameDataMapper.transform(game);
     }
 
     @Test

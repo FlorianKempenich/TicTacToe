@@ -9,6 +9,7 @@ import com.shockn745.application.driving.network.AddMoveFromNetworkUseCase;
 import com.shockn745.domain.Game;
 import com.shockn745.domain.GameFactory;
 import com.shockn745.domain.MoveModel;
+import com.shockn745.domain.datamapper.GameDataMapper;
 import com.shockn745.domain.exceptions.IllegalMoveException;
 
 import java.util.Set;
@@ -20,15 +21,15 @@ public class AddMoveFromNetworkUseCaseImpl implements AddMoveFromNetworkUseCase 
 
     private final GameStatusRepository gameStatusRepository;
     private final NetworkListenerRepository networkListenerRepository;
-    private final GameFactory gameFactory;
+    private final GameDataMapper gameDataMapper;
 
     public AddMoveFromNetworkUseCaseImpl(
             GameStatusRepository gameStatusRepository,
             NetworkListenerRepository networkListenerRepository,
-            GameFactory gameFactory) {
+            GameDataMapper gameDataMapper) {
         this.gameStatusRepository = gameStatusRepository;
         this.networkListenerRepository = networkListenerRepository;
-        this.gameFactory = gameFactory;
+        this.gameDataMapper = gameDataMapper;
     }
 
     @Override
@@ -48,10 +49,10 @@ public class AddMoveFromNetworkUseCaseImpl implements AddMoveFromNetworkUseCase 
 
     private void playMoveAndNotifyListeners(Move move, int gameId, Callback errorCallback) {
         GameStatus gameStatus = gameStatusRepository.getGame(gameId);
-        Game game = gameFactory.makeGame(gameStatus);
+        Game game = gameDataMapper.transform(gameStatus);
 
         try {
-            GameStatus status = playMoveAndGetStatus(move, gameId, game);
+            GameStatus status = playMoveAndGetStatus(move, game);
             gameStatusRepository.saveGame(status);
             notifyListeners(gameId, status);
         } catch (IllegalMoveException e) {
@@ -61,11 +62,11 @@ public class AddMoveFromNetworkUseCaseImpl implements AddMoveFromNetworkUseCase 
 
     }
 
-    private GameStatus playMoveAndGetStatus(Move move, int gameId, Game game)
+    private GameStatus playMoveAndGetStatus(Move move, Game game)
             throws IllegalMoveException {
         game.play(new MoveModel(move));
         game.checkIfFinishedAndUpdateWinner();
-        return game.makeStatus();
+        return gameDataMapper.transform(game);
     }
 
     private void notifyListeners(int gameId, GameStatus status) {

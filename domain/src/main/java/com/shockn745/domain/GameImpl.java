@@ -1,9 +1,7 @@
 package com.shockn745.domain;
 
-import com.shockn745.application.driving.dto.BoardCoordinates;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Player;
-import com.shockn745.domain.exceptions.GameNotFinishedException;
 import com.shockn745.domain.exceptions.IllegalMoveException;
 import com.shockn745.domain.iterator.BoardIterator;
 
@@ -101,35 +99,28 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public Player getWinner() throws GameNotFinishedException {
-        if (!isGameFinished()) {
-            throw new GameNotFinishedException();
-        }
-        return winner;
-    }
-
-    private boolean isGameFinished() {
-        return !winner.equals(NO_PLAYER);
+    public Board getBoard() {
+        return board;
     }
 
     @Override
-    public GameStatus makeStatus() {
-        return new GameStatus(
-                gameId,
-                board.getBoardStatus(),
-                previousPlayer,
-                winner,
-                map(lastSquarePlayed)
-        );
+    public int getGameId() {
+        return gameId;
     }
 
-    // todo put this AND "make status" to a dedicated mapper
-    private BoardCoordinates map(BoardCoordinatesModel coordinatesModel) {
-        if (coordinatesModel.equals(BoardCoordinatesModel.noCoordinates())) {
-            return BoardCoordinates.noCoordinates();
-        } else {
-            return new BoardCoordinates(lastSquarePlayed.x, lastSquarePlayed.y);
-        }
+    @Override
+    public Player getPreviousPlayer() {
+        return previousPlayer;
+    }
+
+    @Override
+    public BoardCoordinatesModel getLastSquarePlayed() {
+        return lastSquarePlayed;
+    }
+
+    @Override
+    public Player getWinner() {
+        return winner;
     }
 
     @Override

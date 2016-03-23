@@ -7,6 +7,7 @@ import com.shockn745.application.driving.presentation.AddMoveUseCase;
 import com.shockn745.domain.Game;
 import com.shockn745.domain.GameFactory;
 import com.shockn745.domain.MoveModel;
+import com.shockn745.domain.datamapper.GameDataMapper;
 import com.shockn745.domain.exceptions.IllegalMoveException;
 
 /**
@@ -15,12 +16,13 @@ import com.shockn745.domain.exceptions.IllegalMoveException;
 public class AddMoveUseCaseImpl implements AddMoveUseCase {
 
     private final GameStatusRepository gameStatusRepository;
-    private final GameFactory gameFactory;
+    private final GameDataMapper gameDataMapper;
 
     public AddMoveUseCaseImpl(
-            GameStatusRepository gameStatusRepository, GameFactory gameFactory) {
+            GameStatusRepository gameStatusRepository,
+            GameDataMapper gameDataMapper) {
         this.gameStatusRepository = gameStatusRepository;
-        this.gameFactory = gameFactory;
+        this.gameDataMapper = gameDataMapper;
     }
 
     @Override
@@ -45,10 +47,12 @@ public class AddMoveUseCaseImpl implements AddMoveUseCase {
     private void playMove(int gameId, Callback callback, MoveModel moveModel)
             throws IllegalMoveException {
         GameStatus gameStatus = gameStatusRepository.getGame(gameId);
-        Game game = gameFactory.makeGame(gameStatus);
+        Game game = gameDataMapper.transform(gameStatus);
         game.play(moveModel);
         game.checkIfFinishedAndUpdateWinner();
-        gameStatusRepository.saveGame(game.makeStatus());
-        callback.onSuccess(game.makeStatus());
+
+        GameStatus status = gameDataMapper.transform(game);
+        gameStatusRepository.saveGame(status);
+        callback.onSuccess(status);
     }
 }

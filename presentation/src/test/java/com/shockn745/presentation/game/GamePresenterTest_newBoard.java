@@ -35,7 +35,7 @@ public class GamePresenterTest_newBoard {
 
     private static final int GAME_ID = 1;
 
-    GamePresenter presenter;
+    GameContract.Presenter presenter;
 
     @Mock
     GameContract.View view;
@@ -58,11 +58,12 @@ public class GamePresenterTest_newBoard {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        presenter = new GamePresenter(view,
-                initNewGameUseCase,
+        presenter = new GamePresenter(initNewGameUseCase,
                 registerNetworkGameListenerUseCase,
                 addMoveUseCase
         );
+        ((GamePresenter) presenter).setView(view);
+
         testScenarios = new GameStatusTestScenarios(new GameFactoryImpl());
     }
 

@@ -3,6 +3,7 @@ package com.shockn745.presentation.game;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.graphics.Point;
 import android.os.Build;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
@@ -19,6 +20,8 @@ import android.view.Window;
 
 import com.shockn745.domain.R;
 
+import javax.inject.Inject;
+
 /**
  * @author Kempenich Florian
  */
@@ -27,9 +30,9 @@ public class GameAnimations {
     private View firstPlayerBackground;
     private View secondPlayerBackground;
 
-    private final GameActivity activity;
+    private final Activity activity;
 
-    public GameAnimations(GameActivity activity) {
+    public GameAnimations(Activity activity) {
         this.activity = activity;
     }
 

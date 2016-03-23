@@ -22,10 +22,15 @@ public class BoardCoordinatesModelTest {
         assertEquals(2, coordinatesModel.y);
     }
 
-    @Test (expected = IllegalCoordinatesException.class)
+    @Test
     public void illegalCoordinates_throwException() throws Exception {
         BoardCoordinates coordinates = new BoardCoordinates(-1, 2);
-        new BoardCoordinatesModel(coordinates);
+        try {
+            new BoardCoordinatesModel(coordinates);
+            fail();
+        } catch (IllegalCoordinatesException e) {
+            assertEquals("Out of bounds coordinates", e.getMessage());
+        }
     }
 
     @Test

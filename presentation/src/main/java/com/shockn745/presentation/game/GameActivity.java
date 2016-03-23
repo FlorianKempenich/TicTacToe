@@ -11,25 +11,23 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
-import com.shockn745.application.driven.GameStatusRepository;
-import com.shockn745.application.driven.NetworkListenerRepository;
 import com.shockn745.application.driving.dto.BoardCoordinates;
 import com.shockn745.application.driving.dto.GameError;
 import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.dto.Player;
-import com.shockn745.application.driving.implementation.AddMoveUseCaseImpl;
-import com.shockn745.application.driving.implementation.InitNewGameUseCaseImpl;
-import com.shockn745.application.driving.implementation.RegisterNetworkGameListenerUseCaseImpl;
 import com.shockn745.application.driving.network.AddMoveFromNetworkUseCase;
-import com.shockn745.application.driving.presentation.AddMoveUseCase;
-import com.shockn745.application.driving.presentation.InitNewGameUseCase;
-import com.shockn745.application.driving.presentation.RegisterNetworkGameListenerUseCase;
-import com.shockn745.data.InMemoryGameStatusRepository;
-import com.shockn745.domain.GameFactory;
-import com.shockn745.domain.GameFactoryImpl;
 import com.shockn745.domain.R;
-import com.shockn745.network.NetworkListenerRepositoryImpl;
+import com.shockn745.presentation.AndroidApplication;
+import com.shockn745.presentation.internal.di.components.AnimationComponent;
+import com.shockn745.presentation.internal.di.components.ApplicationComponent;
+import com.shockn745.presentation.internal.di.components.DaggerAnimationComponent;
+import com.shockn745.presentation.internal.di.components.DaggerGameComponent;
+import com.shockn745.presentation.internal.di.components.GameComponent;
+import com.shockn745.presentation.internal.di.modules.AnimationModule;
+import com.shockn745.presentation.internal.di.modules.GameModule;
 import com.shockn745.presentation.other.FakeMoveFromNetworkGenerator;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -53,12 +51,16 @@ public class GameActivity extends AppCompatActivity
     View secondPlayerBackground;
 
     private GameContract.Presenter presenter;
-    private GameAnimations gameAnimations;
+    GameAnimations gameAnimations;
     private FakeMoveFromNetworkGenerator fakeMoveFromNetworkGenerator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        gameAnimations = new GameAnimations(this);
+
+        initDependencies();
+        initFakeNetworkGenerator();
+
+
         gameAnimations.initTransitions();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -69,33 +71,47 @@ public class GameActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         ticTacView.setListener(this);
 
-        initPresenter();
         presenter.onCreate();
 
         resetViewVisibility();
     }
 
+
+    private void initDependencies() {
+        ApplicationComponent applicationComponent =
+                AndroidApplication.getApplicationComponent(this);
+        GameComponent gameComponent = DaggerGameComponent.builder()
+                .applicationComponent(applicationComponent)
+                .gameModule(new GameModule())
+                .build();
+        AnimationComponent animationComponent = DaggerAnimationComponent.builder()
+                .applicationComponent(applicationComponent)
+                .animationModule(new AnimationModule(this))
+                .build();
+        gameAnimations = animationComponent.gameAnimations();
+
+
+        presenter = new GamePresenter(
+                gameComponent.initNewGameUseCase(),
+                gameComponent.registerNetworkGameListenerUseCase(),
+                gameComponent.addMoveUseCase()
+        );
+        ((GamePresenter) presenter).setView(this);
+
+
+        fakeMoveFromNetworkGenerator =
+                new FakeMoveFromNetworkGenerator(
+                        applicationComponent.gameStatusRepository(),
+                        applicationComponent.gameFactory(),
+                        applicationComponent.networkListenerRepository()
+                );
+    }
+
     /**
      * Replace with dependency injection
      */
-    private void initPresenter() {
-        GameStatusRepository gameStatusRepository = new InMemoryGameStatusRepository();
-        NetworkListenerRepository networkListenerRepository = new NetworkListenerRepositoryImpl();
-        GameFactory gameFactory = new GameFactoryImpl();
-        InitNewGameUseCase initNewGameUseCase =
-                new InitNewGameUseCaseImpl(gameStatusRepository, gameFactory);
-        AddMoveUseCase addMoveUseCase = new AddMoveUseCaseImpl(gameStatusRepository, gameFactory);
-        RegisterNetworkGameListenerUseCase registerNetworkGameListenerUseCase =
-                new RegisterNetworkGameListenerUseCaseImpl(networkListenerRepository);
-        fakeMoveFromNetworkGenerator =
-                new FakeMoveFromNetworkGenerator(
-                        gameStatusRepository,
-                        gameFactory,
-                        networkListenerRepository
-                );
-        presenter = new GamePresenter(this, initNewGameUseCase,
-                registerNetworkGameListenerUseCase, addMoveUseCase
-        );
+    private void initFakeNetworkGenerator() {
+
     }
 
     private void resetViewVisibility() {
