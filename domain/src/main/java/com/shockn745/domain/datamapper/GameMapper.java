@@ -7,13 +7,13 @@ import com.shockn745.domain.GameFactory;
 /**
  * @author Kempenich Florian
  */
-public class GameDataMapper {
+public class GameMapper {
 
     private final GameFactory gameFactory;
     private final CoordinatesMapper coordinatesMapper;
     private final BoardMapper boardMapper;
 
-    public GameDataMapper(GameFactory gameFactory) {
+    public GameMapper(GameFactory gameFactory) {
         this.gameFactory = gameFactory;
         coordinatesMapper = new CoordinatesMapper();// todo put in constructor
         boardMapper = new BoardMapper();

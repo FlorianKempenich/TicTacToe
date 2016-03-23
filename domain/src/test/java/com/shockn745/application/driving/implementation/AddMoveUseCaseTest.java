@@ -9,7 +9,7 @@ import com.shockn745.application.driving.presentation.AddMoveUseCase;
 import com.shockn745.domain.Game;
 import com.shockn745.domain.GameFactory;
 import com.shockn745.domain.MoveModel;
-import com.shockn745.domain.datamapper.GameDataMapper;
+import com.shockn745.domain.datamapper.GameMapper;
 import com.shockn745.testutil.GameStatusTestScenarios;
 import com.shockn745.utils.NullObjects;
 
@@ -43,15 +43,15 @@ public class AddMoveUseCaseTest {
     @Captor
     ArgumentCaptor<GameError> gameErrorArgumentCaptor;
     GameStatusTestScenarios testScenarios;
-    GameDataMapper gameDataMapper;
+    GameMapper gameMapper;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         GameFactory gameFactory = new GameFactory();
-        gameDataMapper = new GameDataMapper(gameFactory);
+        gameMapper = new GameMapper(gameFactory);
         testScenarios = new GameStatusTestScenarios(gameFactory);
-        addMoveUseCase = new AddMoveUseCaseImpl(gameStatusRepository, gameDataMapper);
+        addMoveUseCase = new AddMoveUseCaseImpl(gameStatusRepository, gameMapper);
         GameStatus emptyGameStatus = NullObjects.makeEmptyGameStatus(GAME_ID);
         game = gameFactory.makeGame(emptyGameStatus);
     }
@@ -66,7 +66,7 @@ public class AddMoveUseCaseTest {
 
     private void updateGameInRepository() {
         when(gameStatusRepository.contains(GAME_ID)).thenReturn(true);
-        when(gameStatusRepository.getGame(GAME_ID)).thenReturn(gameDataMapper.transform(game));
+        when(gameStatusRepository.getGame(GAME_ID)).thenReturn(gameMapper.transform(game));
     }
 
     @Test

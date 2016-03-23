@@ -2,7 +2,7 @@ package com.shockn745.domain;
 
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Player;
-import com.shockn745.domain.datamapper.GameDataMapper;
+import com.shockn745.domain.datamapper.GameMapper;
 import com.shockn745.testutil.GameStatusTestScenarios;
 import com.shockn745.utils.NullObjects;
 
@@ -17,20 +17,20 @@ import static org.junit.Assert.*;
 public class GameFactoryTest {
 
     GameFactory gameFactory;
-    GameDataMapper gameDataMapper;
+    GameMapper gameMapper;
     GameStatusTestScenarios testScenarios;
 
     @Before
     public void setUp() throws Exception {
         gameFactory = new GameFactory();
-        gameDataMapper = new GameDataMapper(gameFactory);
+        gameMapper = new GameMapper(gameFactory);
         testScenarios = new GameStatusTestScenarios(gameFactory);
     }
 
     @Test
     public void createNewGame_returnEmptyGame() throws Exception {
         Game game = gameFactory.makeNewGame();
-        GameStatus status = gameDataMapper.transform(game);
+        GameStatus status = gameMapper.transform(game);
         GameStatus expected = NullObjects.makeEmptyGameStatus(GameStatus.NO_ID);
         assertEquals(expected, status);
     }
@@ -41,7 +41,7 @@ public class GameFactoryTest {
         GameStatus status = NullObjects.makeEmptyGameStatus(id);
         Game game = gameFactory.makeGame(status);
 
-        assertEquals(status, gameDataMapper.transform(game));
+        assertEquals(status, gameMapper.transform(game));
     }
 
     @Test
@@ -49,14 +49,14 @@ public class GameFactoryTest {
         int id = 2;
         GameStatus status = testScenarios.makeGameStatusWithMoveOn00(id);
         Game game = gameFactory.makeGame(status);
-        assertEquals(status, gameDataMapper.transform(game));
+        assertEquals(status, gameMapper.transform(game));
     }
 
     @Test
     public void createNewGame_makeStatus_createNewGameWithStatus_gamesAreIdentical()
             throws Exception {
         Game newGame = gameFactory.makeNewGame();
-        GameStatus status = gameDataMapper.transform(newGame);
+        GameStatus status = gameMapper.transform(newGame);
 
         Game fromStatus = gameFactory.makeGame(status);
 
@@ -68,7 +68,7 @@ public class GameFactoryTest {
             throws Exception {
         Game moveOn00 = gameFactory.makeNewGame();
         moveOn00.play(new MoveModel(0, 0, Player.player1()));
-        GameStatus status = gameDataMapper.transform(moveOn00);
+        GameStatus status = gameMapper.transform(moveOn00);
 
         Game fromStatus = gameFactory.makeGame(status);
 

@@ -6,7 +6,7 @@ import com.shockn745.application.driven.GameStatusRepository;
 import com.shockn745.application.driven.NetworkListenerRepository;
 import com.shockn745.data.InMemoryGameStatusRepository;
 import com.shockn745.domain.GameFactory;
-import com.shockn745.domain.datamapper.GameDataMapper;
+import com.shockn745.domain.datamapper.GameMapper;
 import com.shockn745.network.NetworkListenerRepositoryImpl;
 import com.shockn745.presentation.AndroidApplication;
 
@@ -53,7 +53,7 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    GameDataMapper provideGameDateMapper(GameFactory gameFactory) {
-        return new GameDataMapper(gameFactory);
+    GameMapper provideGameDateMapper(GameFactory gameFactory) {
+        return new GameMapper(gameFactory);
     }
 }

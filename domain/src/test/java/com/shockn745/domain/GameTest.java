@@ -3,7 +3,7 @@ package com.shockn745.domain;
 import com.shockn745.application.driving.dto.BoardCoordinates;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Player;
-import com.shockn745.domain.datamapper.GameDataMapper;
+import com.shockn745.domain.datamapper.GameMapper;
 import com.shockn745.domain.exceptions.IllegalMoveException;
 
 import org.junit.Before;
@@ -17,12 +17,12 @@ import static org.junit.Assert.fail;
 public class GameTest {
 
     private Game game;
-    private GameDataMapper gameDataMapper;
+    private GameMapper gameMapper;
 
     @Before
     public void setUp() throws Exception {
         GameFactory factory = new GameFactory();
-        gameDataMapper = new GameDataMapper(factory);
+        gameMapper = new GameMapper(factory);
         game = factory.makeNewGame();
 
     }
@@ -160,7 +160,7 @@ public class GameTest {
             game.play(new MoveModel(0, 0, Player.player2()));
             fail();
         } catch (IllegalMoveException e) {
-            GameStatus status = gameDataMapper.transform(game);
+            GameStatus status = gameMapper.transform(game);
             assertEquals(Player.player1(), status.lastPlayer);
         }
     }
@@ -169,7 +169,7 @@ public class GameTest {
     public void gamefinished_firstRow_getLastPlayedSquare() throws Exception {
         scoreRowPlayerOne(game, 0);
         assertTrue(game.checkIfFinishedAndUpdateWinner());
-        GameStatus status = gameDataMapper.transform(game);
+        GameStatus status = gameMapper.transform(game);
         BoardCoordinates expected = new BoardCoordinates(2, 0); //last square played by player 1
 
         assertEquals(expected, status.lastPlayedSquare);

@@ -8,7 +8,7 @@ import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.network.AddMoveFromNetworkUseCase;
 import com.shockn745.domain.Game;
 import com.shockn745.domain.MoveModel;
-import com.shockn745.domain.datamapper.GameDataMapper;
+import com.shockn745.domain.datamapper.GameMapper;
 import com.shockn745.domain.exceptions.IllegalMoveException;
 
 import java.util.Set;
@@ -20,15 +20,15 @@ public class AddMoveFromNetworkUseCaseImpl implements AddMoveFromNetworkUseCase 
 
     private final GameStatusRepository gameStatusRepository;
     private final NetworkListenerRepository networkListenerRepository;
-    private final GameDataMapper gameDataMapper;
+    private final GameMapper gameMapper;
 
     public AddMoveFromNetworkUseCaseImpl(
             GameStatusRepository gameStatusRepository,
             NetworkListenerRepository networkListenerRepository,
-            GameDataMapper gameDataMapper) {
+            GameMapper gameMapper) {
         this.gameStatusRepository = gameStatusRepository;
         this.networkListenerRepository = networkListenerRepository;
-        this.gameDataMapper = gameDataMapper;
+        this.gameMapper = gameMapper;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class AddMoveFromNetworkUseCaseImpl implements AddMoveFromNetworkUseCase 
 
     private void playMoveAndNotifyListeners(Move move, int gameId, Callback errorCallback) {
         GameStatus gameStatus = gameStatusRepository.getGame(gameId);
-        Game game = gameDataMapper.transform(gameStatus);
+        Game game = gameMapper.transform(gameStatus);
 
         try {
             GameStatus status = playMoveAndGetStatus(move, game);
@@ -65,7 +65,7 @@ public class AddMoveFromNetworkUseCaseImpl implements AddMoveFromNetworkUseCase 
             throws IllegalMoveException {
         game.play(new MoveModel(move));
         game.checkIfFinishedAndUpdateWinner();
-        return gameDataMapper.transform(game);
+        return gameMapper.transform(game);
     }
 
     private void notifyListeners(int gameId, GameStatus status) {
