@@ -5,11 +5,11 @@ import com.shockn745.application.driving.dto.BoardCoordinates;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.dto.Player;
+import com.shockn745.domain.GameFactory;
 import com.shockn745.testutil.GameStatusTestScenarios;
 import com.shockn745.application.driving.presentation.AddMoveUseCase;
 import com.shockn745.application.driving.presentation.InitNewGameUseCase;
 import com.shockn745.application.driving.presentation.RegisterNetworkGameListenerUseCase;
-import com.shockn745.domain.GameFactoryImpl;
 import com.shockn745.utils.NullObjects;
 
 import org.junit.Before;
@@ -63,7 +63,7 @@ public class GamePresenterTest_newBoard {
                 addMoveUseCase
         );
 
-        testScenarios = new GameStatusTestScenarios(new GameFactoryImpl());
+        testScenarios = new GameStatusTestScenarios(new GameFactory());
     }
 
     @Test

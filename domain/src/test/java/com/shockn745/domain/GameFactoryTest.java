@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 /**
  * @author Kempenich Florian
  */
-public class GameFactoryImplTest {
+public class GameFactoryTest {
 
     GameFactory gameFactory;
     GameDataMapper gameDataMapper;
@@ -22,7 +22,7 @@ public class GameFactoryImplTest {
 
     @Before
     public void setUp() throws Exception {
-        gameFactory = new GameFactoryImpl();
+        gameFactory = new GameFactory();
         gameDataMapper = new GameDataMapper(gameFactory);
         testScenarios = new GameStatusTestScenarios(gameFactory);
     }

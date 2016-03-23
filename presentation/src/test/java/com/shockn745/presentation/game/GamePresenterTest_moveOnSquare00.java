@@ -3,11 +3,11 @@ package com.shockn745.presentation.game;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.dto.Player;
+import com.shockn745.domain.GameFactory;
 import com.shockn745.testutil.GameStatusTestScenarios;
 import com.shockn745.application.driving.presentation.AddMoveUseCase;
 import com.shockn745.application.driving.presentation.InitNewGameUseCase;
 import com.shockn745.application.driving.presentation.RegisterNetworkGameListenerUseCase;
-import com.shockn745.domain.GameFactoryImpl;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -58,7 +58,7 @@ public class GamePresenterTest_moveOnSquare00 {
                 anyInt(),
                 addMoveArgumentCaptor.capture()
         );
-        GameStatusTestScenarios testScenarios = new GameStatusTestScenarios(new GameFactoryImpl());
+        GameStatusTestScenarios testScenarios = new GameStatusTestScenarios(new GameFactory());
         GameStatus status = testScenarios.makeGameStatusWithMoveOn00(GAME_ID);
         addMoveArgumentCaptor.getValue().onSuccess(status);
     }

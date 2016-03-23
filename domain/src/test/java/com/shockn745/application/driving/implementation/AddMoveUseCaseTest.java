@@ -6,9 +6,8 @@ import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.dto.Player;
 import com.shockn745.application.driving.presentation.AddMoveUseCase;
-import com.shockn745.domain.GameFactory;
-import com.shockn745.domain.GameFactoryImpl;
 import com.shockn745.domain.Game;
+import com.shockn745.domain.GameFactory;
 import com.shockn745.domain.MoveModel;
 import com.shockn745.domain.datamapper.GameDataMapper;
 import com.shockn745.testutil.GameStatusTestScenarios;
@@ -49,7 +48,7 @@ public class AddMoveUseCaseTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        GameFactory gameFactory = new GameFactoryImpl();
+        GameFactory gameFactory = new GameFactory();
         gameDataMapper = new GameDataMapper(gameFactory);
         testScenarios = new GameStatusTestScenarios(gameFactory);
         addMoveUseCase = new AddMoveUseCaseImpl(gameStatusRepository, gameDataMapper);

@@ -4,7 +4,6 @@ import com.shockn745.application.driven.GameStatusRepository;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.presentation.InitNewGameUseCase;
 import com.shockn745.domain.GameFactory;
-import com.shockn745.domain.GameFactoryImpl;
 import com.shockn745.domain.datamapper.GameDataMapper;
 import com.shockn745.utils.NullObjects;
 
@@ -50,9 +49,10 @@ public class InitNewGameUseCaseTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        GameFactory gameFactory = new GameFactoryImpl();
+        GameFactory gameFactory = new GameFactory();
         GameDataMapper gameDataMapper = new GameDataMapper(gameFactory);
-        initNewGameUseCase = new InitNewGameUseCaseImpl(gameStatusRepository, gameFactory, gameDataMapper);
+        initNewGameUseCase =
+                new InitNewGameUseCaseImpl(gameStatusRepository, gameFactory, gameDataMapper);
     }
 
     @Test

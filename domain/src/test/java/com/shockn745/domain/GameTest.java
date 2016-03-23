@@ -21,7 +21,7 @@ public class GameTest {
 
     @Before
     public void setUp() throws Exception {
-        GameFactory factory = new GameFactoryImpl();
+        GameFactory factory = new GameFactory();
         gameDataMapper = new GameDataMapper(factory);
         game = factory.makeNewGame();
 

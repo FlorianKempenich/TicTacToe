@@ -17,7 +17,10 @@ import dagger.Component;
 @Component(modules = ApplicationModule.class)
 public interface ApplicationComponent {
     GameStatusRepository gameStatusRepository();
+
     NetworkListenerRepository networkListenerRepository();
+
     GameFactory gameFactory();
+
     GameDataMapper gameDataMapper();
 }

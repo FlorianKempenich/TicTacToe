@@ -22,7 +22,13 @@ public class GameStatusTestScenarios {
         Player lastPlayer = Player.noPlayer();
         Player winner = Player.noPlayer();
 
-        return new GameStatus(gameId, emptyBoard, lastPlayer, winner, BoardCoordinates.noCoordinates());
+        return new GameStatus(
+                gameId,
+                emptyBoard,
+                lastPlayer,
+                winner,
+                BoardCoordinates.noCoordinates()
+        );
     }
 
     public GameStatus makeGameStatusWithMoveOn00(int gameId) throws Exception {
@@ -45,6 +51,12 @@ public class GameStatusTestScenarios {
         Player lastPlayer = Player.player1();
         Player winner = Player.player1();
 
-        return new GameStatus(gameId, expectedBoard, lastPlayer, winner, new BoardCoordinates(2, 0));
+        return new GameStatus(
+                gameId,
+                expectedBoard,
+                lastPlayer,
+                winner,
+                new BoardCoordinates(2, 0)
+        );
     }
 }

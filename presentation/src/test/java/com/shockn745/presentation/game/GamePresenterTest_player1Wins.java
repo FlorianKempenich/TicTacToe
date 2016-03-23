@@ -5,7 +5,7 @@ import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.presentation.AddMoveUseCase;
 import com.shockn745.application.driving.presentation.InitNewGameUseCase;
 import com.shockn745.application.driving.presentation.RegisterNetworkGameListenerUseCase;
-import com.shockn745.domain.GameFactoryImpl;
+import com.shockn745.domain.GameFactory;
 import com.shockn745.testutil.GameStatusTestScenarios;
 
 import org.junit.Before;
@@ -50,7 +50,7 @@ public class GamePresenterTest_player1Wins {
         presenter = new GamePresenter(view, initNewGameUseCase,
                 registerNetworkGameListenerUseCase, addMoveUseCase
         );
-        testScenarios = new GameStatusTestScenarios(new GameFactoryImpl());
+        testScenarios = new GameStatusTestScenarios(new GameFactory());
         statusAfterFirstMoveOn00 = testScenarios.makeGameStatusWithMoveOn00(GAME_ID);
     }
 

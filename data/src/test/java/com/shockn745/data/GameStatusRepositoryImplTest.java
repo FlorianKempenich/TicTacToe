@@ -2,9 +2,8 @@ package com.shockn745.data;
 
 import com.shockn745.application.driven.GameStatusRepository;
 import com.shockn745.application.driving.dto.GameStatus;
-import com.shockn745.domain.GameFactory;
-import com.shockn745.domain.GameFactoryImpl;
 import com.shockn745.domain.Game;
+import com.shockn745.domain.GameFactory;
 import com.shockn745.domain.datamapper.GameDataMapper;
 import com.shockn745.utils.NullObjects;
 
@@ -40,7 +39,7 @@ public class GameStatusRepositoryImplTest {
     }
 
     private static GameStatus makeNewGameStatusWithNoId() {
-        GameFactory factory = new GameFactoryImpl();
+        GameFactory factory = new GameFactory();
         GameDataMapper gameDataMapper = new GameDataMapper(factory);
         Game game = factory.makeNewGame();
         return gameDataMapper.transform(game);

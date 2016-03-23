@@ -1,9 +1,8 @@
 package com.shockn745.data;
 
 import com.shockn745.application.driven.GameRepository;
-import com.shockn745.domain.GameFactory;
-import com.shockn745.domain.GameFactoryImpl;
 import com.shockn745.domain.Game;
+import com.shockn745.domain.GameFactory;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +35,7 @@ public class GameRepositoryImplTest {
     }
 
     private static Game makeNewGame() {
-        GameFactory factory = new GameFactoryImpl();
+        GameFactory factory = new GameFactory();
         return factory.makeNewGame();
     }
 

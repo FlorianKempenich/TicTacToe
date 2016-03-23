@@ -8,7 +8,6 @@ import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.dto.Player;
 import com.shockn745.application.driving.network.AddMoveFromNetworkUseCase;
 import com.shockn745.domain.GameFactory;
-import com.shockn745.domain.GameFactoryImpl;
 import com.shockn745.domain.datamapper.GameDataMapper;
 import com.shockn745.testutil.GameStatusTestScenarios;
 
@@ -56,7 +55,7 @@ public class AddMoveFromNetworkUseCaseImplTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        GameFactory gameFactory = new GameFactoryImpl();
+        GameFactory gameFactory = new GameFactory();
         testScenarios = new GameStatusTestScenarios(gameFactory);
         GameDataMapper gameDataMapper = new GameDataMapper(gameFactory);
         addMoveFromNetworkUseCase = new AddMoveFromNetworkUseCaseImpl(
@@ -72,10 +71,12 @@ public class AddMoveFromNetworkUseCaseImplTest {
 
         // Mock game repo behavior
         when(gameStatusRepository.contains(EMPTY_GAME_ID)).thenReturn(true);
-        when(gameStatusRepository.getGame(EMPTY_GAME_ID)).thenReturn(testScenarios.makeEmptyGameStatus(EMPTY_GAME_ID));
+        when(gameStatusRepository.getGame(EMPTY_GAME_ID)).thenReturn(testScenarios.makeEmptyGameStatus(
+                EMPTY_GAME_ID));
 
         when(gameStatusRepository.contains(MOVE_ON_00_GAME_ID)).thenReturn(true);
-        when(gameStatusRepository.getGame(MOVE_ON_00_GAME_ID)).thenReturn(testScenarios.makeGameStatusWithMoveOn00(MOVE_ON_00_GAME_ID));
+        when(gameStatusRepository.getGame(MOVE_ON_00_GAME_ID)).thenReturn(testScenarios.makeGameStatusWithMoveOn00(
+                MOVE_ON_00_GAME_ID));
     }
 
     private static Set<NetworkListenerRepository.GameNetworkListener> makeSetWithListener(
@@ -84,7 +85,6 @@ public class AddMoveFromNetworkUseCaseImplTest {
         set.add(listener);
         return set;
     }
-
 
 
     @Test
