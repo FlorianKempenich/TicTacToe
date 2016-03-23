@@ -2,9 +2,8 @@ package com.shockn745.data;
 
 import com.shockn745.application.driven.GameRepository;
 import com.shockn745.domain.Game;
-import java.util.ArrayList;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,7 +11,6 @@ import java.util.Map;
  */
 public class InMemoryGameRepository implements GameRepository {
 
-    List<Game> database = new ArrayList<>();
     private Map<Integer, Game> map = new HashMap<>();
     private int counter = 0;
 

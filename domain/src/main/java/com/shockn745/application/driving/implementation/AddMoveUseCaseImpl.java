@@ -5,7 +5,6 @@ import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.presentation.AddMoveUseCase;
 import com.shockn745.domain.Game;
-import com.shockn745.domain.GameFactory;
 import com.shockn745.domain.MoveModel;
 import com.shockn745.domain.datamapper.GameDataMapper;
 import com.shockn745.domain.exceptions.IllegalMoveException;

@@ -2,18 +2,14 @@ package com.shockn745.data;
 
 import com.shockn745.application.driven.GameStatusRepository;
 import com.shockn745.application.driving.dto.GameStatus;
-import com.shockn745.domain.Board;
-import com.shockn745.domain.BoardImpl;
-import com.shockn745.domain.Game;
 import com.shockn745.domain.GameFactory;
 import com.shockn745.domain.GameFactoryImpl;
-import com.shockn745.domain.GameImpl;
+import com.shockn745.domain.Game;
 import com.shockn745.domain.datamapper.GameDataMapper;
 import com.shockn745.utils.NullObjects;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.internal.matchers.Null;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

@@ -20,7 +20,7 @@ public class GameFactoryImpl implements GameFactory {
         GameStatus newGameStatus = NullObjects.makeEmptyGameStatus(GameStatus.NO_ID);
 
         BoardImpl board = new BoardImpl(newGameStatus.board);
-        return new GameImpl(
+        return new Game(
                 board,
                 newGameStatus,
                 coordinatesMapper.transform(newGameStatus.lastPlayedSquare)
@@ -30,7 +30,7 @@ public class GameFactoryImpl implements GameFactory {
     @Override
     public Game makeGame(GameStatus status) {
         BoardImpl board = new BoardImpl(status.board);
-        return new GameImpl(board, status, coordinatesMapper.transform(status.lastPlayedSquare));
+        return new Game(board, status, coordinatesMapper.transform(status.lastPlayedSquare));
     }
 
 }

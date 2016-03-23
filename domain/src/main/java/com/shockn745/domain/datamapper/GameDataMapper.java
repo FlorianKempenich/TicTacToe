@@ -1,10 +1,8 @@
 package com.shockn745.domain.datamapper;
 
-import com.shockn745.application.driving.dto.BoardCoordinates;
 import com.shockn745.application.driving.dto.GameStatus;
-import com.shockn745.domain.BoardCoordinatesModel;
-import com.shockn745.domain.Game;
 import com.shockn745.domain.GameFactory;
+import com.shockn745.domain.Game;
 
 /**
  * @author Kempenich Florian

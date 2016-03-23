@@ -1,12 +1,10 @@
 package com.shockn745.data;
 
 import com.shockn745.application.driven.GameRepository;
-import com.shockn745.domain.Board;
-import com.shockn745.domain.BoardImpl;
-import com.shockn745.domain.Game;
 import com.shockn745.domain.GameFactory;
 import com.shockn745.domain.GameFactoryImpl;
-import com.shockn745.domain.GameImpl;
+import com.shockn745.domain.Game;
+
 import org.junit.Before;
 import org.junit.Test;
 
