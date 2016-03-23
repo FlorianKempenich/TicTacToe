@@ -12,6 +12,7 @@ import com.shockn745.domain.datamapper.CoordinatesMapper;
 import com.shockn745.domain.datamapper.GameMapper;
 import com.shockn745.domain.datamapper.MoveMapper;
 import com.shockn745.domain.exceptions.IllegalMoveException;
+import com.shockn745.domain.factory.MapperFactory;
 
 import java.util.Set;
 
@@ -28,11 +29,11 @@ public class AddMoveFromNetworkUseCaseImpl implements AddMoveFromNetworkUseCase 
     public AddMoveFromNetworkUseCaseImpl(
             GameStatusRepository gameStatusRepository,
             NetworkListenerRepository networkListenerRepository,
-            GameMapper gameMapper) {
+            MapperFactory mapperFactory) {
         this.gameStatusRepository = gameStatusRepository;
         this.networkListenerRepository = networkListenerRepository;
-        this.gameMapper = gameMapper;
-        this.moveMapper = new MoveMapper(new CoordinatesMapper()); //todo constructor
+        this.gameMapper = mapperFactory.gameMapper();
+        this.moveMapper = mapperFactory.moveMapper();
     }
 
     @Override

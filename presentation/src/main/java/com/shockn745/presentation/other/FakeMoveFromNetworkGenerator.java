@@ -26,11 +26,10 @@ public class FakeMoveFromNetworkGenerator {
             GameStatusRepository gameStatusRepository,
             NetworkListenerRepository networkListenerRepository) {
         MapperFactory mapperFactory = new MapperFactoryImpl();
-        GameMapper gameMapper = mapperFactory.gameMapper();
         this.addMoveFromNetworkUseCase = new AddMoveFromNetworkUseCaseImpl(
                 gameStatusRepository,
                 networkListenerRepository,
-                gameMapper
+                mapperFactory
         );
     }
 

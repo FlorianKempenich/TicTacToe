@@ -62,11 +62,10 @@ public class AddMoveFromNetworkUseCaseImplTest {
         GameFactory gameFactory = new GameFactoryImpl();
         testScenarios = new GameStatusTestScenarios(gameFactory);
         MapperFactory mapperFactory = new MapperFactoryImpl();
-        GameMapper gameMapper = mapperFactory.gameMapper();
         addMoveFromNetworkUseCase = new AddMoveFromNetworkUseCaseImpl(
                 gameStatusRepository,
                 listenersRepository,
-                gameMapper
+                mapperFactory
         );
 
 
