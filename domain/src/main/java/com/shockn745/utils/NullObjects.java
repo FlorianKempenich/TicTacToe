@@ -6,6 +6,8 @@ import com.shockn745.application.driving.dto.Player;
 import com.shockn745.domain.BoardCoordinatesModel;
 import com.shockn745.domain.Square;
 
+import java.util.HashSet;
+
 /**
  * @author Kempenich Florian
  */
@@ -18,21 +20,11 @@ public class NullObjects {
                 board,
                 Player.noPlayer(),
                 Player.noPlayer(),
-                BoardCoordinates.noCoordinates()
+                BoardCoordinates.noCoordinates(),
+                new HashSet<BoardCoordinates>(3)
         );
     }
 
-    public static Player[][] makeEmptyOldBoard() {
-        Player[][] board = new Player[3][3];
-
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                board[i][j] = Player.noPlayer();
-            }
-        }
-
-        return board;
-    }
 
     public static Square[][] makeEmptyBoard() {
         Square[][] board = new Square[3][3];

@@ -1,5 +1,6 @@
 package com.shockn745.presentation.game;
 
+import com.shockn745.application.driving.dto.BoardCoordinates;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Move;
 import com.shockn745.application.driving.presentation.AddMoveUseCase;
@@ -15,8 +16,12 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
@@ -51,33 +56,47 @@ public class GamePresenterTest_player1Wins {
                 registerNetworkGameListenerUseCase, addMoveUseCase
         );
         testScenarios = new GameStatusTestScenarios(new GameFactoryImpl());
-        statusAfterFirstMoveOn00 = testScenarios.makeGameStatusWithMoveOn00(GAME_ID);
     }
-
 
     @Test
     public void clickOnWinningSquare_WinnerAnnounced() throws Exception {
+        simulateLastClickAndPositiveResponse();
+        verify(view).displayWinner(eq("Player 1"), any(Set.class), any(BoardCoordinates.class));
+    }
+
+    private void simulateLastClickAndPositiveResponse() {
         presenter.onSquareClicked(2, 0); //winning move
         // Capture callback
         verify(addMoveUseCase).execute(any(Move.class), anyInt(), addMoveArgumentCaptor.capture());
         // Simulate response
         addMoveArgumentCaptor.getValue()
                 .onSuccess(testScenarios.makeGameStatusPlayer1WonFirstRow(GAME_ID));
-
-        verify(view).displayWinner("Player 1");
     }
 
     @Test
     public void clickAfterGameWon_ignored() throws Exception {
-        // Init presenter with winning state
-        presenter.onSquareClicked(2, 0); //winning move
-        verify(addMoveUseCase).execute(any(Move.class), anyInt(), addMoveArgumentCaptor.capture());
-        addMoveArgumentCaptor.getValue()
-                .onSuccess(testScenarios.makeGameStatusPlayer1WonFirstRow(GAME_ID));
-
-
+        simulateLastClickAndPositiveResponse();
         presenter.onSquareClicked(1, 2);
         verifyNoMoreInteractions(addMoveUseCase);
+    }
+
+    @Test
+    public void clickOnWinningSquare_WinnerAnnouncedWithWinningSquaresAndLastSquare()
+            throws Exception {
+        simulateLastClickAndPositiveResponse();
+
+        Set<BoardCoordinates> expectedWinningSquares = new HashSet<>(3);
+        expectedWinningSquares.add(new BoardCoordinates(0, 0));
+        expectedWinningSquares.add(new BoardCoordinates(1, 0));
+        expectedWinningSquares.add(new BoardCoordinates(2, 0));
+
+        BoardCoordinates expectedLastSquare = new BoardCoordinates(2, 0);
+
+        verify(view).displayWinner(
+                eq("Player 1"),
+                eq(expectedWinningSquares),
+                eq(expectedLastSquare)
+        );
     }
 
 }

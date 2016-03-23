@@ -1,9 +1,13 @@
 package com.shockn745.domain.datamapper;
 
+import com.shockn745.application.driving.dto.BoardCoordinates;
 import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.domain.Board;
 import com.shockn745.domain.BoardCoordinatesModel;
 import com.shockn745.domain.Game;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Kempenich Florian
@@ -26,10 +30,18 @@ public class GameMapper {
                 boardMapper.transformNew(game.getBoard()),
                 game.getPreviousPlayer(),
                 game.getWinner(),
-                coordinatesMapper.transform(game.getLastSquarePlayed())
+                coordinatesMapper.transform(game.getLastSquarePlayed()),
+                transformWinningSquaresToDto(game.getWinningSquares())
         );
     }
 
+    private Set<BoardCoordinates> transformWinningSquaresToDto(Set<BoardCoordinatesModel> winningSquares) {
+        Set<BoardCoordinates> winningSquaresDto = new HashSet<>(3);
+        for (BoardCoordinatesModel coordinatesModel : winningSquares) {
+            winningSquaresDto.add(coordinatesMapper.transform(coordinatesModel));
+        }
+        return winningSquaresDto;
+    }
 
     public Game transform(GameStatus gameStatus) {
         Board board = boardMapper.transform(gameStatus.board);
@@ -40,8 +52,17 @@ public class GameMapper {
                 gameStatus.gameId,
                 gameStatus.lastPlayer,
                 gameStatus.winner,
-                lastPlayedSquare
+                lastPlayedSquare,
+                transformWinningSquaresToModel(gameStatus.winningSquares)
         );
+    }
+
+    private Set<BoardCoordinatesModel> transformWinningSquaresToModel(Set<BoardCoordinates> winningSquares) {
+        Set<BoardCoordinatesModel> winningSquaresDto = new HashSet<>(3);
+        for (BoardCoordinates coordinates : winningSquares) {
+            winningSquaresDto.add(coordinatesMapper.transform(coordinates));
+        }
+        return winningSquaresDto;
     }
 
 }

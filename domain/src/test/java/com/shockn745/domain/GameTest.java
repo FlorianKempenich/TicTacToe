@@ -203,7 +203,6 @@ public class GameTest {
     }
 
     @Test
-    @Ignore
     public void gameFinished_firstRow_getWinningSquares() throws Exception {
         scoreRowPlayerOne(game, 0);
         assertTrue(game.checkIfFinishedAndUpdateWinStatus());

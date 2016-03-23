@@ -25,6 +25,8 @@ import com.shockn745.presentation.internal.di.modules.GameActivityModule;
 import com.shockn745.presentation.internal.di.modules.UseCasesModule;
 import com.shockn745.presentation.other.FakeMoveFromNetworkGenerator;
 
+import java.util.Set;
+
 import javax.inject.Inject;
 
 import butterknife.Bind;
@@ -141,8 +143,12 @@ public class GameActivity extends AppCompatActivity
         return !lastSquarePlayer.equals(BoardCoordinates.noCoordinates());
     }
 
+
     @Override
-    public void displayWinner(String winnerName) {
+    public void displayWinner(
+            String winnerName,
+            Set<BoardCoordinates> winningSquares,
+            BoardCoordinates lastSquarePlayed) {
         String winnerText = String.format(getString(R.string.winner), winnerName);
         winner.setText(winnerText);
         winner.setVisibility(View.VISIBLE);

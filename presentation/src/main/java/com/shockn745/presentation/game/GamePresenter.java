@@ -54,7 +54,8 @@ public class GamePresenter implements GameContract.Presenter {
     };
 
     @Inject
-    public GamePresenter(GameContract.View view,  InitNewGameUseCase initNewGameUseCase,
+    public GamePresenter(
+            GameContract.View view, InitNewGameUseCase initNewGameUseCase,
             RegisterNetworkGameListenerUseCase registerNetworkGameListenerUseCase,
             AddMoveUseCase addMoveUseCase) {
         this.view = view;
@@ -78,7 +79,7 @@ public class GamePresenter implements GameContract.Presenter {
         if (shouldPlayMove(x, y)) {
             Player currentPlayer = getCurrentPlayer();
             addMoveUseCase.execute(
-                    new Move(new BoardCoordinates(x,y), currentPlayer),
+                    new Move(new BoardCoordinates(x, y), currentPlayer),
                     currentGameStatus.gameId,
                     addMoveCallback
             );
@@ -146,7 +147,11 @@ public class GamePresenter implements GameContract.Presenter {
     }
 
     private void displayWinner() {
-        view.displayWinner(getPlayerName(currentGameStatus.winner));
+        view.displayWinner(
+                getPlayerName(currentGameStatus.winner),
+                currentGameStatus.winningSquares,
+                currentGameStatus.lastPlayedSquare
+        );
     }
 
     private void updateBoardView() {

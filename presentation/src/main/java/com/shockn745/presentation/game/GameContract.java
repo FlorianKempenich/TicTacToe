@@ -4,6 +4,8 @@ package com.shockn745.presentation.game;
 import com.shockn745.application.driving.dto.BoardCoordinates;
 import com.shockn745.application.driving.dto.Player;
 
+import java.util.Set;
+
 /**
  * @author Kempenich Florian
  */
@@ -13,7 +15,10 @@ public interface GameContract {
 
         void setCurrentPlayer(Player player, BoardCoordinates lastSquarePlayed);
 
-        void displayWinner(String winnerName);
+        void displayWinner(
+                String winnerName,
+                Set<BoardCoordinates> winningSquares,
+                BoardCoordinates lastSquarePlayed);
 
         void displayDebugSnackbar(String message);
     }

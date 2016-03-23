@@ -8,6 +8,8 @@ import com.shockn745.domain.Game;
 import com.shockn745.domain.Square;
 import com.shockn745.utils.NullObjects;
 
+import java.util.HashSet;
+
 /**
  * @author Kempenich Florian
  */
@@ -22,7 +24,8 @@ public class GameFactoryImpl implements GameFactory {
                 GameStatus.NO_ID,
                 Player.noPlayer(),
                 Player.noPlayer(),
-                BoardCoordinatesModel.noCoordinates()
+                BoardCoordinatesModel.noCoordinates(),
+                new HashSet<BoardCoordinatesModel>(3)
         );
     }
 

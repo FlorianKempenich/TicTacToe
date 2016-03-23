@@ -1,6 +1,5 @@
 package com.shockn745.domain;
 
-import com.shockn745.application.driving.dto.GameStatus;
 import com.shockn745.application.driving.dto.Player;
 import com.shockn745.domain.exceptions.IllegalMoveException;
 import com.shockn745.domain.iterator.BoardIterator;
@@ -21,17 +20,17 @@ public class Game {
     private final int gameId;
     private Player previousPlayer = NO_PLAYER;
     private BoardCoordinatesModel lastSquarePlayed;
-    private Set<BoardCoordinatesModel> winningSquare;
+    private Set<BoardCoordinatesModel> winningSquares;
 
     private Player winner = NO_PLAYER;
 
-    public Game(Board board, int gameId, Player previousPlayer, Player winner, BoardCoordinatesModel lastSquarePlayed) {
+    public Game(Board board, int gameId, Player previousPlayer, Player winner, BoardCoordinatesModel lastSquarePlayed, Set<BoardCoordinatesModel> winningSquares) {
         this.board = board;
         this.gameId = gameId;
         this.previousPlayer = previousPlayer;
         this.winner = winner;
         this.lastSquarePlayed = lastSquarePlayed;
-        this.winningSquare = new HashSet<>(3); //todo inject
+        this.winningSquares = winningSquares;
     }
 
     public void play(MoveModel move) throws IllegalMoveException {
@@ -75,7 +74,11 @@ public class Game {
             winner = sequenceWinner;
 
             // Update winning squares
-
+            iterator.reset();
+            while (iterator.hasNext()) {
+                Square square = iterator.next();
+                winningSquares.add(square.coordinates);
+            }
             return true;
         } else {
             return false;
@@ -126,11 +129,7 @@ public class Game {
     }
 
     public Set<BoardCoordinatesModel> getWinningSquares() {
-        Set<BoardCoordinatesModel> expectedFirstRow = new HashSet<>(3);
-        expectedFirstRow.add(BoardCoordinatesModel.fromCoordinates(0,0));
-        expectedFirstRow.add(BoardCoordinatesModel.fromCoordinates(1,0));
-        expectedFirstRow.add(BoardCoordinatesModel.fromCoordinates(2,0));
-        return expectedFirstRow;
+        return winningSquares;
     }
 
     @Override

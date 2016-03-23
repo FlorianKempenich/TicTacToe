@@ -8,6 +8,9 @@ import com.shockn745.domain.Square;
 import com.shockn745.domain.factory.GameFactory;
 import com.shockn745.utils.NullObjects;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @author Kempenich Florian
  */
@@ -29,7 +32,8 @@ public class GameStatusTestScenarios {
                 emptyBoard,
                 lastPlayer,
                 winner,
-                BoardCoordinates.noCoordinates()
+                BoardCoordinates.noCoordinates(),
+                new HashSet<BoardCoordinates>(3)
         );
     }
 
@@ -39,7 +43,7 @@ public class GameStatusTestScenarios {
         Player lastPlayer = Player.player1();
         Player winner = Player.noPlayer();
 
-        return new GameStatus(gameId, moveOn00, lastPlayer, winner, new BoardCoordinates(0, 0));
+        return new GameStatus(gameId, moveOn00, lastPlayer, winner, new BoardCoordinates(0, 0), new HashSet<BoardCoordinates>(3));
     }
 
     public GameStatus makeGameStatusPlayer1WonFirstRow(int gameId) {
@@ -53,12 +57,18 @@ public class GameStatusTestScenarios {
         Player lastPlayer = Player.player1();
         Player winner = Player.player1();
 
+        Set<BoardCoordinates> winningSquares = new HashSet<>(3);
+        winningSquares.add(new BoardCoordinates(0, 0));
+        winningSquares.add(new BoardCoordinates(1, 0));
+        winningSquares.add(new BoardCoordinates(2, 0));
+
         return new GameStatus(
                 gameId,
                 expectedBoard,
                 lastPlayer,
                 winner,
-                new BoardCoordinates(2, 0)
+                new BoardCoordinates(2, 0),
+                winningSquares
         );
     }
 }
