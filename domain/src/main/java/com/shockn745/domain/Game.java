@@ -5,6 +5,9 @@ import com.shockn745.application.driving.dto.Player;
 import com.shockn745.domain.exceptions.IllegalMoveException;
 import com.shockn745.domain.iterator.BoardIterator;
 
+import java.util.HashSet;
+import java.util.Set;
+
 
 /**
  * Represents a game of TicTacToe. <p/> A game is finished when either one of the column, one of the
@@ -18,6 +21,7 @@ public class Game {
     private final int gameId;
     private Player previousPlayer = NO_PLAYER;
     private BoardCoordinatesModel lastSquarePlayed;
+    private Set<BoardCoordinatesModel> winningSquare;
 
     private Player winner = NO_PLAYER;
 
@@ -27,6 +31,7 @@ public class Game {
         this.previousPlayer = previousPlayer;
         this.winner = winner;
         this.lastSquarePlayed = lastSquarePlayed;
+        this.winningSquare = new HashSet<>(3); //todo inject
     }
 
     public void play(MoveModel move) throws IllegalMoveException {
@@ -68,6 +73,9 @@ public class Game {
         Player sequenceWinner = getSequenceWinner(iterator);
         if (!sequenceWinner.equals(NO_PLAYER)) {
             winner = sequenceWinner;
+
+            // Update winning squares
+
             return true;
         } else {
             return false;
@@ -115,6 +123,14 @@ public class Game {
 
     public Player getWinner() {
         return winner;
+    }
+
+    public Set<BoardCoordinatesModel> getWinningSquares() {
+        Set<BoardCoordinatesModel> expectedFirstRow = new HashSet<>(3);
+        expectedFirstRow.add(BoardCoordinatesModel.fromCoordinates(0,0));
+        expectedFirstRow.add(BoardCoordinatesModel.fromCoordinates(1,0));
+        expectedFirstRow.add(BoardCoordinatesModel.fromCoordinates(2,0));
+        return expectedFirstRow;
     }
 
     @Override

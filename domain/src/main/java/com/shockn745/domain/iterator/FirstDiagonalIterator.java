@@ -30,4 +30,9 @@ public class FirstDiagonalIterator implements BoardIterator {
     public Square first() {
         return board.getSquareAtCoordinates(0, 0);
     }
+
+    @Override
+    public void reset() {
+        cursor = 0;
+    }
 }

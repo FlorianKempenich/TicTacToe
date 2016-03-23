@@ -213,8 +213,7 @@ public class GameTest {
         expectedFirstRow.add(BoardCoordinatesModel.fromCoordinates(1,0));
         expectedFirstRow.add(BoardCoordinatesModel.fromCoordinates(2,0));
 
-
-//        assertEquals(expectedFirstRow, game.getWinningSquares());
+        assertEquals(expectedFirstRow, game.getWinningSquares());
     }
 
 }

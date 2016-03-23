@@ -32,4 +32,9 @@ public class LineIterator implements BoardIterator {
     public Square first() {
         return board.getSquareAtCoordinates(0, lineIndex);
     }
+
+    @Override
+    public void reset() {
+        cursor = 0;
+    }
 }

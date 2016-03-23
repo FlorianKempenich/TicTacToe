@@ -31,4 +31,9 @@ public class ColumnIterator implements BoardIterator {
     public Square first() {
         return board.getSquareAtCoordinates(columnIndex, 0);
     }
+
+    @Override
+    public void reset() {
+        cursor = 0;
+    }
 }

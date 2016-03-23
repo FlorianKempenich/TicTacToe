@@ -10,6 +10,6 @@ public interface BoardIterator {
 
     Square first();
 
-//    void reset(); todo
+    void reset();
 
 }

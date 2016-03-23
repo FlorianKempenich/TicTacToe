@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 public class BoardIteratorTest {
@@ -107,5 +108,26 @@ public class BoardIteratorTest {
 
         assertTrue(secondDiagonalIterator.hasNext());
         assertEquals(makeSquare(2, 0, 2), secondDiagonalIterator.next());
+    }
+
+    @Test
+    public void iterate_firstLine_testReset() throws Exception {
+        BoardIterator lineIterator = new LineIterator(board, 0);
+        BoardIterator columnIterator = new ColumnIterator(board, 1);
+        BoardIterator firstDiagonalIterator = new FirstDiagonalIterator(board);
+        BoardIterator secondDiagonalIterator = new SecondDiagonalIterator(board);
+
+        checkReset(lineIterator);
+        checkReset(columnIterator);
+        checkReset(firstDiagonalIterator);
+        checkReset(secondDiagonalIterator);
+    }
+
+    private void checkReset(BoardIterator iterator) throws Exception {
+        Square first = iterator.first();
+        assertEquals(first, iterator.next());
+        assertNotEquals(first, iterator.next());
+        iterator.reset();
+        assertEquals(first, iterator.next());
     }
 }
